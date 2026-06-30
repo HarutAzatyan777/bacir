@@ -1,0 +1,166 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Serif+Armenian:wght@400;500&display=swap');
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  text-align: center;
+  color: white;
+  font-family:  cursive; /* հարսանեկան ֆոնտ */
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  padding: 20px;
+}
+
+.hero h1 {
+  font-family:  'Noto Serif Armenian', serif; /* Հայերենի համար էլեգանտ դասական ոճ */
+  font-size: 3.8rem;
+  font-weight: 400;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Լրացուցիչ կոնտրաստ տեքստի համար */
+  letter-spacing: 1px; /* Որպեսզի հայերեն տառերը շատ չսեղմվեն */
+}
+
+.hero h2.subtitle {
+  font-family: 'Arial', sans-serif; /* Ավելի պարզ և մոդեռն տառատեսակ սուբտիտրի համար */
+  font-size: 1.1rem;
+  letter-spacing: 4px; /* Ժամանակակից, «Luxury» տպավորություն */
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  font-weight: 300;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+  font-family: 'Noto Serif Armenian', serif; /* Հայերեն տեքստի համար էլեգանտ ոճ */
+}
+
+.hero button {
+  background-color: #c5a572; /* gold accent */
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  font-size: 1.1rem;
+  border-radius: 28px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero button:hover {
+  background-color: #a7844d;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+/* Scroll Down կոճակ/սլաք */
+.scroll-down-wrapper {
+  position: absolute;
+  bottom: 40px; /* Հեռավորությունը ներքևից */
+  left: 50%;
+  transform: translateX(-50%); /* Ճիշտ կենտրոնացնելու համար */
+  z-index: 5; /* Որպեսզի մուգ ֆոնի վրայով լինի */
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.85;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6); /* Որպեսզի «Շարունակել»-ը չկորչի լուսավոր նկարի վրա */
+  transition: opacity 0.3s ease;
+}
+
+.scroll-down-wrapper:hover {
+  opacity: 1;
+}
+
+.scroll-text {
+  font-family: 'Arial', sans-serif; /* Ավելի պարզ ֆոնտ տեքստի համար */
+  font-size: 0.9rem;
+  letter-spacing: 3px; /* Ավելի տարածուն և պրեմիում տեսք */
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.scroll-arrow {
+  font-size: 1.8rem;
+  font-family: sans-serif;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(10px); }
+  60% { transform: translateY(5px); }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .hero {
+    height: 100vh; /* պահում ենք ամբողջ էկրանին */
+    background-position: center top; /* կարաս փոխես եթե նկարիդ կենտրոնը կարևոր է */
+  }
+
+  .hero-content {
+    max-width: 90%;
+    padding: 10px;
+    height: 10%;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem; /* փոքրացնում ենք վերնագիրը */
+  }
+
+  .hero h2.subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .hero p {
+    font-size: 1rem; /* տեքստը ավելի ընթեռնելի */
+    margin-bottom: 20px;
+  }
+
+  .hero button {
+    padding: 10px 24px;
+    font-size: 1rem;
+    border-radius: 24px;
+  }
+}
+
+/* Very small phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+  }
+
+  .hero button {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+  }
+}

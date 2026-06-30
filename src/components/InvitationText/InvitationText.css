@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Great+Vibes&family=Noto+Serif+Armenian:wght@400;500&display=swap');
+
+:root {
+  --bg: rgba(255, 255, 255, 0.8);
+  --glass: rgba(255, 255, 255, 0.6);
+  --accent: rgba(0, 0, 0, 0.9);
+  --muted: #666;
+  --radius: 16px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Noto Serif Armenian', sans-serif;
+}
+
+.invitation-text {
+  width: 100%;
+ display: flow-root; /* Կանխում է margin-ների կորուստը */
+  margin-bottom: 150px !important;/* Կենտրոնացնում է բլոկը և ավելացնում 150px ազատ տարածք ներքևում */
+  padding: 24px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 248, 248, 0.7));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.invitation-text h2 {
+  margin: 0 0 20px 0;
+  font-family:  'Noto Serif Armenian', serif;
+  font-size: 26px; /* Մեծացրել ենք՝ նուրբ տառատեսակն ավելի ընթեռնելի դարձնելու համար */
+  font-weight: 400; /* Ավելի բարակ և էլեգանտ */
+  color: #111;
+  text-align: center;
+}
+
+.invitation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: 'Noto Serif Armenian', serif;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  margin-left: 4px;
+}
+
+.input-ios {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-ios:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Ժամանակակից Segmented Control (Radio Group) */
+.radio-group {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05); /* Մոխրագույն ետնաֆոն */
+  padding: 4px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.segment {
+  flex: 1;
+  position: relative;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.3s ease;
+  z-index: 1;
+}
+
+.segment.checked {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Անիմացվող Սպիտակ Ֆոնը */
+.active-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+}
+
+.segment-text {
+  position: relative;
+  z-index: 2;
+}
+
+.motion-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #111;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.motion-button:disabled {
+  background: #777;
+  cursor: not-allowed;
+}
+
+.form-success {
+  color: #2e7d32;
+  font-size: 14px;
+  text-align: center;
+  background: #e8f5e9;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.form-error {
+  color: #c62828;
+  font-size: 14px;
+  text-align: center;
+  background: #ffebee;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Tablet & Desktop */
+@media (min-width: 600px) {
+  .invitation-text {
+    
+    max-width: 480px;
+    padding: 30px;
+    
+  }
+  .invitation-text h2 {
+    font-size: 32px;
+  }
+}

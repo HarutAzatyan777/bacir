@@ -1,0 +1,107 @@
+/* Home.css */
+
+/* Գլխավոր wrapper */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+  }
+  
+  /* Section-ների ընդհանուր ստիլ */
+  .home > * {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: var(--section-padding);
+    font-family: var(--font-main);
+  }
+
+/* Audio Toggle Button */
+.audio-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.audio-toggle-btn:hover {
+  transform: scale(1.1);
+  background-color: #fff;
+}
+
+/* Զարկերակի (pulse) անիմացիա միացված ժամանակ */
+@keyframes pulseAnimation {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(44, 62, 53, 0.4); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(44, 62, 53, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(44, 62, 53, 0); }
+}
+
+/* Կիրառում ենք անիմացիան միայն երբ կոճակն ունի 'playing' դասը */
+.audio-toggle-btn.playing {
+  animation: pulseAnimation 2s infinite;
+}
+
+/* Ոլորելու (scroll) ժամանակ կոճակը դառնում է կիսաթափանցիկ */
+.audio-toggle-btn.scrolling {
+  opacity: 0.3;
+}
+
+/* Custom Text Section */
+.custom-section {
+  width: 100%;
+  padding: var(--section-padding);
+  background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.custom-section-content {
+  max-width: var(--container-width);
+  width: 100%;
+  text-align: center;
+}
+
+.custom-section-title {
+  font-family: var(--font-main);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.custom-section-text {
+  font-family: var(--font-main);
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--text-color);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.custom-section-text p {
+  margin-bottom: 20px;
+}
+
+.custom-section-text p:last-child {
+  margin-bottom: 0;
+}
+  

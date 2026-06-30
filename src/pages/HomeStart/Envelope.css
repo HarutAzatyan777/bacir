@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================
+   STAGE
+   ========================= */
+.envelope-stage {
+  position: fixed;
+  inset: 0;
+  background: #2c3a1c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1600px;
+  overflow: hidden;
+  font-family: 'Playfair Display', serif;
+  transition: opacity 1.6s ease-in-out; /* Սահուն մարելու անիմացիան */
+}
+
+.envelope-stage.fade-out {
+  opacity: 0;
+}
+
+/* =========================
+   ENVELOPE BASE
+   ========================= */
+.envelope {
+  position: absolute;
+  width: max(100vw, 150vh);
+  height: max(100vh, 66.66vw);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.pouch {
+  position: absolute;
+  inset: 0;
+  background: #1f2a12;
+  z-index: 1;
+}
+
+/* =========================
+   COMMON PAPER STYLE
+   ========================= */
+.fold-left,
+.fold-right,
+.fold-bottom,
+.flap {
+  position: absolute;
+  inset: 0;
+ 
+  background-image: var(--envelope-texture, url("../../../public/texture.webp"));
+  background-size: contain;
+  background-repeat: repeat;
+  box-shadow: 
+    inset 0 3px 6px rgba(255, 255, 255, .15),
+    inset 0 -6px 10px rgba(0, 0, 0, .35);
+}
+
+/* =========================
+   SIDE FOLDS
+   ========================= */
+.fold-left {
+  clip-path: polygon(0 0, 50% 50%, 0 100%);
+  z-index: 2;
+}
+
+.fold-right {
+  clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+  z-index: 2;
+}
+
+/* =========================
+   BOTTOM FOLD
+   ========================= */
+.fold-bottom {
+  clip-path: polygon(0 100%, 50% 50%, 100% 100%);
+  z-index: 3;
+  background-size: cover;
+}
+
+.fold-bottom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Merged Seam Lines & Shadows */
+  background: 
+    linear-gradient(45deg, transparent 49.7%, rgba(0, 0, 0, .45) 50%, transparent 50.3%),
+    linear-gradient(45deg, transparent 49.2%, rgba(255, 255, 255, .35) 49.6%, transparent 49.9%),
+    linear-gradient(-45deg, transparent 49.7%, rgba(0, 0, 0, .45) 50%, transparent 50.3%),
+    linear-gradient(-45deg, transparent 49.2%, rgba(255, 255, 255, .35) 49.6%, transparent 49.9%);
+  box-shadow: 
+    inset 0 10px 22px rgba(0, 0, 0, .45),
+    inset 0 -3px 6px rgba(255, 255, 255, .25);
+}
+
+/* =========================
+   TOP FLAP
+   ========================= */
+.flap-wrapper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: top;
+  transition: transform 10s cubic-bezier(.25, .1, .25, 1);
+  z-index: 5;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, .6));
+}
+
+.flap {
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+}
+
+/* =========================
+   SEAL
+   ========================= */
+
+/* 2. The Wax Seal Base */
+.seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 140px;
+  height: 140px;
+
+  /* 1. Organic shape: Ավելի բնական տեսքի համար եզրերը մի փոքր անհամաչափ են */
+  border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%;
+  
+  /* 2. Realistic wax color gradient */
+  background: radial-gradient(circle at 30% 30%, #fdf9f2 0%, #e7dcc8 60%, #d1c1a5 100%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* 3. Deep 3D Shadow Layers */
+  box-shadow:
+    /* Արտաքին ստվերներ (Depth) */
+    0 10px 20px rgba(0, 0, 0, 0.2), 
+    0 6px 6px rgba(0, 0, 0, 0.1),
+    /* Ներքին ծավալ (Volume) */
+    inset -4px -4px 8px rgba(200, 185, 160, 0.8), 
+    inset 8px 8px 15px rgba(255, 255, 255, 0.9);
+}
+
+/* Կնիքի ներքին օղակը (Inner circle) */
+.seal::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 51% 49% 48% 52% / 52% 48% 52% 48%;
+  border: 2px solid rgba(200, 185, 160, 0.3);
+  
+  box-shadow:
+    inset 4px 4px 6px rgba(180, 160, 130, 0.5),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Լրացուցիչ փայլ (Plastic/Wax sheen) */
+.seal::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 40%;
+  height: 20%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 50%;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* 4. Փորագրված տառեր (Embossed Text) */
+.seal span {
+  font-family: cursive;
+  font-size: 42px;
+  color: #c4a470; /* Wax color-ից մի փոքր մուգ */
+  z-index: 2;
+  user-select: none;
+  
+  /* Engraving effect: ստեղծում է փորվածքի տպավորություն */
+  text-shadow:
+    -1px -1px 1px rgba(255, 255, 255, 0.7), /* Light edge */
+    1px 1px 2px rgba(0, 0, 0, 0.2);        /* Deep shadow */
+}
+
+/* --- INTERACTION --- */
+
+.seal:hover {
+  transform: translate(-50%, -52%) scale(1.05); /* Մի փոքր բարձրանում է */
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.25), 
+    0 8px 10px rgba(0, 0, 0, 0.15),
+    inset -4px -4px 8px rgba(200, 185, 160, 0.8), 
+    inset 8px 8px 15px rgba(255, 255, 255, 0.9);
+}
+
+.seal:active {
+  transform: translate(-50%, -48%) scale(0.92); /* Սեղմվում է ներքև */
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.2), 
+    inset 4px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.1s ease;
+}
+/* =========================
+   BOTTOM TEXT
+   ========================= */
+.bottom-text {
+  position: absolute;
+  top: 70vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #b3c0a4;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  font-weight: 600;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity .5s;
+}
+
+/* =========================
+   OPEN STATE
+   ========================= */
+.envelope-stage.open .flap-wrapper {
+  transform: rotateX(60deg);
+}
+
+
+.envelope-stage.open .bottom-text {
+  opacity: 0;
+}
+
+.loading-logo {
+  width: 120px; /* Կարգավորեք լոգոյի չափը */
+  height: auto;
+  margin-bottom: 20px;
+  animation: pulse 1.8s infinite ease-in-out;
+}
+/* Envelope.css */
+
+/* =========================
+   LOADING SCREEN
+   ========================= */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background: #2c3a1c; /* Նույն գույնը ինչ stage-ինն է */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: #f2ebd9;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Լոգոյի կոնտեյները (ըստ ցանկության, կարող ես այստեղ էլ չափսեր դնել) */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Բացատ տեքստից վերև */
+}
+
+/* Բուն լոգոյի ոճը և անիմացիան */
+.loading-logo {
+  width: 120px; /* Փոխիր չափսը ըստ քո լոգոյի */
+  height: auto;
+  
+  /* Ավելացնում ենք անիմացիան */
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Բեռնվող տեքստի ոճը (քո կոդում արդեն կա, ուղղակի ավելացրու class-ը) */
+.loading-text {
+  font-family: cursive; /* Ըստ քո դիզայնի */
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+/* =========================
+   KEYFRAMES FOR PULSE ANIMATION
+   ========================= */
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+/* =========================
+   SPINNER ANIMATION
+   ========================= */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-icon {
+  animation: spin 1s linear infinite;
+}

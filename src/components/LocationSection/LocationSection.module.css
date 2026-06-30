@@ -1,0 +1,144 @@
+.locationSection {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: #faf8f5;
+  font-family: 'Noto Serif Armenian', serif;
+  text-align: center;
+  padding: 80px 0;
+  z-index: 1;
+}
+
+.fullBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  object-fit: cover;
+  opacity: 0.7;
+}
+.locationContentContainer {
+  position: relative;
+  z-index: 2; 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.locationContentContainer {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.mainSectionTitle {
+  margin-bottom: 50px;
+  font-family:  'Noto Serif Armenian', serif;
+  color: #333;
+  font-size: 3rem;
+  font-weight: 400;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Vertical connector line */
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 40px;
+  background-color: rgb(0, 0, 0);
+}
+
+.stepContentTop h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  font-family: 'Noto Serif Armenian', serif;
+  color: #2c3e35;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.stepLocation {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #222;
+  margin: 5px 0;
+}
+
+.stepAddress {
+  color: #222;
+  font-size: 1rem;
+}
+
+.stepTime {
+  display: block;
+  font-weight: 800;
+  font-family: "noto serif armenian", serif;
+  font-size: 1.4rem;
+  color: #111;
+  margin: 15px 0;
+}
+
+.stepIconCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 300px; /* Constrain icon size */
+  height: auto;
+  min-height: 150px;
+}
+
+.largeIcon {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.mapButtonOutline {
+  padding: 12px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #2c3e35;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.mapButtonOutline:hover {
+  background-color: #3d5a4d;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .mainSectionTitle { font-size: 2.2rem; }
+  .stepContentTop h3 { font-size: 1.5rem; letter-spacing: 2px; }
+  .largeIcon { width: 80%; }
+}

@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Great+Vibes&family=Noto+Serif+Armenian:wght@400;500&display=swap');
+
+/* Calendar Container */
+.calendar-section {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 40px 20px;
+
+  
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Noto Serif Armenian', sans-serif;
+}
+
+/* Calendar Background Image */
+.calendar-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Content Wrapper for Z-Index */
+.calendar-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Title */
+.section-title {
+  font-family:  'Noto Serif Armenian', serif; /* Էլեգանտ հարսանեկան ոճ */
+  font-size: 2.5rem;
+  font-weight: 400; /* Բարակ և նուրբ տեսքի համար */
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4); /* Հստակեցնող ստվեր */
+}
+
+/* Intro Text */
+.intro-text,
+.invite-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px; /* Տառերի միջև թեթև տարածություն */
+}
+
+/* React Calendar base */
+calendar-wrapper {
+  margin: 0 auto;
+}
+
+.react-calendar {
+  width: 100%;
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  border: none;
+  font-family: 'Montserrat', 'Noto Sans Armenian', sans-serif;
+}
+
+/* Վերնագիր (Ամիս Տարի) */
+.react-calendar__navigation {
+  margin-bottom: 1rem;
+}
+.react-calendar__navigation button {
+  color: #4a4641;
+  background: transparent;
+  font-size: 1.5rem;
+  font-weight: 300;
+  pointer-events: none; /* Անջատում ենք սեղմելու հնարավորությունը, եթե պետք է ստատիկ մնա */
+}
+
+.react-calendar__navigation button:hover,
+.react-calendar__navigation button:focus {
+  background: transparent !important;
+}
+
+/* Շաբաթվա օրերի անվանումներ (ԵՐԿ ԵՐՔ ՉՈՐ...) */
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: #8c867d;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none; /* Հեռացնում ենք կետագծերը շաբաթվա օրերի տակից */
+}
+
+/* Օրերի թվերը */
+.react-calendar__tile {
+  background: transparent;
+  color: #4a4641;
+  font-size: 1rem;
+  padding: 12px 0;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  position: relative;
+}
+
+.react-calendar__tile:hover,
+.react-calendar__tile:focus {
+  background: transparent !important;
+  color: #000 !important;
+}
+
+/* Հեռացնում ենք ակտիվ և ընթացիկ օրվա կապույտ/սև ֆոնը */
+.react-calendar__tile--now,
+.react-calendar__tile--active {
+  background: transparent !important;
+  color: #4a4641 !important;
+  font-weight: 400;
+}
+
+/* Շաբաթ-Կիրակի օրերի գույնը (կարող եք փոխել կամ թողնել նույնը) */
+.react-calendar__month-view__days__day--weekend {
+  color: #4a4641; 
+}
+
+/* --- ՆՇՎԱԾ ՕՐՎԱ ՄԱՏԱՆԻԻ ԷՖԵԿՏԸ --- */
+.event-day {
+  position: relative;
+  z-index: 2;
+  font-weight: 500 !important;
+}
+
+/* Ստեղծում ենք ոսկեգույն մատանիի տեսք օրվա շուրջ */
+.ring-highlight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(25deg) scaleY(0.9);
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ceab6f;
+  border-radius: 50%;
+  z-index: -1;
+
+  /* depth */
+  box-shadow: 
+    2px 3px 6px rgba(0,0,0,0.25),
+    inset -2px -2px 3px rgba(0,0,0,0.2),
+    inset 2px 2px 3px rgba(255,255,255,0.4);
+}
+
+/* Diamond */
+.ring-highlight::after {
+  content: '💎';
+  position: absolute;
+  top: -12px;
+  left: 65%; /* մի քիչ աջ՝ perspective-ի համար */
+  transform: translateX(-45%) rotate(20deg);
+  font-size: 10px;
+
+  /* glow */
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
+}
+/* Mobile styles */
+@media (max-width: 600px) {
+  .calendar-section {
+    padding: 20px 10px;
+  }
+
+  .react-calendar {
+    max-width: 100%;
+    font-size: 14px;
+    box-shadow: none;
+  }
+
+  .react-calendar__navigation button {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .react-calendar__tile {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .heart {
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .intro-text,
+  .invite-text {
+    font-size: 1.1rem;
+  }
+}

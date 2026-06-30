@@ -1,0 +1,106 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1c2e24 0%, #0d1611 100%);
+  color: #d4af37;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+}
+
+.premium-spinner {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  margin: 0 auto 20px auto;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #d4af37;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  animation-delay: -1.0s;
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+  }
+}
+
+.loader-text {
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  font-weight: 300;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Not Found Page styling */
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1c2e24 0%, #0d1611 100%);
+  padding: 20px;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+}
+
+.not-found-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 16px;
+  padding: 40px 30px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.not-found-card h1 {
+  font-size: 5rem;
+  margin: 0;
+  font-weight: 200;
+  color: #d4af37;
+  line-height: 1;
+}
+
+.not-found-card h2 {
+  font-size: 1.5rem;
+  margin: 20px 0 10px 0;
+  font-weight: 400;
+  color: #fff;
+}
+
+.not-found-card p {
+  font-size: 1rem;
+  color: #a3b899;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.gold-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
+  margin: 25px 0;
+}

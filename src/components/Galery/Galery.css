@@ -1,0 +1,101 @@
+.galery-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px 20px;
+    font-family: Noto Serif Armenian, serif;
+  }
+  
+  .galery-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #222;
+    font-weight: 700;
+  }
+
+/* Countdown Styles */
+.countdown-container {
+  margin-bottom: 30px;
+}
+
+.countdown-card {
+  background-color: rgb(255, 255, 255);
+  color: #333; /* Սպիտակի փոխարեն մուգ գույն՝ լավ կարդացվելու համար */
+  padding: 15px 25px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(25, 85, 28, 0.2);
+
+  text-align: center;
+}
+  
+  .galery-photo-wrapper {
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .galery-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+  }
+  
+  .galery-photo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
+  
+  /* ✅ Mobile First / Responsive */
+  @media (max-width: 768px) {
+    .galery-container {
+      padding: 25px 15px;
+    }
+  
+    .galery-title {
+      font-size: 1.75rem;
+      margin-bottom: 16px;
+    }
+  
+    .galery-photo-wrapper {
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+  
+    .galery-photo:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .galery-container {
+      padding: 20px 10px;
+    }
+  
+    .galery-title {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+  
+    .galery-photo-wrapper {
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+  
+    .galery-photo:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.galery-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+  

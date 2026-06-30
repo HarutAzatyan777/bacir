@@ -1,0 +1,90 @@
+/* 기본 պարամետրեր (desktop) */
+.colors-palette {
+  --size: 70px;        /* յուրաքանչյուր շրթ-ի չափը */
+  --radius: 90px;      /* կենտրոնից չորսուսի ճշգրիտ շառավիղ */
+  --hover-offset: 10px;/* hover-ն ավելի դուրս բերի */
+  position: relative;
+  width: calc(var(--radius) * 2 + var(--size));
+  height: calc(var(--radius) * 2 + var(--size));
+  margin: 1.5rem auto;
+}
+
+/* գույների շրջանները */
+.color-icon {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+
+  /* Առաջին դիրափոխումը (կենտրոն) + ռոտացիա ըստ նախապես հաշվարկված անկյան,
+     ապա դուրս տեղափոխում շառավիղով ու վերակոսմետիկ ռոտացիա՝ էֆեկտի համար */
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translate(var(--radius))
+    rotate(var(--neg-angle));
+
+  opacity: 0.98;
+  transition: transform 0.22s ease, z-index 0.22s;
+  cursor: pointer;
+}
+
+/* հովեր և Ֆոկուս */
+.color-icon:hover,
+.color-icon:focus {
+  z-index: 3;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--angle))
+    translate(calc(var(--radius) + var(--hover-offset)))
+    rotate(var(--neg-angle))
+    scale(1.06);
+  outline: none;
+}
+
+/* հասանելիության համար փոքր զեղչ */
+.color-icon:focus {
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.08);
+}
+
+/* Դասական սեկտորային դասավորություն կենտրոնից շրջապատով */
+/* (backgroundColor գալիս է inline style-ով React-ից) */
+
+/* Responsive — MOBILE */
+@media (max-width: 600px) {
+  .colors-palette {
+    --size: 50px;
+    --radius: 70px;
+    --hover-offset: 8px;
+    width: calc(var(--radius) * 2 + var(--size));
+    height: calc(var(--radius) * 2 + var(--size));
+  }
+
+  .color-icon {
+    /* եթե համակարգը փոքր է, կարող ենք քիչ ավելի overlap ստանալ՝
+       որպեսզի պալետը կոմպակտ լինի */
+    opacity: 0.98;
+  }
+}
+
+/* Խնդիրներ չլինելու համար՝ փոքր էստետիկ */
+.dresscode-section {
+  text-align: center;
+  padding: 1.2rem 1rem;
+}
+
+.dresscode-section h2 {
+  margin-bottom: 0.4rem;
+  font-size: 1.6rem;
+}
+
+.dresscode-section p {
+  color: #444;
+  margin: 0.6rem auto;
+  max-width: 720px;
+}

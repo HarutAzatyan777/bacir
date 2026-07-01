@@ -14,7 +14,7 @@ export default function DressCodeSection({ dressCodeData }) {
   const count = colors.length;
 
   const displayTitle = currentLang === "ru" ? "Дресс-код" : "Dress Code";
-  const displayDescription = dressCodeData?.description?.[currentLang] || dressCodeData?.description?.am || (currentLang === "ru" ? "Пожалуйста, выбирайте пастельные тона." : "Ընտրեք նուրբ գույներ։");
+  const displayDescription = dressCodeData?.description?.[currentLang] || dressCodeData?.description?.am || (currentLang === "ru" ? "Пожалуйста, выбирайте пастельные тона." : currentLang === "en" ? "Please choose pastel colors." : "Ընտրեք նուրբ գույներ։");
 
   return (
     <div className="dresscode-section">

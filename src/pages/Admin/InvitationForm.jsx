@@ -37,8 +37,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   // Hero Section
   const [heroNamesAm, setHeroNamesAm] = useState("");
   const [heroNamesRu, setHeroNamesRu] = useState("");
+  const [heroNamesEn, setHeroNamesEn] = useState("");
   const [heroTitleAm, setHeroTitleAm] = useState("");
   const [heroTitleRu, setHeroTitleRu] = useState("");
+  const [heroTitleEn, setHeroTitleEn] = useState("");
   const [heroBgMobileFile, setHeroBgMobileFile] = useState(null);
   const [heroBgDesktopFile, setHeroBgDesktopFile] = useState(null);
   const [heroBgMobileUrl, setHeroBgMobileUrl] = useState("");
@@ -47,10 +49,13 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   // Calendar
   const [calTitleAm, setCalTitleAm] = useState("");
   const [calTitleRu, setCalTitleRu] = useState("");
+  const [calTitleEn, setCalTitleEn] = useState("");
   const [calIntroAm, setCalIntroAm] = useState("");
   const [calIntroRu, setCalIntroRu] = useState("");
+  const [calIntroEn, setCalIntroEn] = useState("");
   const [calInviteAm, setCalInviteAm] = useState("");
   const [calInviteRu, setCalInviteRu] = useState("");
+  const [calInviteEn, setCalInviteEn] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [calBgFile, setCalBgFile] = useState(null);
   const [calBgUrl, setCalBgUrl] = useState("");
@@ -58,26 +63,35 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   // Location - Church
   const [churchTitleAm, setChurchTitleAm] = useState("ԵԿԵՂԵՑԻ");
   const [churchTitleRu, setChurchTitleRu] = useState("ЦЕРКОВЬ");
+  const [churchTitleEn, setChurchTitleEn] = useState("CHURCH");
   const [churchNameAm, setChurchNameAm] = useState("");
   const [churchNameRu, setChurchNameRu] = useState("");
+  const [churchNameEn, setChurchNameEn] = useState("");
   const [churchAddr1Am, setChurchAddr1Am] = useState("");
   const [churchAddr1Ru, setChurchAddr1Ru] = useState("");
+  const [churchAddr1En, setChurchAddr1En] = useState("");
   const [churchAddr2Am, setChurchAddr2Am] = useState("");
   const [churchAddr2Ru, setChurchAddr2Ru] = useState("");
+  const [churchAddr2En, setChurchAddr2En] = useState("");
   const [churchTime, setChurchTime] = useState("15:00");
   const [churchMapLink, setChurchMapLink] = useState("");
 
   // Location - Party
   const [partyTitleAm, setPartyTitleAm] = useState("ՌԵՍՏՈՐԱՆ");
   const [partyTitleRu, setPartyTitleRu] = useState("РЕСТОРАН");
+  const [partyTitleEn, setPartyTitleEn] = useState("RESTAURANT");
   const [partyNameAm, setPartyNameAm] = useState("");
   const [partyNameRu, setPartyNameRu] = useState("");
+  const [partyNameEn, setPartyNameEn] = useState("");
   const [partyAddrExtraAm, setPartyAddrExtraAm] = useState("");
   const [partyAddrExtraRu, setPartyAddrExtraRu] = useState("");
+  const [partyAddrExtraEn, setPartyAddrExtraEn] = useState("");
   const [partyAddr1Am, setPartyAddr1Am] = useState("");
   const [partyAddr1Ru, setPartyAddr1Ru] = useState("");
+  const [partyAddr1En, setPartyAddr1En] = useState("");
   const [partyAddr2Am, setPartyAddr2Am] = useState("");
   const [partyAddr2Ru, setPartyAddr2Ru] = useState("");
+  const [partyAddr2En, setPartyAddr2En] = useState("");
   const [partyTime, setPartyTime] = useState("17:30");
   const [partyMapLink, setPartyMapLink] = useState("");
   const [locBgFile, setLocBgFile] = useState(null);
@@ -91,6 +105,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const [showDressCode, setShowDressCode] = useState(true);
   const [dressDescAm, setDressDescAm] = useState("Ընտրեք նուրբ գույներ։");
   const [dressDescRu, setDressDescRu] = useState("Пожалуйста, выбирайте пастельные тона.");
+  const [dressDescEn, setDressDescEn] = useState("Please choose pastel colors.");
   const [dressColors, setDressColors] = useState(["#eaeaea", "#d9c8b4", "#c5a880", "#8b6f47"]);
   const [newColor, setNewColor] = useState("#ffffff");
 
@@ -103,6 +118,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const [newHostId, setNewHostId] = useState("");
   const [newHostAm, setNewHostAm] = useState("");
   const [newHostRu, setNewHostRu] = useState("");
+  const [newHostEn, setNewHostEn] = useState("");
   const [telegramBotToken, setTelegramBotToken] = useState("");
   const [telegramChatId, setTelegramChatId] = useState("");
 
@@ -156,44 +172,58 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         // Hero
         setHeroNamesAm(data.hero?.names?.am || "");
         setHeroNamesRu(data.hero?.names?.ru || "");
+        setHeroNamesEn(data.hero?.names?.en || "");
         setHeroTitleAm(data.hero?.title?.am || "");
         setHeroTitleRu(data.hero?.title?.ru || "");
+        setHeroTitleEn(data.hero?.title?.en || "");
         setHeroBgMobileUrl(data.hero?.bgMobileUrl || "");
         setHeroBgDesktopUrl(data.hero?.bgDesktopUrl || "");
 
         // Calendar
         setCalTitleAm(data.calendar?.title?.am || "");
         setCalTitleRu(data.calendar?.title?.ru || "");
+        setCalTitleEn(data.calendar?.title?.en || "");
         setCalIntroAm(data.calendar?.intro?.am || "");
         setCalIntroRu(data.calendar?.intro?.ru || "");
+        setCalIntroEn(data.calendar?.intro?.en || "");
         setCalInviteAm(data.calendar?.invite?.am || "");
         setCalInviteRu(data.calendar?.invite?.ru || "");
+        setCalInviteEn(data.calendar?.invite?.en || "");
         setEventDate(data.calendar?.eventDate ? data.calendar.eventDate.substring(0, 16) : "");
         setCalBgUrl(data.calendar?.bgUrl || "");
 
         // Church
         setChurchTitleAm(data.location?.church?.title?.am || "ԵԿԵՂԵՑԻ");
         setChurchTitleRu(data.location?.church?.title?.ru || "ЦЕРКОВЬ");
+        setChurchTitleEn(data.location?.church?.title?.en || "CHURCH");
         setChurchNameAm(data.location?.church?.name?.am || "");
         setChurchNameRu(data.location?.church?.name?.ru || "");
+        setChurchNameEn(data.location?.church?.name?.en || "");
         setChurchAddr1Am(data.location?.church?.address1?.am || "");
         setChurchAddr1Ru(data.location?.church?.address1?.ru || "");
+        setChurchAddr1En(data.location?.church?.address1?.en || "");
         setChurchAddr2Am(data.location?.church?.address2?.am || "");
         setChurchAddr2Ru(data.location?.church?.address2?.ru || "");
+        setChurchAddr2En(data.location?.church?.address2?.en || "");
         setChurchTime(data.location?.church?.time || "15:00");
         setChurchMapLink(data.location?.church?.mapLink || "");
 
         // Party
         setPartyTitleAm(data.location?.party?.title?.am || "ՌԵՍՏՈՐԱՆ");
         setPartyTitleRu(data.location?.party?.title?.ru || "РЕСТОРАН");
+        setPartyTitleEn(data.location?.party?.title?.en || "RESTAURANT");
         setPartyNameAm(data.location?.party?.name?.am || "");
         setPartyNameRu(data.location?.party?.name?.ru || "");
+        setPartyNameEn(data.location?.party?.name?.en || "");
         setPartyAddrExtraAm(data.location?.party?.addressExtra?.am || "");
         setPartyAddrExtraRu(data.location?.party?.addressExtra?.ru || "");
+        setPartyAddrExtraEn(data.location?.party?.addressExtra?.en || "");
         setPartyAddr1Am(data.location?.party?.address1?.am || "");
         setPartyAddr1Ru(data.location?.party?.address1?.ru || "");
+        setPartyAddr1En(data.location?.party?.address1?.en || "");
         setPartyAddr2Am(data.location?.party?.address2?.am || "");
         setPartyAddr2Ru(data.location?.party?.address2?.ru || "");
+        setPartyAddr2En(data.location?.party?.address2?.en || "");
         setPartyTime(data.location?.party?.time || "17:30");
         setPartyMapLink(data.location?.party?.mapLink || "");
         setLocBgUrl(data.location?.bgUrl || "");
@@ -205,6 +235,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setShowDressCode(data.dressCode?.show !== false);
         setDressDescAm(data.dressCode?.description?.am || "");
         setDressDescRu(data.dressCode?.description?.ru || "");
+        setDressDescEn(data.dressCode?.description?.en || "");
         setDressColors(data.dressCode?.colors || []);
 
         // RSVP
@@ -249,10 +280,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
 
   const handleAddHost = () => {
     if (newHostId && newHostAm) {
-      setHosts([...hosts, { id: newHostId, am: newHostAm, ru: newHostRu || newHostAm }]);
+      setHosts([...hosts, { id: newHostId, am: newHostAm, ru: newHostRu || newHostAm, en: newHostEn || newHostAm }]);
       setNewHostId("");
       setNewHostAm("");
       setNewHostRu("");
+      setNewHostEn("");
     }
   };
 
@@ -293,8 +325,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       id: newId,
       type: "customText",
       enabled: true,
-      title: { am: "Նոր բաժին", ru: "Новый раздел" },
-      content: { am: "Բովանդակություն...", ru: "Содержимое..." }
+      title: { am: "Նոր բաժին", ru: "Новый раздел", en: "New section" },
+      content: { am: "Բովանդակություն...", ru: "Содержимое...", en: "Content..." }
     };
     setSections([...sections, newCustom]);
   };
@@ -388,34 +420,38 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           fontMain
         },
         hero: {
-          names: { am: heroNamesAm, ru: heroNamesRu },
-          title: { am: heroTitleAm, ru: heroTitleRu },
+          names: { am: heroNamesAm, ru: heroNamesRu, en: heroNamesEn },
+          title: { am: heroTitleAm, ru: heroTitleRu, en: heroTitleEn },
           bgMobileUrl: finalHeroBgMobile,
           bgDesktopUrl: finalHeroBgDesktop,
         },
         calendar: {
-          title: { am: calTitleAm, ru: calTitleRu },
-          intro: { am: calIntroAm, ru: calIntroRu },
-          invite: { am: calInviteAm, ru: calInviteRu },
+          title: { am: calTitleAm, ru: calTitleRu, en: calTitleEn },
+          intro: { am: calIntroAm, ru: calIntroRu, en: calIntroEn },
+          invite: { am: calInviteAm, ru: calInviteRu, en: calInviteEn },
           eventDate: eventDate ? new Date(eventDate).toISOString() : "",
           bgUrl: finalCalBg,
         },
         location: {
-          title: { am: churchTitleAm === "ԵԿԵՂԵՑԻ" ? "Տեղը և ժամանակացույցը" : "Место и расписание", ru: "Место и расписание" },
+          title: { 
+            am: churchTitleAm === "ԵԿԵՂԵՑԻ" ? "Տեղը և ժամանակացույցը" : "Место и расписание", 
+            ru: "Место и расписание",
+            en: "Location & Schedule"
+          },
           church: {
-            title: { am: churchTitleAm, ru: churchTitleRu },
-            name: { am: churchNameAm, ru: churchNameRu },
-            address1: { am: churchAddr1Am, ru: churchAddr1Ru },
-            address2: { am: churchAddr2Am, ru: churchAddr2Ru },
+            title: { am: churchTitleAm, ru: churchTitleRu, en: churchTitleEn },
+            name: { am: churchNameAm, ru: churchNameRu, en: churchNameEn },
+            address1: { am: churchAddr1Am, ru: churchAddr1Ru, en: churchAddr1En },
+            address2: { am: churchAddr2Am, ru: churchAddr2Ru, en: churchAddr2En },
             time: churchTime,
             mapLink: churchMapLink,
           },
           party: {
-            title: { am: partyTitleAm, ru: partyTitleRu },
-            name: { am: partyNameAm, ru: partyNameRu },
-            addressExtra: { am: partyAddrExtraAm, ru: partyAddrExtraRu },
-            address1: { am: partyAddr1Am, ru: partyAddr1Ru },
-            address2: { am: partyAddr2Am, ru: partyAddr2Ru },
+            title: { am: partyTitleAm, ru: partyTitleRu, en: partyTitleEn },
+            name: { am: partyNameAm, ru: partyNameRu, en: partyNameEn },
+            addressExtra: { am: partyAddrExtraAm, ru: partyAddrExtraRu, en: partyAddrExtraEn },
+            address1: { am: partyAddr1Am, ru: partyAddr1Ru, en: partyAddr1En },
+            address2: { am: partyAddr2Am, ru: partyAddr2Ru, en: partyAddr2En },
             time: partyTime,
             mapLink: partyMapLink,
           },
@@ -426,7 +462,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         },
         dressCode: {
           show: showDressCode,
-          description: { am: dressDescAm, ru: dressDescRu },
+          description: { am: dressDescAm, ru: dressDescRu, en: dressDescEn },
           colors: dressColors,
         },
         rsvp: {
@@ -641,6 +677,14 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                           />
                         </div>
                         <div className="form-field">
+                          <label>Վերնագիր EN</label>
+                          <input
+                            type="text"
+                            value={section.title?.en || ""}
+                            onChange={(e) => updateCustomSection(section.id, "title", "en", e.target.value)}
+                          />
+                        </div>
+                        <div className="form-field">
                           <label>Տեքստ AM</label>
                           <textarea
                             value={section.content?.am || ""}
@@ -652,6 +696,13 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                           <textarea
                             value={section.content?.ru || ""}
                             onChange={(e) => updateCustomSection(section.id, "content", "ru", e.target.value)}
+                          />
+                        </div>
+                        <div className="form-field">
+                          <label>Տեքստ EN</label>
+                          <textarea
+                            value={section.content?.en || ""}
+                            onChange={(e) => updateCustomSection(section.id, "content", "en", e.target.value)}
                           />
                         </div>
                       </div>
@@ -810,6 +861,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Անուններ (Ռուսերեն)</label>
                 <input type="text" value={heroNamesRu} onChange={(e) => setHeroNamesRu(e.target.value)} required />
               </div>
+              <div className="form-field">
+                <label>Անուններ (Անգլերեն)</label>
+                <input type="text" value={heroNamesEn} onChange={(e) => setHeroNamesEn(e.target.value)} required />
+              </div>
 
               <div className="form-field">
                 <label>Վերնագիր (Հայերեն)</label>
@@ -818,6 +873,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
               <div className="form-field">
                 <label>Վերնագիր (Ռուսերեն)</label>
                 <input type="text" value={heroTitleRu} onChange={(e) => setHeroTitleRu(e.target.value)} />
+              </div>
+              <div className="form-field">
+                <label>Վերնագիր (Անգլերեն)</label>
+                <input type="text" value={heroTitleEn} onChange={(e) => setHeroTitleEn(e.target.value)} />
               </div>
 
               <div className="form-field">
@@ -858,6 +917,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Վերնագիր RU</label>
                 <input type="text" value={calTitleRu} onChange={(e) => setCalTitleRu(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Վերնագիր EN</label>
+                <input type="text" value={calTitleEn} onChange={(e) => setCalTitleEn(e.target.value)} />
+              </div>
 
               <div className="form-field">
                 <label>Ներածություն AM</label>
@@ -867,6 +930,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Ներածություն RU</label>
                 <textarea value={calIntroRu} onChange={(e) => setCalIntroRu(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Ներածություն EN</label>
+                <textarea value={calIntroEn} onChange={(e) => setCalIntroEn(e.target.value)} />
+              </div>
 
               <div className="form-field">
                 <label>Հրավեր տեքստ AM</label>
@@ -875,6 +942,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
               <div className="form-field">
                 <label>Հրավեր տեքստ RU</label>
                 <textarea value={calInviteRu} onChange={(e) => setCalInviteRu(e.target.value)} />
+              </div>
+              <div className="form-field">
+                <label>Հրավեր տեքստ EN</label>
+                <textarea value={calInviteEn} onChange={(e) => setCalInviteEn(e.target.value)} />
               </div>
             </div>
 
@@ -891,6 +962,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <input type="text" value={churchTitleRu} onChange={(e) => setChurchTitleRu(e.target.value)} />
               </div>
               <div className="form-field">
+                <label>Վերնագիր EN</label>
+                <input type="text" value={churchTitleEn} onChange={(e) => setChurchTitleEn(e.target.value)} />
+              </div>
+
+              <div className="form-field">
                 <label>Եկեղեցու անուն AM</label>
                 <input type="text" value={churchNameAm} onChange={(e) => setChurchNameAm(e.target.value)} />
               </div>
@@ -898,6 +974,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Եկեղեցու անուն RU</label>
                 <input type="text" value={churchNameRu} onChange={(e) => setChurchNameRu(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Եկեղեցու անուն EN</label>
+                <input type="text" value={churchNameEn} onChange={(e) => setChurchNameEn(e.target.value)} />
+              </div>
+
               <div className="form-field">
                 <label>Հասցե տող 1 AM</label>
                 <input type="text" value={churchAddr1Am} onChange={(e) => setChurchAddr1Am(e.target.value)} />
@@ -907,6 +988,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <input type="text" value={churchAddr1Ru} onChange={(e) => setChurchAddr1Ru(e.target.value)} />
               </div>
               <div className="form-field">
+                <label>Հասցե տող 1 EN</label>
+                <input type="text" value={churchAddr1En} onChange={(e) => setChurchAddr1En(e.target.value)} />
+              </div>
+
+              <div className="form-field">
                 <label>Հասցե տող 2 AM</label>
                 <input type="text" value={churchAddr2Am} onChange={(e) => setChurchAddr2Am(e.target.value)} />
               </div>
@@ -914,6 +1000,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Հասցե տող 2 RU</label>
                 <input type="text" value={churchAddr2Ru} onChange={(e) => setChurchAddr2Ru(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Հասցե տող 2 EN</label>
+                <input type="text" value={churchAddr2En} onChange={(e) => setChurchAddr2En(e.target.value)} />
+              </div>
+
               <div className="form-field">
                 <label>Ժամ (օր.՝ 15:00)</label>
                 <input type="text" value={churchTime} onChange={(e) => setChurchTime(e.target.value)} />
@@ -937,6 +1028,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <input type="text" value={partyTitleRu} onChange={(e) => setPartyTitleRu(e.target.value)} />
               </div>
               <div className="form-field">
+                <label>Վերնագիր EN</label>
+                <input type="text" value={partyTitleEn} onChange={(e) => setPartyTitleEn(e.target.value)} />
+              </div>
+
+              <div className="form-field">
                 <label>Ռեստորանի անուն AM</label>
                 <input type="text" value={partyNameAm} onChange={(e) => setPartyNameAm(e.target.value)} />
               </div>
@@ -944,6 +1040,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Ռեստորանի անուն RU</label>
                 <input type="text" value={partyNameRu} onChange={(e) => setPartyNameRu(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Ռեստորանի անուն EN</label>
+                <input type="text" value={partyNameEn} onChange={(e) => setPartyNameEn(e.target.value)} />
+              </div>
+
               <div className="form-field">
                 <label>Լրացուցիչ տեղեկություն (օր.՝ Նոր Դվին) AM</label>
                 <input type="text" value={partyAddrExtraAm} onChange={(e) => setPartyAddrExtraAm(e.target.value)} />
@@ -953,6 +1054,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <input type="text" value={partyAddrExtraRu} onChange={(e) => setPartyAddrExtraRu(e.target.value)} />
               </div>
               <div className="form-field">
+                <label>Լրացուցիչ տեղեկություն EN</label>
+                <input type="text" value={partyAddrExtraEn} onChange={(e) => setPartyAddrExtraEn(e.target.value)} />
+              </div>
+
+              <div className="form-field">
                 <label>Հասցե տող 1 AM</label>
                 <input type="text" value={partyAddr1Am} onChange={(e) => setPartyAddr1Am(e.target.value)} />
               </div>
@@ -961,6 +1067,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <input type="text" value={partyAddr1Ru} onChange={(e) => setPartyAddr1Ru(e.target.value)} />
               </div>
               <div className="form-field">
+                <label>Հասցե տող 1 EN</label>
+                <input type="text" value={partyAddr1En} onChange={(e) => setPartyAddr1En(e.target.value)} />
+              </div>
+
+              <div className="form-field">
                 <label>Հասցե տող 2 AM</label>
                 <input type="text" value={partyAddr2Am} onChange={(e) => setPartyAddr2Am(e.target.value)} />
               </div>
@@ -968,6 +1079,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 <label>Հասցե տող 2 RU</label>
                 <input type="text" value={partyAddr2Ru} onChange={(e) => setPartyAddr2Ru(e.target.value)} />
               </div>
+              <div className="form-field">
+                <label>Հասցե տող 2 EN</label>
+                <input type="text" value={partyAddr2En} onChange={(e) => setPartyAddr2En(e.target.value)} />
+              </div>
+
               <div className="form-field">
                 <label>Ժամ (օր.՝ 17:30)</label>
                 <input type="text" value={partyTime} onChange={(e) => setPartyTime(e.target.value)} />
@@ -1063,6 +1179,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                   <label>Նկարագրություն RU</label>
                   <textarea value={dressDescRu} onChange={(e) => setDressDescRu(e.target.value)} />
                 </div>
+                <div className="form-field">
+                  <label>Նկարագրություն EN</label>
+                  <textarea value={dressDescEn} onChange={(e) => setDressDescEn(e.target.value)} />
+                </div>
 
                 <div className="form-field full-width">
                   <label>Գունային Գամմա / Цветовая гамма</label>
@@ -1132,6 +1252,12 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                     value={newHostRu}
                     onChange={(e) => setNewHostRu(e.target.value)}
                   />
+                  <input
+                    type="text"
+                    placeholder="Անուն EN (օր.՝ Robert)"
+                    value={newHostEn}
+                    onChange={(e) => setNewHostEn(e.target.value)}
+                  />
                   <button type="button" className="add-host-btn" onClick={handleAddHost}>
                     + Ավելացնել
                   </button>
@@ -1144,6 +1270,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                         <th>ID</th>
                         <th>Անուն AM</th>
                         <th>Անուն RU</th>
+                        <th>Անուն EN</th>
                         <th>Գործողություն</th>
                       </tr>
                     </thead>
@@ -1153,6 +1280,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                           <td>{h.id}</td>
                           <td>{h.am}</td>
                           <td>{h.ru}</td>
+                          <td>{h.en || h.am}</td>
                           <td>
                             <button
                               type="button"

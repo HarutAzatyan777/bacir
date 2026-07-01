@@ -38,6 +38,19 @@ const translations = {
     partyMapAddr1: "Армения, Армавирская область, г. Эчмиадзин",
     partyMapAddr2: "Аштаракское шоссе, здание 1",
     mapBtn: "Карта"
+  },
+  en: {
+    mainTitle: "Location & Schedule",
+    churchTitle: "CHURCH",
+    churchLoc: "St. Gregory the Illuminator Cathedral",
+    churchMapAddr1: "Yerevan, Armenia",
+    churchMapAddr2: "Yervand Kochar Street",
+    partyTitle: "RESTAURANT",
+    partyLoc: "«Rodes» Restaurant",
+    partyAddr: "Nor Dvin",
+    partyMapAddr1: "Echmiadzin, Armavir Province, Armenia",
+    partyMapAddr2: "Ashtarak Highway, building 1",
+    mapBtn: "Map"
   }
 };
 

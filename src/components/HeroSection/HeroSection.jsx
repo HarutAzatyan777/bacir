@@ -14,6 +14,12 @@ const translations = {
     title: "День Свадьбы",
     date: "06. 06. 2026",
     scrollDown: "Продолжить"
+  },
+  en: {
+    names: "Robert & Lusine",
+    title: "Wedding Day",
+    date: "06. 06. 2026",
+    scrollDown: "Scroll Down"
   }
 };
 

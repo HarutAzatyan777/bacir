@@ -50,6 +50,30 @@ const translations = {
     submit: "Отправить",
     alertName: "Пожалуйста, введите ваше имя.",
     alertRsvp: "Пожалуйста, выберите, сможете ли вы присутствовать."
+  },
+  en: {
+    title: "It is with great joy that we want to share with you the most beautiful and memorable moment of our lives.",
+    intro: "We lovingly invite you to be by our side and celebrate this special day together. Bring love, smiles, and endless positive emotions, as well as comfortable shoes for dancing.",
+    thanksTitle: "Thank you, your response has been registered.",
+    thanksSub: "We will contact you shortly.",
+    dressCodeHint: "Let the bride be the only one in a white dress on that day 🤍",
+    nameLabel: "First and Last Name",
+    namePlaceholder: "Your full name",
+    guestsLabel: "Number of invited guests",
+    rsvpLegend: "Will you be able to attend the event?",
+    rsvpYes: "Yes, I will attend",
+    rsvpNo: "Unfortunately, I will not be able to",
+    invitedByLabel: "Who invited you?",
+    invitedByPlaceholder: "Name of the person who invited you",
+    guestsHeader: "Guest names",
+    addGuest: "+ Add Guest",
+    guestPlaceholder: "Guest name",
+    hint: "Enter names of additional guests (if any)",
+    messageLabel: "Additional message (optional)",
+    messagePlaceholder: "Message: special wishes or notes",
+    submit: "Send",
+    alertName: "Please enter your name.",
+    alertRsvp: "Please select whether you will attend the event."
   }
 };
 

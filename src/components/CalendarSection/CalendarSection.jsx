@@ -29,6 +29,17 @@ const translations = {
     minutes: "минут",
     seconds: "секунд",
     calendarLocale: "ru-RU"
+  },
+  en: {
+    title: "Our Memorable Day",
+    intro: "We are very happy to share with you the most anticipated and unforgettable moment of our lives. Your presence is invaluable to us.",
+    invite: "We lovingly invite you to be by our side and celebrate this beautiful day together. Let's create unforgettable memories together.",
+    remains: "Remaining",
+    days: "days",
+    hours: "hours",
+    minutes: "minutes",
+    seconds: "seconds",
+    calendarLocale: "en-US"
   }
 };
 
@@ -59,7 +70,10 @@ export default function CalendarSection({ calendarData }) {
   const formatShortWeekday = (locale, date) => {
     const daysAm = ['ԿԻՐ', 'ԵՐԿ', 'ԵՐՔ', 'ՉՈՐ', 'ՀՆԳ', 'ՈՒՐԲ', 'ՇԲԹ'];
     const daysRu = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
-    return currentLang === 'ru' ? daysRu[date.getDay()] : daysAm[date.getDay()];
+    const daysEn = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    if (currentLang === 'ru') return daysRu[date.getDay()];
+    if (currentLang === 'en') return daysEn[date.getDay()];
+    return daysAm[date.getDay()];
   };
 
   const displayTitle = calendarData?.title?.[currentLang] || calendarData?.title?.am || t.title;

@@ -148,6 +148,12 @@ export default function Home({ invitationData }) {
         >
           РУС
         </button>
+        <button 
+          className={currentLang === "en" ? "active" : ""}
+          onClick={() => changeLanguage("en")}
+        >
+          ENG
+        </button>
       </div>
 
       {/* Dynamic Sections */}

@@ -46,7 +46,7 @@ export default function InvitationLoader() {
           <div className="double-bounce1"></div>
           <div className="double-bounce2"></div>
         </div>
-        <p className="loader-text">Բեռնվում է / Загрузка...</p>
+        <p className="loader-text">Բեռնվում է / Загрузка... / Loading...</p>
       </div>
     );
   }
@@ -61,6 +61,9 @@ export default function InvitationLoader() {
           <hr className="gold-divider" />
           <h2>Приглашение не найдено</h2>
           <p>Приглашение по указанному адресу не существует.</p>
+          <hr className="gold-divider" />
+          <h2>Invitation not found</h2>
+          <p>The invitation at the specified address does not exist.</p>
         </div>
       </div>
     );

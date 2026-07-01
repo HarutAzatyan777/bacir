@@ -53,6 +53,30 @@ const translations = {
     optional: "(необязательно)",
     robert: "Роберт",
     lusine: "Лусине"
+  },
+  en: {
+    confirmTitle: "Please confirm your attendance by May 25.",
+    nameLabel: "First and Last Name",
+    guestsLabel: "Number of guests",
+    maxGuestsHint: "Up to 20 guests allowed",
+    attendanceLabel: "Will you be able to attend?",
+    yes: "Yes, I will attend",
+    no: "Unfortunately, no",
+    invitedByLabel: "Who invited you?",
+    submitBtn: "Send",
+    submittingBtn: "Sending...",
+    successMsg: "Thank you, your response has been successfully sent.",
+    errorMsg: "An error occurred. Please try again later.",
+    waName: "Name",
+    waAttendance: "Attendance",
+    waGuests: "Quantity",
+    waInvitedBy: "Invited by:",
+    waYes: "Yes",
+    waNo: "No",
+    alertName: "Please enter at least one name.",
+    optional: "(optional)",
+    robert: "Robert",
+    lusine: "Lusine"
   }
 };
 
@@ -124,7 +148,7 @@ export default function InvitationText({ rsvpData, invitationId }) {
 
     const selectedHost = hosts.find(h => h.id === formData.invitedBy);
     const invitedByValue = selectedHost 
-      ? `${selectedHost.am} / ${selectedHost.ru || selectedHost.am}` 
+      ? (selectedHost[currentLang] || selectedHost.am) 
       : formData.invitedBy;
 
     const attendanceValue = formData.attendance === "yes" ? t.waYes : t.waNo;
@@ -164,15 +188,18 @@ export default function InvitationText({ rsvpData, invitationId }) {
   // Dynamic deadline text
   let displayDeadline = "Մայիսի 25-ը";
   let displayDeadlineRu = "25 мая";
+  let displayDeadlineEn = "May 25";
   if (rsvpData?.deadline) {
     try {
       const deadlineDate = new Date(rsvpData.deadline);
       const monthsAm = ["Հունվարի", "Փետրվարի", "Մարտի", "Ապրիլի", "Մայիսի", "Հունիսի", "Հուլիսի", "Օգոստոսի", "Սեպտեմբերի", "Հոկտեմբերի", "Նոյեմբերի", "Դեկտեմբերի"];
       const monthsRu = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+      const monthsEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       const day = deadlineDate.getDate();
       const monthIndex = deadlineDate.getMonth();
       displayDeadline = `${monthsAm[monthIndex]} ${day}-ը`;
       displayDeadlineRu = `${day} ${monthsRu[monthIndex]}`;
+      displayDeadlineEn = `${monthsEn[monthIndex]} ${day}`;
     } catch (e) {
       console.error(e);
     }
@@ -180,6 +207,8 @@ export default function InvitationText({ rsvpData, invitationId }) {
 
   const confirmTitleText = currentLang === "ru" 
     ? `Пожалуйста, подтвердите присутствие до ${displayDeadlineRu}.` 
+    : currentLang === "en"
+    ? `Please confirm your attendance by ${displayDeadlineEn}.`
     : `Խնդրում ենք հաստատել Ձեր ներկայությունը մինչև ${displayDeadline}։`;
 
   return (

@@ -13,6 +13,11 @@ const translations = {
     loading: "Загрузка",
     openText1: "Чтобы открыть приглашение",
     openText2: "нажмите на печать"
+  },
+  en: {
+    loading: "Loading",
+    openText1: "To open the invitation",
+    openText2: "click on the seal"
   }
 };
 

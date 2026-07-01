@@ -15,6 +15,12 @@ const translations = {
     hours: "часов",
     minutes: "минут",
     seconds: "секунд",
+  },
+  en: {
+    days: "days",
+    hours: "hours",
+    minutes: "minutes",
+    seconds: "seconds",
   }
 };
 

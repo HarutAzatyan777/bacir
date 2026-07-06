@@ -7,7 +7,7 @@ import "./Login.css";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isRegistering, setIsRegistering] = useState(false);
+  const isRegistering = false;
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -85,20 +85,6 @@ export default function Login() {
               : (isRegistering ? "Գրանցվել / Зарегистрироваться" : "Մուտք գործել / Войти")}
           </button>
           
-          <div className="auth-toggle">
-            <button 
-              type="button" 
-              className="toggle-btn"
-              onClick={() => {
-                setIsRegistering(!isRegistering);
-                setError("");
-              }}
-            >
-              {isRegistering 
-                ? "Արդեն ունե՞ք հաշիվ: Մուտք գործել / Войти" 
-                : "Չունե՞ք հաշիվ: Գրանցվել / Регистрация"}
-            </button>
-          </div>
         </form>
       </div>
     </div>

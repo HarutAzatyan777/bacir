@@ -1,4 +1,7 @@
 const admin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore'); // 👈 Ավելացրու այս տողը
+
 const fs = require('fs');
 const path = require('path');
 
@@ -23,6 +26,9 @@ function loadEnv() {
   }
 }
 
+// Load environment variables
+loadEnv();
+
 // 1. Try to find and parse service account key
 let serviceAccount = null;
 
@@ -35,7 +41,6 @@ if (fs.existsSync(serviceAccountPath)) {
     console.error("Error reading service-account.json:", err.message);
   }
 } else {
-  loadEnv();
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   if (serviceAccountKey) {
     try {
@@ -65,12 +70,11 @@ if (!serviceAccount && !emulatorHost) {
 // 2. Initialize Firebase Admin SDK
 try {
   if (serviceAccount) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount)
+    initializeApp({
+      credential: cert(serviceAccount) // Անմիջապես կանչում ենք ներմուծված cert-ը
     });
   } else {
-    // Emulator mode or fallback
-    admin.initializeApp();
+    initializeApp();
   }
   console.log("Firebase Admin successfully initialized.");
 } catch (err) {
@@ -78,7 +82,8 @@ try {
   process.exit(1);
 }
 
-const db = admin.firestore();
+// Փոխարինիր հին `admin.firestore()`-ը սրանով
+const db = getFirestore();
 
 // 3. Define the Mock Invitation templates
 const mocks = [
@@ -760,10 +765,23 @@ const mocks = [
 async function seedMocks() {
   console.log(`Starting to seed ${mocks.length} mock invitations into Firestore...`);
   
+  const ownerId = process.env.OWNER_ID || null;
+  if (ownerId) {
+    console.log(`Found OWNER_ID in .env: ${ownerId}. Setting all mock invitations ownerId to this value.`);
+  } else {
+    console.log("No OWNER_ID found in .env (ownerId will be set to null).");
+  }
+  
   for (const mock of mocks) {
     try {
       const invitationRef = db.collection("invitations").doc(mock.slug);
-      await invitationRef.set(mock.data);
+      
+      const inviteData = {
+        ...mock.data,
+        ownerId: ownerId
+      };
+      
+      await invitationRef.set(inviteData);
       console.log(`✔ Successfully uploaded invitation: ${mock.slug}`);
 
       // Create an empty secrets document as well

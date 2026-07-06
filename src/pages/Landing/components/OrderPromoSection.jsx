@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheck, FaPaperPlane, FaTelegramPlane, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 
-export default function OrderPromoSection({ t }) {
+export default function OrderPromoSection({ t, selectedPlan }) {
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
@@ -11,6 +11,12 @@ export default function OrderPromoSection({ t }) {
     notes: ""
   });
   const [status, setStatus] = useState("idle"); // idle, loading, success, error
+
+  useEffect(() => {
+    if (selectedPlan) {
+      setFormData((prev) => ({ ...prev, plan: selectedPlan }));
+    }
+  }, [selectedPlan]);
 
   const eventTypes = [
     { value: "wedding", label: t.orderEventWedding },

@@ -1,8 +1,10 @@
+/* RsvpList.css */
 .rsvp-container {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
 }
 
 .rsvp-header-row {
@@ -10,16 +12,16 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid #f1f5f9;
   padding-bottom: 20px;
 }
 
 .rsvp-header-row h3 {
   font-size: 1.4rem;
-  font-weight: 300;
-  color: #d4af37;
+  font-weight: 600;
+  color: #2c3e35;
   margin: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .rsvp-actions {
@@ -30,18 +32,17 @@
 .export-btn {
   padding: 10px 20px;
   background: #2c3e35;
-  border: 1px solid #d4af37;
-  color: #d4af37;
-  border-radius: 6px;
+  border: none;
+  color: #ffffff;
+  border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .export-btn:hover:not(:disabled) {
-  background: #d4af37;
-  color: #2c3e35;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+  background: #3d5a49;
+  box-shadow: 0 4px 12px rgba(44, 62, 53, 0.15);
 }
 
 .export-btn:disabled {
@@ -52,21 +53,23 @@
 .back-btn-secondary {
   padding: 10px 20px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .back-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: #f1f5f9;
+  color: #1e293b;
+  border-color: #94a3b8;
 }
 
 .rsvp-loading {
   text-align: center;
   padding: 50px;
-  color: #d4af37;
+  color: #2c3e35;
   font-size: 1.1rem;
 }
 
@@ -79,44 +82,43 @@
 }
 
 .stats-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #f8faf9;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .stats-card h4 {
   font-size: 0.9rem;
-  color: #a3b899;
+  color: #556b5e;
   margin: 0 0 10px 0;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.5px;
 }
 
 .stats-number {
   display: block;
   font-size: 2.5rem;
-  font-weight: 300;
+  font-weight: 600;
   line-height: 1.2;
 }
 
 .stats-number.positive {
-  color: #5cb85c;
+  color: #16a34a;
 }
 
 .stats-number.negative {
-  color: #d9534f;
+  color: #dc2626;
 }
 
 .stats-number.highlight {
-  color: #d4af37;
+  color: #b5892b;
 }
 
 .stats-card p {
   font-size: 0.8rem;
-  color: #7a8e72;
+  color: #64748b;
   margin: 5px 0 0 0;
 }
 
@@ -124,16 +126,16 @@
 .empty-rsvps {
   text-align: center;
   padding: 50px;
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
+  background: #f8faf9;
+  border: 1px dashed #cbd5e1;
   border-radius: 8px;
-  color: #a3b899;
+  color: #556b5e;
 }
 
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
 }
 
@@ -146,22 +148,22 @@
 
 .rsvp-table th, .rsvp-table td {
   padding: 15px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .rsvp-table th {
-  background: rgba(255, 255, 255, 0.02);
-  color: #d4af37;
-  font-weight: 500;
+  background: #f8faf9;
+  color: #2c3e35;
+  font-weight: 600;
   letter-spacing: 0.5px;
 }
 
 .row-attending {
-  background: rgba(92, 184, 92, 0.02);
+  background: rgba(22, 163, 74, 0.01);
 }
 
 .row-declined {
-  background: rgba(217, 83, 79, 0.01);
+  background: rgba(220, 38, 38, 0.01);
 }
 
 .guest-names {
@@ -172,8 +174,9 @@
 }
 
 .guest-name-badge {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
   padding: 3px 10px;
   border-radius: 12px;
   font-size: 0.85rem;
@@ -188,28 +191,29 @@
 }
 
 .status-badge.yes {
-  background: rgba(92, 184, 92, 0.15);
-  color: #5cb85c;
-  border: 1px solid rgba(92, 184, 92, 0.3);
+  background: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
 }
 
 .status-badge.no {
-  background: rgba(217, 83, 79, 0.15);
-  color: #d9534f;
-  border: 1px solid rgba(217, 83, 79, 0.3);
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
 .guest-count {
-  font-weight: 500;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 .invited-by {
-  color: #a3b899;
+  color: #556b5e;
 }
 
 .submit-date {
   font-size: 0.85rem;
-  color: #7a8e72;
+  color: #64748b;
 }
 
 @media (max-width: 768px) {

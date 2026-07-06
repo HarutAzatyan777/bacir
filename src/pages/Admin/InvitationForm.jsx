@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../../firebase";
+import { FaMobileAlt } from "react-icons/fa";
 import "./InvitationForm.css";
 
 export default function InvitationForm({ mode, invitationId, onSuccess, onCancel }) {
   const [activeTab, setActiveTab] = useState("general");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewSlug, setPreviewSlug] = useState("");
 
   // Form states
   const [slug, setSlug] = useState("");
@@ -24,6 +27,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     { id: "dressCode", type: "dressCode", enabled: true },
     { id: "rsvp", type: "rsvp", enabled: true }
   ]);
+
+  const [eventType, setEventType] = useState("wedding"); // wedding, birthday, baptism, other
+  const [showChurch, setShowChurch] = useState(true);
+  const [showParty, setShowParty] = useState(true);
 
   // Theme states
   const [primaryColor, setPrimaryColor] = useState("#2c3e35");
@@ -141,6 +148,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         const data = docSnap.data();
         setSlug(docSnap.id);
         setEventName(data.eventName || "");
+        setEventType(data.eventType || "wedding");
         setSealInitials(data.sealInitials || "RL");
         setMusicUrl(data.musicUrl || "/wedding-audio.mp3");
         setEnvelopeBgUrl(data.envelopeBgUrl || "");
@@ -193,6 +201,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setCalBgUrl(data.calendar?.bgUrl || "");
 
         // Church
+        setShowChurch(data.location?.church?.show !== false);
         setChurchTitleAm(data.location?.church?.title?.am || "ԵԿԵՂԵՑԻ");
         setChurchTitleRu(data.location?.church?.title?.ru || "ЦЕРКОВЬ");
         setChurchTitleEn(data.location?.church?.title?.en || "CHURCH");
@@ -209,6 +218,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setChurchMapLink(data.location?.church?.mapLink || "");
 
         // Party
+        setShowParty(data.location?.party?.show !== false);
         setPartyTitleAm(data.location?.party?.title?.am || "ՌԵՍՏՈՐԱՆ");
         setPartyTitleRu(data.location?.party?.title?.ru || "РЕСТОРАН");
         setPartyTitleEn(data.location?.party?.title?.en || "RESTAURANT");
@@ -256,6 +266,57 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       alert("Տվյալները բեռնելիս սխալ տեղի ունեցավ:");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEventTypeChange = (type) => {
+    setEventType(type);
+    
+    // Auto-configure sections and defaults based on selected event type
+    if (type === "wedding") {
+      setShowChurch(true);
+      setShowParty(true);
+      
+      // Defaults for Wedding
+      if (!heroTitleAm || heroTitleAm === "Ծննդյան Օր" || heroTitleAm === "Սուրբ Կնունք") setHeroTitleAm("Հարսանյաց Օր");
+      if (!heroTitleRu || heroTitleRu === "День Рождения" || heroTitleRu === "Святое Крещение") setHeroTitleRu("День Свадьбы");
+      if (!heroTitleEn || heroTitleEn === "Birthday Party" || heroTitleEn === "Holy Baptism") setHeroTitleEn("Wedding Day");
+      
+      if (!churchTitleAm || churchTitleAm === "ԵԿԵՂԵՑԻ") setChurchTitleAm("ԵԿԵՂԵՑԻ");
+      if (!churchTitleRu || churchTitleRu === "ЦЕРКОВЬ") setChurchTitleRu("ЦЕРКОВЬ");
+      if (!churchTitleEn || churchTitleEn === "CHURCH") setChurchTitleEn("CHURCH");
+      
+      if (!partyTitleAm || partyTitleAm === "ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ" || partyTitleAm === "ՀԱՑԿԵՐՈՒՅԹ") setPartyTitleAm("ՌԵՍՏՈՐԱՆ");
+      if (!partyTitleRu || partyTitleRu === "БАНКЕТНЫЙ ЗАЛ" || partyTitleRu === "ЗАСТОЛЬЕ") setPartyTitleRu("РЕСТОРАН");
+      if (!partyTitleEn || partyTitleEn === "BANQUET HALL" || partyTitleEn === "RECEPTION") setPartyTitleEn("RESTAURANT");
+    } else if (type === "birthday") {
+      setShowChurch(false);
+      setShowParty(true);
+      
+      // Defaults for Birthday
+      if (!heroTitleAm || heroTitleAm === "Հարսանյաց Օր" || heroTitleAm === "Սուրբ Կնունք") setHeroTitleAm("Ծննդյան Օր");
+      if (!heroTitleRu || heroTitleRu === "День Свадьбы" || heroTitleRu === "Святое Крещение") setHeroTitleRu("День Рождения");
+      if (!heroTitleEn || heroTitleEn === "Wedding Day" || heroTitleEn === "Holy Baptism") setHeroTitleEn("Birthday Party");
+      
+      if (!partyTitleAm || partyTitleAm === "ՌԵՍՏՈՐԱՆ" || partyTitleAm === "ՀԱՑԿԵՐՈՒՅԹ") setPartyTitleAm("ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ");
+      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "ЗАСТОЛЬЕ") setPartyTitleRu("БАНКЕТНЫЙ ЗАЛ");
+      if (!partyTitleEn || partyTitleEn === "RESTAURANT" || partyTitleEn === "RECEPTION") setPartyTitleEn("BANQUET HALL");
+    } else if (type === "baptism") {
+      setShowChurch(true);
+      setShowParty(true);
+      
+      // Defaults for Baptism
+      if (!heroTitleAm || heroTitleAm === "Հարսանյաց Օր" || heroTitleAm === "Ծննդյան Օր") setHeroTitleAm("Սուրբ Կնունք");
+      if (!heroTitleRu || heroTitleRu === "День Свадьбы" || heroTitleRu === "День Рождения") setHeroTitleRu("Святое Крещение");
+      if (!heroTitleEn || heroTitleEn === "Wedding Day" || heroTitleEn === "Birthday Party") setHeroTitleEn("Holy Baptism");
+      
+      if (!churchTitleAm || churchTitleAm === "ԵԿԵՂԵՑԻ") setChurchTitleAm("ԵԿԵՂԵՑԻ");
+      if (!churchTitleRu || churchTitleRu === "ЦЕРКОВЬ") setChurchTitleRu("ЦЕРКОВЬ");
+      if (!churchTitleEn || churchTitleEn === "CHURCH") setChurchTitleEn("CHURCH");
+      
+      if (!partyTitleAm || partyTitleAm === "ՌԵՍՏՈՐԱՆ" || partyTitleAm === "ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ") setPartyTitleAm("ՀԱՑԿԵՐՈՒՅԹ");
+      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "БАНКЕТНЫЙ ЗАЛ") setPartyTitleRu("ЗАСТОЛЬԵ");
+      if (!partyTitleEn || partyTitleEn === "RESTAURANT" || partyTitleEn === "BANQUET HALL") setPartyTitleEn("RECEPTION");
     }
   };
 
@@ -354,12 +415,11 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     );
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const saveData = async () => {
     const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-_]/g, "");
     if (!cleanSlug) {
       alert("Խնդրում ենք նշել վավեր հասցե (Slug):");
-      return;
+      return null;
     }
 
     setSaving(true);
@@ -405,6 +465,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       // 2. Build Firestore Document
       const invitationDoc = {
         eventName,
+        eventType,
         sealInitials,
         musicUrl,
         envelopeBgUrl: finalEnvelopeBg,
@@ -439,6 +500,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             en: "Location & Schedule"
           },
           church: {
+            show: showChurch,
             title: { am: churchTitleAm, ru: churchTitleRu, en: churchTitleEn },
             name: { am: churchNameAm, ru: churchNameRu, en: churchNameEn },
             address1: { am: churchAddr1Am, ru: churchAddr1Ru, en: churchAddr1En },
@@ -447,6 +509,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             mapLink: churchMapLink,
           },
           party: {
+            show: showParty,
             title: { am: partyTitleAm, ru: partyTitleRu, en: partyTitleEn },
             name: { am: partyNameAm, ru: partyNameRu, en: partyNameEn },
             addressExtra: { am: partyAddrExtraAm, ru: partyAddrExtraRu, en: partyAddrExtraEn },
@@ -481,13 +544,46 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       };
       await setDoc(doc(db, "invitationSecrets", cleanSlug), secretsDoc);
 
-      alert("Հաջողությամբ պահպանվեց:");
-      onSuccess();
+      // Reset file selection states
+      setEnvelopeBgFile(null);
+      setHeroBgMobileFile(null);
+      setHeroBgDesktopFile(null);
+      setCalBgFile(null);
+      setLocBgFile(null);
+      setGalleryFiles([]);
+
+      // Update URL states
+      setEnvelopeBgUrl(finalEnvelopeBg);
+      setHeroBgMobileUrl(finalHeroBgMobile);
+      setHeroBgDesktopUrl(finalHeroBgDesktop);
+      setCalBgUrl(finalCalBg);
+      setLocBgUrl(finalLocBg);
+      setGalleryUrls(finalGalleryUrls);
+
+      return cleanSlug;
     } catch (err) {
       console.error("Error saving invitation:", err);
       alert("Պահպանելիս սխալ տեղի ունեցավ:");
+      return null;
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    const cleanSlug = await saveData();
+    if (cleanSlug) {
+      alert("Հաջողությամբ պահպանվեց:");
+      onSuccess();
+    }
+  };
+
+  const handlePreview = async () => {
+    const cleanSlug = await saveData();
+    if (cleanSlug) {
+      setPreviewSlug(cleanSlug);
+      setShowPreviewModal(true);
     }
   };
 
@@ -502,6 +598,9 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         <div className="form-actions-top">
           <button type="button" className="cancel-btn" onClick={onCancel}>
             Չեղարկել / Отмена
+          </button>
+          <button type="button" className="preview-btn" onClick={handlePreview} disabled={saving}>
+            <FaMobileAlt style={{ marginRight: "4px" }} /> Նախադիտում / Превью
           </button>
           <button type="button" className="save-btn" onClick={handleSubmit} disabled={saving}>
             {saving ? "Պահպանվում է..." : "Պահպանել / Сохранить"}
@@ -549,6 +648,29 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                   onChange={(e) => setEventName(e.target.value)}
                   required
                 />
+              </div>
+
+              <div className="form-field">
+                <label>Միջոցառման տեսակ (Occasion / Event Type)</label>
+                <select
+                  value={eventType}
+                  onChange={(e) => handleEventTypeChange(e.target.value)}
+                  style={{
+                    padding: "12px",
+                    background: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "8px",
+                    color: "#1e293b",
+                    fontSize: "0.95rem",
+                    outline: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  <option value="wedding">Հարսանիք / Свадьба / Wedding</option>
+                  <option value="birthday">Ծննդյան օր / День рождения / Birthday</option>
+                  <option value="baptism">Կնունք / Крещение / Baptism</option>
+                  <option value="other">Այլ միջոցառում / Другое / Other</option>
+                </select>
               </div>
 
               <div className="form-field">
@@ -951,147 +1073,187 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
 
             <hr className="form-divider" />
 
-            <h3>Եկեղեցու Արարողություն / Church</h3>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Վերնագիր (օր.՝ ԵԿԵՂԵՑԻ)</label>
-                <input type="text" value={churchTitleAm} onChange={(e) => setChurchTitleAm(e.target.value)} />
+            <div className="form-grid" style={{ marginBottom: "25px", gridTemplateColumns: "1fr 1fr" }}>
+              <div className="form-field" style={{ flexDirection: "row", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="checkbox"
+                  id="showChurchCheckbox"
+                  checked={showChurch}
+                  onChange={(e) => setShowChurch(e.target.checked)}
+                  style={{ width: "20px", height: "20px", cursor: "pointer" }}
+                />
+                <label htmlFor="showChurchCheckbox" style={{ margin: 0, cursor: "pointer", fontWeight: "bold", color: "#2c3e35" }}>
+                  Ցուցադրել Եկեղեցու բաժինը / Показать раздел Церкви / Show Church
+                </label>
               </div>
-              <div className="form-field">
-                <label>Վերնագիր RU</label>
-                <input type="text" value={churchTitleRu} onChange={(e) => setChurchTitleRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր EN</label>
-                <input type="text" value={churchTitleEn} onChange={(e) => setChurchTitleEn(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Եկեղեցու անուն AM</label>
-                <input type="text" value={churchNameAm} onChange={(e) => setChurchNameAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Եկեղեցու անուն RU</label>
-                <input type="text" value={churchNameRu} onChange={(e) => setChurchNameRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Եկեղեցու անուն EN</label>
-                <input type="text" value={churchNameEn} onChange={(e) => setChurchNameEn(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Հասցե տող 1 AM</label>
-                <input type="text" value={churchAddr1Am} onChange={(e) => setChurchAddr1Am(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 1 RU</label>
-                <input type="text" value={churchAddr1Ru} onChange={(e) => setChurchAddr1Ru(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 1 EN</label>
-                <input type="text" value={churchAddr1En} onChange={(e) => setChurchAddr1En(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Հասցե տող 2 AM</label>
-                <input type="text" value={churchAddr2Am} onChange={(e) => setChurchAddr2Am(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 2 RU</label>
-                <input type="text" value={churchAddr2Ru} onChange={(e) => setChurchAddr2Ru(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 2 EN</label>
-                <input type="text" value={churchAddr2En} onChange={(e) => setChurchAddr2En(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Ժամ (օր.՝ 15:00)</label>
-                <input type="text" value={churchTime} onChange={(e) => setChurchTime(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Քարտեզի հղում (Google Maps Link)</label>
-                <input type="text" value={churchMapLink} onChange={(e) => setChurchMapLink(e.target.value)} />
+              <div className="form-field" style={{ flexDirection: "row", alignItems: "center", gap: "10px" }}>
+                <input
+                  type="checkbox"
+                  id="showPartyCheckbox"
+                  checked={showParty}
+                  onChange={(e) => setShowParty(e.target.checked)}
+                  style={{ width: "20px", height: "20px", cursor: "pointer" }}
+                />
+                <label htmlFor="showPartyCheckbox" style={{ margin: 0, cursor: "pointer", fontWeight: "bold", color: "#2c3e35" }}>
+                  Ցուցադրել Ռեստորանի բաժինը / Показать раздел Ресторана / Show Reception
+                </label>
               </div>
             </div>
 
             <hr className="form-divider" />
 
-            <h3>Ռեստորան / Party</h3>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Վերնագիր (օր.՝ ՌԵՍՏՈՐԱՆ)</label>
-                <input type="text" value={partyTitleAm} onChange={(e) => setPartyTitleAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր RU</label>
-                <input type="text" value={partyTitleRu} onChange={(e) => setPartyTitleRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր EN</label>
-                <input type="text" value={partyTitleEn} onChange={(e) => setPartyTitleEn(e.target.value)} />
-              </div>
+            {showChurch && (
+              <>
+                <h3>Եկեղեցու Արարողություն / Church</h3>
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label>Վերնագիր (օր.՝ ԵԿԵՂԵՑԻ)</label>
+                    <input type="text" value={churchTitleAm} onChange={(e) => setChurchTitleAm(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Վերնագիր RU</label>
+                    <input type="text" value={churchTitleRu} onChange={(e) => setChurchTitleRu(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Վերնագիր EN</label>
+                    <input type="text" value={churchTitleEn} onChange={(e) => setChurchTitleEn(e.target.value)} />
+                  </div>
 
-              <div className="form-field">
-                <label>Ռեստորանի անուն AM</label>
-                <input type="text" value={partyNameAm} onChange={(e) => setPartyNameAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Ռեստորանի անուն RU</label>
-                <input type="text" value={partyNameRu} onChange={(e) => setPartyNameRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Ռեստորանի անուն EN</label>
-                <input type="text" value={partyNameEn} onChange={(e) => setPartyNameEn(e.target.value)} />
-              </div>
+                  <div className="form-field">
+                    <label>Եկեղեցու անուն AM</label>
+                    <input type="text" value={churchNameAm} onChange={(e) => setChurchNameAm(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Եկեղեցու անուն RU</label>
+                    <input type="text" value={churchNameRu} onChange={(e) => setChurchNameRu(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Եկեղեցու անուն EN</label>
+                    <input type="text" value={churchNameEn} onChange={(e) => setChurchNameEn(e.target.value)} />
+                  </div>
 
-              <div className="form-field">
-                <label>Լրացուցիչ տեղեկություն (օր.՝ Նոր Դվին) AM</label>
-                <input type="text" value={partyAddrExtraAm} onChange={(e) => setPartyAddrExtraAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Լրացուցիչ տեղեկություն RU</label>
-                <input type="text" value={partyAddrExtraRu} onChange={(e) => setPartyAddrExtraRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Լրացուցիչ տեղեկություն EN</label>
-                <input type="text" value={partyAddrExtraEn} onChange={(e) => setPartyAddrExtraEn(e.target.value)} />
-              </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 1 AM</label>
+                    <input type="text" value={churchAddr1Am} onChange={(e) => setChurchAddr1Am(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 1 RU</label>
+                    <input type="text" value={churchAddr1Ru} onChange={(e) => setChurchAddr1Ru(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 1 EN</label>
+                    <input type="text" value={churchAddr1En} onChange={(e) => setChurchAddr1En(e.target.value)} />
+                  </div>
 
-              <div className="form-field">
-                <label>Հասցե տող 1 AM</label>
-                <input type="text" value={partyAddr1Am} onChange={(e) => setPartyAddr1Am(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 1 RU</label>
-                <input type="text" value={partyAddr1Ru} onChange={(e) => setPartyAddr1Ru(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 1 EN</label>
-                <input type="text" value={partyAddr1En} onChange={(e) => setPartyAddr1En(e.target.value)} />
-              </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 2 AM</label>
+                    <input type="text" value={churchAddr2Am} onChange={(e) => setChurchAddr2Am(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 2 RU</label>
+                    <input type="text" value={churchAddr2Ru} onChange={(e) => setChurchAddr2Ru(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 2 EN</label>
+                    <input type="text" value={churchAddr2En} onChange={(e) => setChurchAddr2En(e.target.value)} />
+                  </div>
 
-              <div className="form-field">
-                <label>Հասցե տող 2 AM</label>
-                <input type="text" value={partyAddr2Am} onChange={(e) => setPartyAddr2Am(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 2 RU</label>
-                <input type="text" value={partyAddr2Ru} onChange={(e) => setPartyAddr2Ru(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հասցե տող 2 EN</label>
-                <input type="text" value={partyAddr2En} onChange={(e) => setPartyAddr2En(e.target.value)} />
-              </div>
+                  <div className="form-field">
+                    <label>Ժամ (օր.՝ 15:00)</label>
+                    <input type="text" value={churchTime} onChange={(e) => setChurchTime(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Քարտեզի հղում (Google Maps Link)</label>
+                    <input type="text" value={churchMapLink} onChange={(e) => setChurchMapLink(e.target.value)} />
+                  </div>
+                </div>
+                <hr className="form-divider" />
+              </>
+            )}
 
-              <div className="form-field">
-                <label>Ժամ (օր.՝ 17:30)</label>
-                <input type="text" value={partyTime} onChange={(e) => setPartyTime(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Քարտեզի հղում (Google Maps Link)</label>
-                <input type="text" value={partyMapLink} onChange={(e) => setPartyMapLink(e.target.value)} />
-              </div>
+            {showParty && (
+              <>
+                <h3>Ռեստորան / Party</h3>
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label>Վերնագիր (օր.՝ ՌԵՍՏՈՐԱՆ)</label>
+                    <input type="text" value={partyTitleAm} onChange={(e) => setPartyTitleAm(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Վերնագիր RU</label>
+                    <input type="text" value={partyTitleRu} onChange={(e) => setPartyTitleRu(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Վերնագիր EN</label>
+                    <input type="text" value={partyTitleEn} onChange={(e) => setPartyTitleEn(e.target.value)} />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Ռեստորանի անուն AM</label>
+                    <input type="text" value={partyNameAm} onChange={(e) => setPartyNameAm(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Ռեստորանի անուն RU</label>
+                    <input type="text" value={partyNameRu} onChange={(e) => setPartyNameRu(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Ռեստորանի անուն EN</label>
+                    <input type="text" value={partyNameEn} onChange={(e) => setPartyNameEn(e.target.value)} />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Լրացուցիչ տեղեկություն (օր.՝ Նոր Դվին) AM</label>
+                    <input type="text" value={partyAddrExtraAm} onChange={(e) => setPartyAddrExtraAm(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Լրացուցիչ տեղեկություն RU</label>
+                    <input type="text" value={partyAddrExtraRu} onChange={(e) => setPartyAddrExtraRu(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Լրացուցիչ տեղեկություն EN</label>
+                    <input type="text" value={partyAddrExtraEn} onChange={(e) => setPartyAddrExtraEn(e.target.value)} />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Հասցե տող 1 AM</label>
+                    <input type="text" value={partyAddr1Am} onChange={(e) => setPartyAddr1Am(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 1 RU</label>
+                    <input type="text" value={partyAddr1Ru} onChange={(e) => setPartyAddr1Ru(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 1 EN</label>
+                    <input type="text" value={partyAddr1En} onChange={(e) => setPartyAddr1En(e.target.value)} />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Հասցե տող 2 AM</label>
+                    <input type="text" value={partyAddr2Am} onChange={(e) => setPartyAddr2Am(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 2 RU</label>
+                    <input type="text" value={partyAddr2Ru} onChange={(e) => setPartyAddr2Ru(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Հասցե տող 2 EN</label>
+                    <input type="text" value={partyAddr2En} onChange={(e) => setPartyAddr2En(e.target.value)} />
+                  </div>
+
+                  <div className="form-field">
+                    <label>Ժամ (օր.՝ 17:30)</label>
+                    <input type="text" value={partyTime} onChange={(e) => setPartyTime(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Քարտեզի հղում (Google Maps Link)</label>
+                    <input type="text" value={partyMapLink} onChange={(e) => setPartyMapLink(e.target.value)} />
+                  </div>
+                </div>
+                <hr className="form-divider" />
+              </>
+            )}
+
+            <div className="form-grid" style={{ marginTop: "20px" }}>
               <div className="form-field">
                 <label>Տեղանքի բաժնի ֆոնային նկար</label>
                 <input type="file" accept="image/*" onChange={(e) => setLocBgFile(e.target.files[0])} />
@@ -1321,6 +1483,41 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           </div>
         )}
       </form>
+
+      {/* iPhone 17 Preview Modal */}
+      {showPreviewModal && previewSlug && (
+        <div className="preview-modal-overlay" onClick={() => setShowPreviewModal(false)}>
+          <div className="preview-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="preview-modal-header">
+              <h3>iPhone 17 Նախադիտում / Предпросмотр iPhone 17</h3>
+              <button className="preview-modal-close" onClick={() => setShowPreviewModal(false)}>
+                &times;
+              </button>
+            </div>
+            <div className="preview-device-container">
+              <div className="iphone-17-frame">
+                {/* Dynamic Island */}
+                <div className="dynamic-island"></div>
+                {/* Screen frame */}
+                <div className="iphone-screen">
+                  <iframe 
+                    src={`/i/${previewSlug}?preview=true`} 
+                    title="iPhone 17 Preview"
+                    className="preview-iframe"
+                  />
+                </div>
+                {/* Side buttons */}
+                <div className="iphone-btn volume-up"></div>
+                <div className="iphone-btn volume-down"></div>
+                <div className="iphone-btn action-button"></div>
+                <div className="iphone-btn power-button"></div>
+                {/* Home Indicator */}
+                <div className="home-indicator"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,8 @@
+/* Dashboard.css */
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1c2e24 0%, #0d1611 100%);
-  color: #fff;
+  background-color: #f8faf9;
+  color: #1e293b;
   font-family: 'Montserrat', 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
@@ -12,10 +13,10 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #0d1611;
-  color: #d4af37;
+  background: #f8faf9;
+  color: #2c3e35;
   font-size: 1.2rem;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 /* Header styling */
@@ -24,24 +25,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .header-left h1 {
   font-size: 1.4rem;
   margin: 0;
-  font-weight: 300;
-  letter-spacing: 3px;
-  color: #d4af37;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #2c3e35;
 }
 
 .header-left p {
   font-size: 0.85rem;
-  color: #a3b899;
+  color: #556b5e;
   margin: 5px 0 0 0;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .header-right {
@@ -51,7 +51,7 @@
 
 .logout-btn, .back-btn {
   padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -60,25 +60,26 @@
 
 .logout-btn {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
 }
 
 .logout-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
 }
 
 .back-btn {
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  background: #f0f5f2;
+  border: 1px solid rgba(44, 62, 53, 0.2);
+  color: #2c3e35;
 }
 
 .back-btn:hover {
-  background: #d4af37;
-  color: #1c2e24;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+  background: #2c3e35;
+  color: #ffffff;
+  border-color: #2c3e35;
 }
 
 /* Main Area */
@@ -101,15 +102,16 @@
 
 .list-header h2 {
   font-size: 1.6rem;
-  font-weight: 300;
+  font-weight: 500;
+  color: #2c3e35;
   margin: 0;
 }
 
 .create-btn {
   padding: 12px 24px;
   background: #2c3e35;
-  border: 1px solid #d4af37;
-  color: #d4af37;
+  border: none;
+  color: #ffffff;
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -118,23 +120,22 @@
 }
 
 .create-btn:hover {
-  background: #d4af37;
-  color: #2c3e35;
-  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.25);
+  background: #3d5a49;
+  box-shadow: 0 4px 12px rgba(44, 62, 53, 0.15);
 }
 
 .empty-state {
   text-align: center;
   padding: 60px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(212, 175, 55, 0.2);
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
   border-radius: 12px;
-  color: #a3b899;
+  color: #556b5e;
 }
 
 .empty-state p {
   margin: 5px 0;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* Invitations Grid */
@@ -145,34 +146,35 @@
 }
 
 .invitation-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
 }
 
 .invitation-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(212, 175, 55, 0.25);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
 }
 
 .card-info h3 {
   font-size: 1.3rem;
   margin: 0 0 10px 0;
-  font-weight: 400;
-  color: #fff;
+  font-weight: 500;
+  color: #2c3e35;
 }
 
 .slug-badge {
   display: inline-block;
   font-family: monospace;
-  background: rgba(212, 175, 55, 0.1);
-  color: #d4af37;
+  background: #f0f5f2;
+  color: #2c3e35;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 0.85rem;
@@ -181,9 +183,9 @@
 
 .card-date {
   font-size: 0.9rem;
-  color: #a3b899;
+  color: #556b5e;
   margin: 5px 0;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .card-actions {
@@ -207,46 +209,70 @@
 }
 
 .view-live {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.1);
+  background: #f1f5f9;
+  color: #475569;
+  border-color: #cbd5e1;
 }
 
 .view-live:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #e2e8f0;
+  color: #1e293b;
 }
 
 .rsvps {
-  background: rgba(212, 175, 55, 0.1);
-  color: #d4af37;
-  border-color: rgba(212, 175, 55, 0.2);
+  background: #f0f5f2;
+  color: #2c3e35;
+  border-color: rgba(44, 62, 53, 0.15);
 }
 
 .rsvps:hover {
-  background: rgba(212, 175, 55, 0.2);
+  background: #e2ede7;
+  border-color: #2c3e35;
 }
 
 .edit {
-  background: #2c3e35;
-  color: #a3b899;
-  border-color: rgba(163, 184, 153, 0.2);
+  background: #ffffff;
+  color: #475569;
+  border-color: #cbd5e1;
 }
 
 .edit:hover {
-  background: #395044;
-  color: #fff;
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: #94a3b8;
 }
 
 .delete {
-  background: rgba(217, 83, 79, 0.05);
-  color: #d9534f;
-  border-color: rgba(217, 83, 79, 0.15);
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
 .delete:hover {
-  background: rgba(217, 83, 79, 0.2);
-  color: #fff;
-  border-color: #d9534f;
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #f87171;
+}
+
+.preview-btn {
+  background: #f0f5f2;
+  color: #2c3e35;
+  border-color: rgba(44, 62, 53, 0.15);
+}
+
+.preview-btn:hover {
+  background: #e2ede7;
+  border-color: #2c3e35;
+}
+
+.card-actions .delete {
+  grid-column: span 2;
+}
+
+.data-spinner {
+  text-align: center;
+  padding: 40px;
+  color: #556b5e;
 }
 
 @media (max-width: 768px) {
@@ -272,3 +298,223 @@
     width: 100%;
   }
 }
+
+/* Modal Preview Styles */
+.preview-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.preview-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 550px;
+  height: 90vh;
+  max-height: 960px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.preview-modal-header {
+  padding: 15px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+}
+
+.preview-modal-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2c3e35;
+}
+
+.preview-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #64748b;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.preview-modal-close:hover {
+  color: #ef4444;
+}
+
+.preview-device-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* iPhone 17 Frame Mockup */
+.iphone-17-frame {
+  position: relative;
+  width: 393px;
+  height: 852px;
+  background: #000000;
+  border: 12px solid #2d302e;
+  border-radius: 54px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.05),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* iPhone buttons */
+.iphone-btn {
+  position: absolute;
+  background: #2d302e;
+  border-radius: 3px;
+  left: -16px;
+}
+
+.iphone-btn.volume-up {
+  top: 180px;
+  width: 4px;
+  height: 60px;
+}
+
+.iphone-btn.volume-down {
+  top: 255px;
+  width: 4px;
+  height: 60px;
+}
+
+.iphone-btn.action-button {
+  top: 120px;
+  width: 4px;
+  height: 35px;
+}
+
+.iphone-btn.power-button {
+  top: 210px;
+  left: auto;
+  right: -16px;
+  width: 4px;
+  height: 85px;
+}
+
+/* Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 30px;
+  background: #000000;
+  border-radius: 20px;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: inset 0 0 2px rgba(255,255,255,0.2);
+}
+
+/* Screen */
+.iphone-screen {
+  flex: 1;
+  border-radius: 42px;
+  overflow: hidden;
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Iframe */
+.preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+/* Home Indicator */
+.home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 5px;
+  background: #000000;
+  border-radius: 10px;
+  z-index: 100;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive scaling for different screen heights */
+@media (max-height: 960px) {
+  .iphone-17-frame {
+    transform: scale(0.85);
+    transform-origin: center center;
+    margin: -60px 0;
+  }
+}
+
+@media (max-height: 820px) {
+  .iphone-17-frame {
+    transform: scale(0.72);
+    transform-origin: center center;
+    margin: -110px 0;
+  }
+}
+
+@media (max-height: 700px) {
+  .iphone-17-frame {
+    transform: scale(0.6);
+    transform-origin: center center;
+    margin: -170px 0;
+  }
+}
+
+@media (max-height: 600px) {
+  .iphone-17-frame {
+    transform: scale(0.48);
+    transform-origin: center center;
+    margin: -220px 0;
+  }
+}
+

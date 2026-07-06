@@ -3,6 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
+import { FaMobileAlt } from "react-icons/fa";
 import InvitationForm from "./InvitationForm";
 import RsvpList from "./RsvpList";
 import "./Dashboard.css";
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [loadingData, setLoadingData] = useState(true);
   const [view, setView] = useState("list"); // list, create, edit, rsvps
   const [selectedId, setSelectedId] = useState(null);
+  const [previewInvitationId, setPreviewInvitationId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -163,6 +165,12 @@ export default function Dashboard() {
                         Խմբագրել / Изменить
                       </button>
                       <button
+                        className="action-btn preview-btn"
+                        onClick={() => setPreviewInvitationId(inv.id)}
+                      >
+                        <FaMobileAlt style={{ marginRight: "4px" }} /> Նախադիտում / Превью
+                      </button>
+                      <button
                         className="action-btn delete"
                         onClick={() => handleDelete(inv.id)}
                       >
@@ -206,6 +214,41 @@ export default function Dashboard() {
           />
         )}
       </main>
+
+      {/* iPhone 17 Preview Modal */}
+      {previewInvitationId && (
+        <div className="preview-modal-overlay" onClick={() => setPreviewInvitationId(null)}>
+          <div className="preview-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="preview-modal-header">
+              <h3>iPhone 17 Նախադիտում / Предпросмотр iPhone 17</h3>
+              <button className="preview-modal-close" onClick={() => setPreviewInvitationId(null)}>
+                &times;
+              </button>
+            </div>
+            <div className="preview-device-container">
+              <div className="iphone-17-frame">
+                {/* Dynamic Island */}
+                <div className="dynamic-island"></div>
+                {/* Screen frame */}
+                <div className="iphone-screen">
+                  <iframe 
+                    src={`/i/${previewInvitationId}?preview=true`} 
+                    title="iPhone 17 Preview"
+                    className="preview-iframe"
+                  />
+                </div>
+                {/* Side buttons */}
+                <div className="iphone-btn volume-up"></div>
+                <div className="iphone-btn volume-down"></div>
+                <div className="iphone-btn action-button"></div>
+                <div className="iphone-btn power-button"></div>
+                {/* Home Indicator */}
+                <div className="home-indicator"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

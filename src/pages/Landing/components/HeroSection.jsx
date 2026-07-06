@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaEnvelopeOpenText, FaChevronRight } from "react-icons/fa";
+import { FaEnvelopeOpenText } from "react-icons/fa";
 
 export default function HeroSection({ t }) {
   const navigate = useNavigate();
@@ -32,11 +32,8 @@ export default function HeroSection({ t }) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="hero-cta-buttons"
           >
-            <button className="cta-btn primary-gold" onClick={() => navigate("/i/robert-lusine")}>
+            <button className="cta-btn primary-gold" onClick={() => navigate("/invitations")}>
               <FaEnvelopeOpenText className="btn-icon" /> {t.viewDemo}
-            </button>
-            <button className="cta-btn secondary-glass" onClick={() => navigate("/admin")}>
-              {t.adminPanel} <FaChevronRight className="btn-icon-right" />
             </button>
           </motion.div>
         </div>

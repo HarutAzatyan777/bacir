@@ -6,11 +6,11 @@ const galleryImages = [
   { id: 1, src: "images/1762250986-9.avif", tag: "Wedding / Portrait", size: "large", slug: "demo-wedding-portrait" },
   { id: 2, src: "images/1749120138-12.avif", tag: "Minimal / Modern", size: "small", slug: "demo-minimal-modern" },
   { id: 3, src: "images/1749120139-3.avif", tag: "Floral / Classic", size: "tall", slug: "demo-floral-classic" },
-  { id: 4, src: "images/1749120139-9.avif", tag: "Chic / Elegant", size: "wide", slug: "demo-chic-elegant" },
-  { id: 5, src: "images/1762250986-7.avif", tag: "Luxury / Gold", size: "small", slug: "demo-luxury-gold" },
+  { id: 4, src: "images/4.avif", tag: "Chic / Elegant", size: "wide", slug: "demo-chic-elegant" },
+  { id: 5, src: "images/1749120138-6.avif", tag: "Luxury / Gold", size: "small", slug: "demo-luxury-gold" },
   { id: 6, src: "images/1762342687-05.avif", tag: "Romantic / Photo", size: "tall", slug: "demo-romantic-photo" },
   { id: 7, src: "images/1749120139-11.avif", tag: "Aesthetic / Editorial", size: "large", slug: "demo-aesthetic-editorial" },
-  { id: 8, src: "images/1749625949-8.avif", tag: "Vintage / Retro", size: "wide", slug: "demo-vintage-retro" }
+  { id: 8, src: "images/2.avif", tag: "Vintage / Retro", size: "wide", slug: "demo-vintage-retro" }
 ];
 
 export default function GallerySection({ t }) {

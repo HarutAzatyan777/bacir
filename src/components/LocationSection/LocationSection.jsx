@@ -67,6 +67,9 @@ export default function LocationSection({ locationData }) {
   const displayMainTitle = locationData?.title?.[currentLang] || locationData?.title?.am || t.mainTitle;
   const bgImg = locationData?.bgUrl || BackgroundImage;
 
+  const showChurch = locationData?.church?.show !== false;
+  const showParty = locationData?.party?.show !== false;
+
   // Եկեղեցի
   const churchTitle = locationData?.church?.title?.[currentLang] || locationData?.church?.title?.am || t.churchTitle;
   const churchName = locationData?.church?.name?.[currentLang] || locationData?.church?.name?.am || t.churchLoc;
@@ -97,65 +100,69 @@ export default function LocationSection({ locationData }) {
 
         <div className={styles.timeline}>
           {/* Step 1: Church */}
-          <div className={styles.step}>
-            <div className={styles.stepContentTop}>
-              <h3>{churchTitle}</h3>
-              <p className={styles.stepLocation}>{churchName}</p>
-              <span className={styles.stepTime}>{churchTime}</span>
-            </div>
-            
-            <div className={styles.stepIconCenter}>
-                <img 
-                  src={ChurchIconOutline} 
-                  alt="Church" 
-                  className={styles.largeIcon} 
-                  loading="lazy"
-                />
-            </div>
-            
-            <p className={styles.stepAddress} style={{ marginBottom: '15px' }}>
-              {churchAddr1} <br />
-              {churchAddr2}
-            </p>
-
-            <button
-              className={styles.mapButtonOutline}
-              onClick={() => openMap(churchMapLink)}
-            >
-              {t.mapBtn}
-            </button>
-          </div>
-
-          {/* Step 2: Restaurant */}
-          <div className={styles.step}>
+          {showChurch && (
+            <div className={styles.step}>
               <div className={styles.stepContentTop}>
-                <h3>{partyTitle}</h3>
-                <p className={styles.stepLocation}>{partyName}</p>
-                {partyAddrExtra && <p className={styles.stepAddress}>{partyAddrExtra}</p>}
-                <span className={styles.stepTime}>{partyTime}</span>
+                <h3>{churchTitle}</h3>
+                <p className={styles.stepLocation}>{churchName}</p>
+                <span className={styles.stepTime}>{churchTime}</span>
               </div>
-
+              
               <div className={styles.stepIconCenter}>
                   <img 
-                    src={RestaurantIconOutline} 
-                    alt="Restaurant" 
+                    src={ChurchIconOutline} 
+                    alt="Church" 
                     className={styles.largeIcon} 
                     loading="lazy"
                   />
               </div>
-
+              
               <p className={styles.stepAddress} style={{ marginBottom: '15px' }}>
-                {partyAddr1} <br />
-                {partyAddr2}
+                {churchAddr1} <br />
+                {churchAddr2}
               </p>
 
               <button
                 className={styles.mapButtonOutline}
-                onClick={() => openMap(partyMapLink)}
+                onClick={() => openMap(churchMapLink)}
               >
                 {t.mapBtn}
               </button>
-          </div>
+            </div>
+          )}
+
+          {/* Step 2: Restaurant */}
+          {showParty && (
+            <div className={styles.step}>
+                <div className={styles.stepContentTop}>
+                  <h3>{partyTitle}</h3>
+                  <p className={styles.stepLocation}>{partyName}</p>
+                  {partyAddrExtra && <p className={styles.stepAddress}>{partyAddrExtra}</p>}
+                  <span className={styles.stepTime}>{partyTime}</span>
+                </div>
+
+                <div className={styles.stepIconCenter}>
+                    <img 
+                      src={RestaurantIconOutline} 
+                      alt="Restaurant" 
+                      className={styles.largeIcon} 
+                      loading="lazy"
+                    />
+                </div>
+
+                <p className={styles.stepAddress} style={{ marginBottom: '15px' }}>
+                  {partyAddr1} <br />
+                  {partyAddr2}
+                </p>
+
+                <button
+                  className={styles.mapButtonOutline}
+                  onClick={() => openMap(partyMapLink)}
+                >
+                  {t.mapBtn}
+                </button>
+            </div>
+          )}
         </div>
       </div>
     </section>

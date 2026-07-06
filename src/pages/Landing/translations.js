@@ -71,6 +71,31 @@ export const translations = {
     orderError: "Տեղի ունեցավ սխալ: Խնդրում ենք փորձել կրկին կամ կապնվել մեզ հետ ուղղակիորեն:",
     orderOrContact: "Կամ կապնվեք մեզ հետ ուղղակիորեն",
 
+    pricingTitle: "Մեր Սակագները",
+    pricingSubtitle: "Ընտրեք լավագույն տարբերակը ձեր անմոռանալի օրվա համար: Գործում է հատուկ ակցիա՝ սահմանափակ ժամանակով:",
+    pricingPromoBadge: "ԱԿՑԻԱ",
+    pricingSave: "Խնայում եք",
+    pricingPopular: "Ամենահանրաճանաչ",
+    pricingOrderBtn: "Պատվիրել",
+    
+    pricingFeatStandard1: "3D Ծրարի բացման անիմացիա",
+    pricingFeatStandard2: "RSVP հյուրերի հաստատում",
+    pricingFeatStandard3: "Հաճելի ֆոնային երաժշտություն",
+    pricingFeatStandard4: "Ինտերակտիվ քարտեզ (Google/Yandex)",
+    pricingFeatStandard5: "1 տարի ակտիվ հղում հրավերի համար",
+
+    pricingFeatCustom1: "Ներառում է «Ստանդարտ»-ի բոլոր հնարավորությունները",
+    pricingFeatCustom2: "Անհատական դիզայն և գունային գամմա",
+    pricingFeatCustom3: "Գեղեցիկ ֆոտոսրահ (մինչև 15 նկար)",
+    pricingFeatCustom4: "Telegram ակնթարթային ծանուցումներ պատասխանների համար",
+    pricingFeatCustom5: "Սեփական երաժշտության ընտրություն և վերբեռնում",
+
+    pricingFeatVip1: "Ներառում է «Անհատական»-ի բոլոր հնարավորությունները",
+    pricingFeatVip2: "Բազմալեզու հրավեր (3 լեզվով՝ AM, RU, EN)",
+    pricingFeatVip3: "Հյուրերի սեղանների դասավորության սխեմա",
+    pricingFeatVip4: "Առանց bacir.online լոգոտիպի (Branding-free)",
+    pricingFeatVip5: "Անձնական մենեջերի և դիզայների աջակցություն",
+
     footerText: "© 2026 bacir.online. Բոլոր իրավունքները պաշտպանված են:"
   },
   ru: {
@@ -145,6 +170,31 @@ export const translations = {
     orderError: "Произошла ошибка. Пожалуйста, попробуйте еще раз или свяжитесь с нами напрямую.",
     orderOrContact: "Или свяжитесь с нами напрямую",
 
+    pricingTitle: "Наши Тарифы",
+    pricingSubtitle: "Выберите лучший вариант для вашего незабываемого дня. Действует специальная акция на ограниченное время!",
+    pricingPromoBadge: "АКЦИЯ",
+    pricingSave: "Вы экономите",
+    pricingPopular: "Самый популярный",
+    pricingOrderBtn: "Заказать",
+    
+    pricingFeatStandard1: "3D Анимация открытия конверта",
+    pricingFeatStandard2: "RSVP подтверждение от гостей",
+    pricingFeatStandard3: "Приятная фоновая музыка",
+    pricingFeatStandard4: "Интерактивная карта (Google/Yandex)",
+    pricingFeatStandard5: "Активная ссылка на приглашение 1 год",
+
+    pricingFeatCustom1: "Включает все преимущества «Стандарта»",
+    pricingFeatCustom2: "Индивидуальный дизайн и цветовая гамма",
+    pricingFeatCustom3: "Красивая фотогалерея (до 15 фото)",
+    pricingFeatCustom4: "Мгновенные Telegram уведомления об ответах",
+    pricingFeatCustom5: "Выбор и загрузка собственной музыки",
+
+    pricingFeatVip1: "Включает все преимущества «Индивидуального»",
+    pricingFeatVip2: "Мультиязычное приглашение (3 языка: AM, RU, EN)",
+    pricingFeatVip3: "Схема рассадки гостей по столам",
+    pricingFeatVip4: "Без логотипа bacir.online (Branding-free)",
+    pricingFeatVip5: "Поддержка персонального менеджера и дизайнера",
+
     footerText: "© 2026 bacir.online. Все права защищены."
   },
   en: {
@@ -215,6 +265,31 @@ export const translations = {
     orderSuccessDesc: "Your order request has been submitted successfully. Our team will contact you shortly.",
     orderError: "An error occurred. Please try again or contact us directly.",
     orderOrContact: "Or contact us directly",
+
+    pricingTitle: "Our Pricing",
+    pricingSubtitle: "Choose the best option for your unforgettable day. Special promotion is active for a limited time!",
+    pricingPromoBadge: "PROMOTION",
+    pricingSave: "You save",
+    pricingPopular: "Most Popular",
+    pricingOrderBtn: "Order Now",
+    
+    pricingFeatStandard1: "3D Envelope opening animation",
+    pricingFeatStandard2: "RSVP guest confirmation",
+    pricingFeatStandard3: "Pleasant background music",
+    pricingFeatStandard4: "Interactive map (Google/Yandex)",
+    pricingFeatStandard5: "1 year active link for the invitation",
+
+    pricingFeatCustom1: "Includes all features of «Standard»",
+    pricingFeatCustom2: "Custom design & color palette",
+    pricingFeatCustom3: "Beautiful photo gallery (up to 15 photos)",
+    pricingFeatCustom4: "Instant Telegram notifications for responses",
+    pricingFeatCustom5: "Choose and upload your own music",
+
+    pricingFeatVip1: "Includes all features of «Custom»",
+    pricingFeatVip2: "Multi-language invitation (3 languages: AM, RU, EN)",
+    pricingFeatVip3: "Guest seating arrangement layout",
+    pricingFeatVip4: "No bacir.online logo (Branding-free)",
+    pricingFeatVip5: "Personal manager & designer support",
 
     footerText: "© 2026 bacir.online. All rights reserved."
   }

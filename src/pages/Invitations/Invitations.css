@@ -1,0 +1,323 @@
+/* Invitations.css */
+
+.gallery-page-layout {
+  min-height: 100vh;
+  background-color: #FAFAFA;
+  color: #3A5A40;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background Glows */
+.gallery-glow-1 {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(193, 207, 161, 0.2) 0%, rgba(250, 250, 250, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gallery-glow-2 {
+  position: absolute;
+  bottom: 10%;
+  left: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(232, 224, 213, 0.3) 0%, rgba(250, 250, 250, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gallery-main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px 100px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-header-block {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.gallery-pretitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #d4af37; /* Gold accent */
+  text-transform: uppercase;
+}
+
+.gallery-main-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #3A5A40 0%, #5A7A60 50%, #1c2e20 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gallery-subtitle-text {
+  font-size: 1.1rem;
+  color: #557a5c;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Spinner and Loader */
+.gallery-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+}
+
+.premium-spinner {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #3A5A40;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  animation-delay: -1.0s;
+  background-color: #C1CFA1;
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+  }
+}
+
+.loader-text {
+  font-size: 1rem;
+  color: #3A5A40;
+  font-weight: 500;
+}
+
+/* Error and Empty state */
+.gallery-error-banner {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.gallery-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  color: #557a5c;
+  gap: 16px;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+/* Grid Layout */
+.invitations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  width: 100%;
+}
+
+/* Invitation Card */
+.invitation-card-item {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(58, 90, 64, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.invitation-card-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(58, 90, 64, 0.12);
+  border-color: rgba(58, 90, 64, 0.18);
+}
+
+.card-image-container {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  background: #E8E0D5;
+}
+
+.card-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.invitation-card-item:hover .card-preview-img {
+  transform: scale(1.06);
+}
+
+.card-gradient-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E8E0D5 0%, #C1CFA1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3A5A40;
+}
+
+.fallback-inner-gold {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  opacity: 0.15;
+}
+
+.card-badge-type {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #3A5A40;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.event-type-icon {
+  font-size: 0.9rem;
+}
+
+.event-type-icon.wedding {
+  color: #e63946;
+}
+
+.event-type-icon.birthday {
+  color: #ffb703;
+}
+
+.event-type-icon.baptism {
+  color: #219ebc;
+}
+
+.event-type-icon.other {
+  color: #3A5A40;
+}
+
+/* Card Content */
+.card-info-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.card-event-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #3A5A40;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.4;
+  margin: 0;
+  /* Multi-line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6a7b6d;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.date-icon {
+  font-size: 0.9rem;
+  color: #d4af37;
+}
+
+.card-open-action-btn {
+  margin-top: 12px;
+  width: 100%;
+  background: #3A5A40;
+  color: #FAFAFA;
+  border: none;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(58, 90, 64, 0.1);
+}
+
+.card-open-action-btn:hover {
+  background: #2D4432;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(58, 90, 64, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gallery-main-title {
+    font-size: 2rem;
+  }
+  
+  .gallery-subtitle-text {
+    font-size: 1rem;
+  }
+  
+  .invitations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  
+  .card-image-container {
+    height: 300px;
+  }
+}

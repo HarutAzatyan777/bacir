@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
 
 export default function LandingHeader({ t }) {
   const { currentLang, changeLanguage } = useLanguage();
   const navigate = useNavigate();
+  const clickCountRef = useRef(0);
+
+  const handleLogoClick = () => {
+    clickCountRef.current += 1;
+    if (clickCountRef.current >= 7) {
+      navigate("/admin");
+      clickCountRef.current = 0;
+    }
+  };
 
   return (
     <header className="landing-header">
-      <div className="logo-section">
+      <div className="logo-section" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
         <span className="logo-gold">BACIR</span>
         <span className="logo-sub">ONLINE</span>
       </div>
@@ -33,9 +42,6 @@ export default function LandingHeader({ t }) {
             EN
           </button>
         </div>
-        <button className="nav-admin-btn" onClick={() => navigate("/admin")}>
-          {t.adminPanel}
-        </button>
       </div>
     </header>
   );

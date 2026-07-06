@@ -5,6 +5,16 @@ import { db, storage, auth } from "../../firebase";
 import { FaMobileAlt } from "react-icons/fa";
 import "./InvitationForm.css";
 
+// Sub-tab Components
+import GeneralTab from "./tabs/GeneralTab";
+import SectionsTab from "./tabs/SectionsTab";
+import ThemeTab from "./tabs/ThemeTab";
+import HeroTab from "./tabs/HeroTab";
+import CalendarLocationTab from "./tabs/CalendarLocationTab";
+import GalleryTab from "./tabs/GalleryTab";
+import DressCodeTab from "./tabs/DressCodeTab";
+import RsvpTelegramTab from "./tabs/RsvpTelegramTab";
+
 export default function InvitationForm({ mode, invitationId, onSuccess, onCancel }) {
   const [activeTab, setActiveTab] = useState("general");
   const [loading, setLoading] = useState(false);
@@ -622,865 +632,230 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       </div>
 
       <form onSubmit={handleSubmit} className="form-body">
-        {/* Tab 1: General */}
         {activeTab === "general" && (
-          <div className="tab-pane">
-            <div className="form-grid">
-              <div className="form-field full-width">
-                <label>Հասցեի Slug (օր.՝ robert-lusine) *</label>
-                <input
-                  type="text"
-                  placeholder="robert-lusine"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  disabled={mode === "edit"}
-                  required
-                />
-                <small>Այս Slug-ը կօգտագործվի URL-ում (օրինակ՝ /i/robert-lusine): Միայն փոքրատառեր, թվեր և գծիկներ:</small>
-              </div>
-
-              <div className="form-field">
-                <label>Միջոցառման անուն (ներքին օգտագործման)</label>
-                <input
-                  type="text"
-                  placeholder="Ռոբերտի և Լուսինեի հարսանիքը"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-field">
-                <label>Միջոցառման տեսակ (Occasion / Event Type)</label>
-                <select
-                  value={eventType}
-                  onChange={(e) => handleEventTypeChange(e.target.value)}
-                  style={{
-                    padding: "12px",
-                    background: "#ffffff",
-                    border: "1px solid #cbd5e1",
-                    borderRadius: "8px",
-                    color: "#1e293b",
-                    fontSize: "0.95rem",
-                    outline: "none",
-                    cursor: "pointer"
-                  }}
-                >
-                  <option value="wedding">Հարսանիք / Свадьба / Wedding</option>
-                  <option value="birthday">Ծննդյան օր / День рождения / Birthday</option>
-                  <option value="baptism">Կնունք / Крещение / Baptism</option>
-                  <option value="other">Այլ միջոցառում / Другое / Other</option>
-                </select>
-              </div>
-
-              <div className="form-field">
-                <label>Կնիքի տառերը (Initials, օր.՝ RL)</label>
-                <input
-                  type="text"
-                  maxLength={4}
-                  value={sealInitials}
-                  onChange={(e) => setSealInitials(e.target.value)}
-                />
-              </div>
-
-              <div className="form-field full-width">
-                <label>Երաժշտության URL (Music file link or path)</label>
-                <input
-                  type="text"
-                  value={musicUrl}
-                  onChange={(e) => setMusicUrl(e.target.value)}
-                />
-                <small>Կարող եք թողնել լռելյայն `/wedding-audio.mp3` կամ տեղադրել այլ հղում:</small>
-              </div>
-
-              <div className="form-field full-width">
-                <label>Ծրարի/նամակի ֆոնային նկար (Envelope/Letter BG Image)</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setEnvelopeBgFile(e.target.files[0])}
-                />
-                {envelopeBgUrl && (
-                  <div className="preview-img-container">
-                    <img src={envelopeBgUrl} alt="Envelope Preview" className="preview-thumb" />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <GeneralTab
+            mode={mode}
+            slug={slug}
+            setSlug={setSlug}
+            eventName={eventName}
+            setEventName={setEventName}
+            eventType={eventType}
+            handleEventTypeChange={handleEventTypeChange}
+            sealInitials={sealInitials}
+            setSealInitials={setSealInitials}
+            musicUrl={musicUrl}
+            setMusicUrl={setMusicUrl}
+            envelopeBgFile={envelopeBgFile}
+            setEnvelopeBgFile={setEnvelopeBgFile}
+            envelopeBgUrl={envelopeBgUrl}
+            setEnvelopeBgUrl={setEnvelopeBgUrl}
+          />
         )}
 
-        {/* Tab 1.5: Sections */}
         {activeTab === "sections" && (
-          <div className="tab-pane">
-            <h3>Բաժինների դասավորություն / Настройка разделов</h3>
-            <p className="tab-desc" style={{ color: "#a3b899", fontSize: "0.85rem", marginBottom: "20px" }}>
-              Դասավորեք բաժինները ըստ ցանկության և միացրեք կամ անջատեք դրանք (ինչպես WordPress-ում):
-            </p>
-
-            <div className="sections-list">
-              {sections.map((section, index) => {
-                const isFirst = index === 0;
-                const isLast = index === sections.length - 1;
-                const sectionNames = {
-                  hero: "Գլխավոր / Главная",
-                  calendar: "Օրացույց / Календарь",
-                  location: "Տեղանք / Локация",
-                  gallery: "Պատկերասրահ / Галерея",
-                  dressCode: "Դրեսս Կոդ / Дресс-код",
-                  rsvp: "Հաստատում (RSVP) / Подтверждение",
-                  customText: `Հատուկ բաժին / Свой раздел (${section.title?.am || "Նոր"})`
-                };
-
-                return (
-                  <div key={section.id} className="section-item-card">
-                    <div className="section-item-header">
-                      <div className="section-item-info">
-                        <span className="section-badge">{section.type}</span>
-                        <span className="section-title-label">{sectionNames[section.type] || section.type}</span>
-                      </div>
-                      
-                      <div className="section-item-actions">
-                        <button
-                          type="button"
-                          className="reorder-btn"
-                          onClick={() => moveSectionUp(index)}
-                          disabled={isFirst}
-                          title="Տեղափոխել վերև"
-                        >
-                          ▲
-                        </button>
-                        <button
-                          type="button"
-                          className="reorder-btn"
-                          onClick={() => moveSectionDown(index)}
-                          disabled={isLast}
-                          title="Տեղափոխել ներքև"
-                        >
-                          ▼
-                        </button>
-                        
-                        <button
-                          type="button"
-                          className={`toggle-section-btn ${section.enabled ? "enabled" : "disabled"}`}
-                          onClick={() => toggleSectionEnabled(index)}
-                        >
-                          {section.enabled ? "Միացված / Вкл" : "Անջատված / Выкл"}
-                        </button>
-
-                        {section.type === "customText" && (
-                          <button
-                            type="button"
-                            className="delete-section-btn"
-                            onClick={() => removeCustomSection(section.id)}
-                          >
-                            Ջնջել / Удалить
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {section.type === "customText" && (
-                      <div className="custom-section-edit-grid">
-                        <div className="form-field">
-                          <label>Վերնագիր AM</label>
-                          <input
-                            type="text"
-                            value={section.title?.am || ""}
-                            onChange={(e) => updateCustomSection(section.id, "title", "am", e.target.value)}
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label>Վերնագիր RU</label>
-                          <input
-                            type="text"
-                            value={section.title?.ru || ""}
-                            onChange={(e) => updateCustomSection(section.id, "title", "ru", e.target.value)}
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label>Վերնագիր EN</label>
-                          <input
-                            type="text"
-                            value={section.title?.en || ""}
-                            onChange={(e) => updateCustomSection(section.id, "title", "en", e.target.value)}
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label>Տեքստ AM</label>
-                          <textarea
-                            value={section.content?.am || ""}
-                            onChange={(e) => updateCustomSection(section.id, "content", "am", e.target.value)}
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label>Տեքստ RU</label>
-                          <textarea
-                            value={section.content?.ru || ""}
-                            onChange={(e) => updateCustomSection(section.id, "content", "ru", e.target.value)}
-                          />
-                        </div>
-                        <div className="form-field">
-                          <label>Տեքստ EN</label>
-                          <textarea
-                            value={section.content?.en || ""}
-                            onChange={(e) => updateCustomSection(section.id, "content", "en", e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <button type="button" className="add-section-btn" onClick={addCustomSection}>
-              + Ավելացնել հատուկ բաժին / Добавить свой раздел
-            </button>
-          </div>
+          <SectionsTab
+            sections={sections}
+            moveSectionUp={moveSectionUp}
+            moveSectionDown={moveSectionDown}
+            toggleSectionEnabled={toggleSectionEnabled}
+            addCustomSection={addCustomSection}
+            removeCustomSection={removeCustomSection}
+            updateCustomSection={updateCustomSection}
+          />
         )}
 
-        {/* Tab 1.6: Theme / Styler */}
         {activeTab === "theme" && (
-          <div className="tab-pane">
-            <h3>Դիզայնի կարգավորումներ / Настройка дизайна (Styler)</h3>
-            <p className="tab-desc" style={{ color: "#a3b899", fontSize: "0.85rem", marginBottom: "20px" }}>
-              Անհատականացրեք ձեր հրավիրատոմսի գույները, տառատեսակները և դասավորությունը:
-            </p>
-
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Հիմնական գույն (Primary Color)</label>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <input
-                    type="color"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
-                  />
-                  <input
-                    type="text"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    style={{ flex: 1 }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label>Ակցենտային գույն (Accent/Gold Color)</label>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <input
-                    type="color"
-                    value={accentColor}
-                    onChange={(e) => setAccentColor(e.target.value)}
-                    style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
-                  />
-                  <input
-                    type="text"
-                    value={accentColor}
-                    onChange={(e) => setAccentColor(e.target.value)}
-                    style={{ flex: 1 }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label>Ֆոնի գույն (Background Color)</label>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <input
-                    type="color"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
-                    style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
-                  />
-                  <input
-                    type="text"
-                    value={bgColor}
-                    onChange={(e) => setBgColor(e.target.value)}
-                    style={{ flex: 1 }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label>Տեքստի գույն (Text Color)</label>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <input
-                    type="color"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
-                  />
-                  <input
-                    type="text"
-                    value={textColor}
-                    onChange={(e) => setTextColor(e.target.value)}
-                    style={{ flex: 1 }}
-                  />
-                </div>
-              </div>
-
-              <div className="form-field">
-                <label>Բաժնի հեռավորություն (Section Padding)</label>
-                <input
-                  type="text"
-                  placeholder="80px 20px"
-                  value={sectionPadding}
-                  onChange={(e) => setSectionPadding(e.target.value)}
-                />
-                <small>Օրինակ՝ `80px 20px` (վերև/ներքև և աջ/ձախ):</small>
-              </div>
-
-              <div className="form-field">
-                <label>Առավելագույն լայնություն (Container Width)</label>
-                <input
-                  type="text"
-                  placeholder="1200px"
-                  value={containerWidth}
-                  onChange={(e) => setContainerWidth(e.target.value)}
-                />
-                <small>Օրինակ՝ `1200px` կամ `100%`:</small>
-              </div>
-
-              <div className="form-field full-width">
-                <label>Տառատեսակ (Main Font)</label>
-                <select
-                  value={fontMain}
-                  onChange={(e) => setFontMain(e.target.value)}
-                  style={{
-                    padding: "12px",
-                    background: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "6px",
-                    color: "#fff",
-                    fontSize: "0.95rem",
-                    outline: "none",
-                    cursor: "pointer"
-                  }}
-                >
-                  <option style={{ background: "#1c2e24", color: "#fff" }} value="'Montserrat', sans-serif">Montserrat (Modern Sans-Serif)</option>
-                  <option style={{ background: "#1c2e24", color: "#fff" }} value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
-                  <option style={{ background: "#1c2e24", color: "#fff" }} value="'Inter', sans-serif">Inter (Clean Neutral)</option>
-                  <option style={{ background: "#1c2e24", color: "#fff" }} value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Wedding Serif)</option>
-                  <option style={{ background: "#1c2e24", color: "#fff" }} value="'Great Vibes', cursive">Great Vibes (Romantic Script)</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          <ThemeTab
+            primaryColor={primaryColor}
+            setPrimaryColor={setPrimaryColor}
+            accentColor={accentColor}
+            setAccentColor={setAccentColor}
+            bgColor={bgColor}
+            setBgColor={setBgColor}
+            textColor={textColor}
+            setTextColor={setTextColor}
+            sectionPadding={sectionPadding}
+            setSectionPadding={setSectionPadding}
+            containerWidth={containerWidth}
+            setContainerWidth={setContainerWidth}
+            fontMain={fontMain}
+            setFontMain={setFontMain}
+          />
         )}
 
-        {/* Tab 2: Hero */}
         {activeTab === "hero" && (
-          <div className="tab-pane">
-            <h3>Գլխավոր Էջ / Hero Section</h3>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Անուններ (Հայերեն)</label>
-                <input type="text" value={heroNamesAm} onChange={(e) => setHeroNamesAm(e.target.value)} required />
-              </div>
-              <div className="form-field">
-                <label>Անուններ (Ռուսերեն)</label>
-                <input type="text" value={heroNamesRu} onChange={(e) => setHeroNamesRu(e.target.value)} required />
-              </div>
-              <div className="form-field">
-                <label>Անուններ (Անգլերեն)</label>
-                <input type="text" value={heroNamesEn} onChange={(e) => setHeroNamesEn(e.target.value)} required />
-              </div>
-
-              <div className="form-field">
-                <label>Վերնագիր (Հայերեն)</label>
-                <input type="text" value={heroTitleAm} onChange={(e) => setHeroTitleAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր (Ռուսերեն)</label>
-                <input type="text" value={heroTitleRu} onChange={(e) => setHeroTitleRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր (Անգլերեն)</label>
-                <input type="text" value={heroTitleEn} onChange={(e) => setHeroTitleEn(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Հեռախոսի ֆոնային նկար (Mobile BG)</label>
-                <input type="file" accept="image/*" onChange={(e) => setHeroBgMobileFile(e.target.files[0])} />
-                {heroBgMobileUrl && <div className="preview-img-container"><img src={heroBgMobileUrl} alt="Preview" className="preview-thumb" /></div>}
-              </div>
-
-              <div className="form-field">
-                <label>Համակարգչի ֆոնային նկար (Desktop BG)</label>
-                <input type="file" accept="image/*" onChange={(e) => setHeroBgDesktopFile(e.target.files[0])} />
-                {heroBgDesktopUrl && <div className="preview-img-container"><img src={heroBgDesktopUrl} alt="Preview" className="preview-thumb" /></div>}
-              </div>
-            </div>
-          </div>
+          <HeroTab
+            heroNamesAm={heroNamesAm}
+            setHeroNamesAm={setHeroNamesAm}
+            heroNamesRu={heroNamesRu}
+            setHeroNamesRu={setHeroNamesRu}
+            heroNamesEn={heroNamesEn}
+            setHeroNamesEn={setHeroNamesEn}
+            heroTitleAm={heroTitleAm}
+            setHeroTitleAm={setHeroTitleAm}
+            heroTitleRu={heroTitleRu}
+            setHeroTitleRu={setHeroTitleRu}
+            heroTitleEn={heroTitleEn}
+            setHeroTitleEn={setHeroTitleEn}
+            heroBgMobileFile={heroBgMobileFile}
+            setHeroBgMobileFile={setHeroBgMobileFile}
+            heroBgMobileUrl={heroBgMobileUrl}
+            setHeroBgMobileUrl={setHeroBgMobileUrl}
+            heroBgDesktopFile={heroBgDesktopFile}
+            setHeroBgDesktopFile={setHeroBgDesktopFile}
+            heroBgDesktopUrl={heroBgDesktopUrl}
+            setHeroBgDesktopUrl={setHeroBgDesktopUrl}
+          />
         )}
 
-        {/* Tab 3: Calendar & Location */}
         {activeTab === "calendar_location" && (
-          <div className="tab-pane">
-            <h3>Օրացույց / Calendar</h3>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Ամսաթիվ և Ժամ (Event Date & Time)</label>
-                <input type="datetime-local" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required />
-              </div>
-              <div className="form-field">
-                <label>Օրացույցի ֆոնային նկար</label>
-                <input type="file" accept="image/*" onChange={(e) => setCalBgFile(e.target.files[0])} />
-                {calBgUrl && <div className="preview-img-container"><img src={calBgUrl} alt="Preview" className="preview-thumb" /></div>}
-              </div>
-
-              <div className="form-field">
-                <label>Վերնագիր AM</label>
-                <input type="text" value={calTitleAm} onChange={(e) => setCalTitleAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր RU</label>
-                <input type="text" value={calTitleRu} onChange={(e) => setCalTitleRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Վերնագիր EN</label>
-                <input type="text" value={calTitleEn} onChange={(e) => setCalTitleEn(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Ներածություն AM</label>
-                <textarea value={calIntroAm} onChange={(e) => setCalIntroAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Ներածություն RU</label>
-                <textarea value={calIntroRu} onChange={(e) => setCalIntroRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Ներածություն EN</label>
-                <textarea value={calIntroEn} onChange={(e) => setCalIntroEn(e.target.value)} />
-              </div>
-
-              <div className="form-field">
-                <label>Հրավեր տեքստ AM</label>
-                <textarea value={calInviteAm} onChange={(e) => setCalInviteAm(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հրավեր տեքստ RU</label>
-                <textarea value={calInviteRu} onChange={(e) => setCalInviteRu(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Հրավեր տեքստ EN</label>
-                <textarea value={calInviteEn} onChange={(e) => setCalInviteEn(e.target.value)} />
-              </div>
-            </div>
-
-            <hr className="form-divider" />
-
-            <div className="form-grid" style={{ marginBottom: "25px", gridTemplateColumns: "1fr 1fr" }}>
-              <div className="form-field" style={{ flexDirection: "row", alignItems: "center", gap: "10px" }}>
-                <input
-                  type="checkbox"
-                  id="showChurchCheckbox"
-                  checked={showChurch}
-                  onChange={(e) => setShowChurch(e.target.checked)}
-                  style={{ width: "20px", height: "20px", cursor: "pointer" }}
-                />
-                <label htmlFor="showChurchCheckbox" style={{ margin: 0, cursor: "pointer", fontWeight: "bold", color: "#2c3e35" }}>
-                  Ցուցադրել Եկեղեցու բաժինը / Показать раздел Церкви / Show Church
-                </label>
-              </div>
-              <div className="form-field" style={{ flexDirection: "row", alignItems: "center", gap: "10px" }}>
-                <input
-                  type="checkbox"
-                  id="showPartyCheckbox"
-                  checked={showParty}
-                  onChange={(e) => setShowParty(e.target.checked)}
-                  style={{ width: "20px", height: "20px", cursor: "pointer" }}
-                />
-                <label htmlFor="showPartyCheckbox" style={{ margin: 0, cursor: "pointer", fontWeight: "bold", color: "#2c3e35" }}>
-                  Ցուցադրել Ռեստորանի բաժինը / Показать раздел Ресторана / Show Reception
-                </label>
-              </div>
-            </div>
-
-            <hr className="form-divider" />
-
-            {showChurch && (
-              <>
-                <h3>Եկեղեցու Արարողություն / Church</h3>
-                <div className="form-grid">
-                  <div className="form-field">
-                    <label>Վերնագիր (օր.՝ ԵԿԵՂԵՑԻ)</label>
-                    <input type="text" value={churchTitleAm} onChange={(e) => setChurchTitleAm(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Վերնագիր RU</label>
-                    <input type="text" value={churchTitleRu} onChange={(e) => setChurchTitleRu(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Վերնագիր EN</label>
-                    <input type="text" value={churchTitleEn} onChange={(e) => setChurchTitleEn(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Եկեղեցու անուն AM</label>
-                    <input type="text" value={churchNameAm} onChange={(e) => setChurchNameAm(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Եկեղեցու անուն RU</label>
-                    <input type="text" value={churchNameRu} onChange={(e) => setChurchNameRu(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Եկեղեցու անուն EN</label>
-                    <input type="text" value={churchNameEn} onChange={(e) => setChurchNameEn(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Հասցե տող 1 AM</label>
-                    <input type="text" value={churchAddr1Am} onChange={(e) => setChurchAddr1Am(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 1 RU</label>
-                    <input type="text" value={churchAddr1Ru} onChange={(e) => setChurchAddr1Ru(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 1 EN</label>
-                    <input type="text" value={churchAddr1En} onChange={(e) => setChurchAddr1En(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Հասցե տող 2 AM</label>
-                    <input type="text" value={churchAddr2Am} onChange={(e) => setChurchAddr2Am(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 2 RU</label>
-                    <input type="text" value={churchAddr2Ru} onChange={(e) => setChurchAddr2Ru(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 2 EN</label>
-                    <input type="text" value={churchAddr2En} onChange={(e) => setChurchAddr2En(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Ժամ (օր.՝ 15:00)</label>
-                    <input type="text" value={churchTime} onChange={(e) => setChurchTime(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Քարտեզի հղում (Google Maps Link)</label>
-                    <input type="text" value={churchMapLink} onChange={(e) => setChurchMapLink(e.target.value)} />
-                  </div>
-                </div>
-                <hr className="form-divider" />
-              </>
-            )}
-
-            {showParty && (
-              <>
-                <h3>Ռեստորան / Party</h3>
-                <div className="form-grid">
-                  <div className="form-field">
-                    <label>Վերնագիր (օր.՝ ՌԵՍՏՈՐԱՆ)</label>
-                    <input type="text" value={partyTitleAm} onChange={(e) => setPartyTitleAm(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Վերնագիր RU</label>
-                    <input type="text" value={partyTitleRu} onChange={(e) => setPartyTitleRu(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Վերնագիր EN</label>
-                    <input type="text" value={partyTitleEn} onChange={(e) => setPartyTitleEn(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Ռեստորանի անուն AM</label>
-                    <input type="text" value={partyNameAm} onChange={(e) => setPartyNameAm(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Ռեստորանի անուն RU</label>
-                    <input type="text" value={partyNameRu} onChange={(e) => setPartyNameRu(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Ռեստորանի անուն EN</label>
-                    <input type="text" value={partyNameEn} onChange={(e) => setPartyNameEn(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Լրացուցիչ տեղեկություն (օր.՝ Նոր Դվին) AM</label>
-                    <input type="text" value={partyAddrExtraAm} onChange={(e) => setPartyAddrExtraAm(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Լրացուցիչ տեղեկություն RU</label>
-                    <input type="text" value={partyAddrExtraRu} onChange={(e) => setPartyAddrExtraRu(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Լրացուցիչ տեղեկություն EN</label>
-                    <input type="text" value={partyAddrExtraEn} onChange={(e) => setPartyAddrExtraEn(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Հասցե տող 1 AM</label>
-                    <input type="text" value={partyAddr1Am} onChange={(e) => setPartyAddr1Am(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 1 RU</label>
-                    <input type="text" value={partyAddr1Ru} onChange={(e) => setPartyAddr1Ru(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 1 EN</label>
-                    <input type="text" value={partyAddr1En} onChange={(e) => setPartyAddr1En(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Հասցե տող 2 AM</label>
-                    <input type="text" value={partyAddr2Am} onChange={(e) => setPartyAddr2Am(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 2 RU</label>
-                    <input type="text" value={partyAddr2Ru} onChange={(e) => setPartyAddr2Ru(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Հասցե տող 2 EN</label>
-                    <input type="text" value={partyAddr2En} onChange={(e) => setPartyAddr2En(e.target.value)} />
-                  </div>
-
-                  <div className="form-field">
-                    <label>Ժամ (օր.՝ 17:30)</label>
-                    <input type="text" value={partyTime} onChange={(e) => setPartyTime(e.target.value)} />
-                  </div>
-                  <div className="form-field">
-                    <label>Քարտեզի հղում (Google Maps Link)</label>
-                    <input type="text" value={partyMapLink} onChange={(e) => setPartyMapLink(e.target.value)} />
-                  </div>
-                </div>
-                <hr className="form-divider" />
-              </>
-            )}
-
-            <div className="form-grid" style={{ marginTop: "20px" }}>
-              <div className="form-field">
-                <label>Տեղանքի բաժնի ֆոնային նկար</label>
-                <input type="file" accept="image/*" onChange={(e) => setLocBgFile(e.target.files[0])} />
-                {locBgUrl && <div className="preview-img-container"><img src={locBgUrl} alt="Preview" className="preview-thumb" /></div>}
-              </div>
-            </div>
-          </div>
+          <CalendarLocationTab
+            eventDate={eventDate}
+            setEventDate={setEventDate}
+            calBgFile={calBgFile}
+            setCalBgFile={setCalBgFile}
+            calBgUrl={calBgUrl}
+            setCalBgUrl={setCalBgUrl}
+            calTitleAm={calTitleAm}
+            setCalTitleAm={setCalTitleAm}
+            calTitleRu={calTitleRu}
+            setCalTitleRu={setCalTitleRu}
+            calTitleEn={calTitleEn}
+            setCalTitleEn={setCalTitleEn}
+            calIntroAm={calIntroAm}
+            setCalIntroAm={setCalIntroAm}
+            calIntroRu={calIntroRu}
+            setCalIntroRu={setCalIntroRu}
+            calIntroEn={calIntroEn}
+            setCalIntroEn={setCalIntroEn}
+            calInviteAm={calInviteAm}
+            setCalInviteAm={setCalInviteAm}
+            calInviteRu={calInviteRu}
+            setCalInviteRu={setCalInviteRu}
+            calInviteEn={calInviteEn}
+            setCalInviteEn={setCalInviteEn}
+            showChurch={showChurch}
+            setShowChurch={setShowChurch}
+            showParty={showParty}
+            setShowParty={setShowParty}
+            churchTitleAm={churchTitleAm}
+            setChurchTitleAm={setChurchTitleAm}
+            churchTitleRu={churchTitleRu}
+            setChurchTitleRu={setChurchTitleRu}
+            churchTitleEn={churchTitleEn}
+            setChurchTitleEn={setChurchTitleEn}
+            churchNameAm={churchNameAm}
+            setChurchNameAm={setChurchNameAm}
+            churchNameRu={churchNameRu}
+            setChurchNameRu={setChurchNameRu}
+            churchNameEn={churchNameEn}
+            setChurchNameEn={setChurchNameEn}
+            churchAddr1Am={churchAddr1Am}
+            setChurchAddr1Am={setChurchAddr1Am}
+            churchAddr1Ru={churchAddr1Ru}
+            setChurchAddr1Ru={setChurchAddr1Ru}
+            churchAddr1En={churchAddr1En}
+            setChurchAddr1En={setChurchAddr1En}
+            churchAddr2Am={churchAddr2Am}
+            setChurchAddr2Am={setChurchAddr2Am}
+            churchAddr2Ru={churchAddr2Ru}
+            setChurchAddr2Ru={setChurchAddr2Ru}
+            churchAddr2En={churchAddr2En}
+            setChurchAddr2En={setChurchAddr2En}
+            churchTime={churchTime}
+            setChurchTime={setChurchTime}
+            churchMapLink={churchMapLink}
+            setChurchMapLink={setChurchMapLink}
+            partyTitleAm={partyTitleAm}
+            setPartyTitleAm={setPartyTitleAm}
+            partyTitleRu={partyTitleRu}
+            setPartyTitleRu={setPartyTitleRu}
+            partyTitleEn={partyTitleEn}
+            setPartyTitleEn={setPartyTitleEn}
+            partyNameAm={partyNameAm}
+            setPartyNameAm={setPartyNameAm}
+            partyNameRu={partyNameRu}
+            setPartyNameRu={setPartyNameRu}
+            partyNameEn={partyNameEn}
+            setPartyNameEn={setPartyNameEn}
+            partyAddrExtraAm={partyAddrExtraAm}
+            setPartyAddrExtraAm={setPartyAddrExtraAm}
+            partyAddrExtraRu={partyAddrExtraRu}
+            setPartyAddrExtraRu={setPartyAddrExtraRu}
+            partyAddrExtraEn={partyAddrExtraEn}
+            setPartyAddrExtraEn={setPartyAddrExtraEn}
+            partyAddr1Am={partyAddr1Am}
+            setPartyAddr1Am={setPartyAddr1Am}
+            partyAddr1Ru={partyAddr1Ru}
+            setPartyAddr1Ru={setPartyAddr1Ru}
+            partyAddr1En={partyAddr1En}
+            setPartyAddr1En={setPartyAddr1En}
+            partyAddr2Am={partyAddr2Am}
+            setPartyAddr2Am={setPartyAddr2Am}
+            partyAddr2Ru={partyAddr2Ru}
+            setPartyAddr2Ru={setPartyAddr2Ru}
+            partyAddr2En={partyAddr2En}
+            setPartyAddr2En={setPartyAddr2En}
+            partyTime={partyTime}
+            setPartyTime={setPartyTime}
+            partyMapLink={partyMapLink}
+            setPartyMapLink={setPartyMapLink}
+            locBgFile={locBgFile}
+            setLocBgFile={setLocBgFile}
+            locBgUrl={locBgUrl}
+            setLocBgUrl={setLocBgUrl}
+          />
         )}
 
-        {/* Tab 4: Gallery */}
         {activeTab === "gallery" && (
-          <div className="tab-pane">
-            <h3>Լուսանկարների Սրահ / Gallery</h3>
-            <div className="gallery-upload-section">
-              <label className="upload-box">
-                <span>+ Ավելացնել լուսանկարներ / Добавить фото</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => setGalleryFiles(e.target.files)}
-                />
-              </label>
-              {galleryFiles.length > 0 && (
-                <div className="selected-files-list">
-                  <p>Ընտրված նոր ֆայլեր ({galleryFiles.length})՝</p>
-                  <ul>
-                    {Array.from(galleryFiles).map((f, idx) => (
-                      <li key={idx}>{f.name}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-
-            <div className="existing-gallery">
-              <h4>Առկա լուսանկարներ ({galleryUrls.length})</h4>
-              {galleryUrls.length === 0 ? (
-                <p className="no-images">Նկարներ դեռ չկան:</p>
-              ) : (
-                <div className="gallery-thumbs-grid">
-                  {galleryUrls.map((url, idx) => (
-                    <div key={idx} className="gallery-thumb-card">
-                      <img src={url} alt={`Gallery ${idx}`} />
-                      <button
-                        type="button"
-                        className="delete-thumb-btn"
-                        onClick={() => setGalleryUrls(galleryUrls.filter((_, i) => i !== idx))}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          <GalleryTab
+            setGalleryFiles={setGalleryFiles}
+            galleryFiles={galleryFiles}
+            galleryUrls={galleryUrls}
+            setGalleryUrls={setGalleryUrls}
+          />
         )}
 
-        {/* Tab 5: Dress Code */}
         {activeTab === "dress_code" && (
-          <div className="tab-pane">
-            <div className="dresscode-toggle">
-              <label className="switch-label">
-                <input
-                  type="checkbox"
-                  checked={showDressCode}
-                  onChange={(e) => {
-                    const val = e.target.checked;
-                    setShowDressCode(val);
-                    setSections(sections.map(s => s.type === "dressCode" ? { ...s, enabled: val } : s));
-                  }}
-                />
-                Ցուցադրել Dress Code-ը / Показать дресс-код
-              </label>
-            </div>
-
-            {showDressCode && (
-              <div className="dresscode-settings form-grid">
-                <div className="form-field">
-                  <label>Նկարագրություն AM</label>
-                  <textarea value={dressDescAm} onChange={(e) => setDressDescAm(e.target.value)} />
-                </div>
-                <div className="form-field">
-                  <label>Նկարագրություն RU</label>
-                  <textarea value={dressDescRu} onChange={(e) => setDressDescRu(e.target.value)} />
-                </div>
-                <div className="form-field">
-                  <label>Նկարագրություն EN</label>
-                  <textarea value={dressDescEn} onChange={(e) => setDressDescEn(e.target.value)} />
-                </div>
-
-                <div className="form-field full-width">
-                  <label>Գունային Գամմա / Цветовая гамма</label>
-                  <div className="color-picker-row">
-                    <input
-                      type="color"
-                      value={newColor}
-                      onChange={(e) => setNewColor(e.target.value)}
-                    />
-                    <button type="button" className="add-color-btn" onClick={handleAddColor}>
-                      + Ավելացնել գույն
-                    </button>
-                  </div>
-
-                  <div className="colors-preview-list">
-                    {dressColors.map((c, idx) => (
-                      <div key={idx} className="color-badge" style={{ backgroundColor: c }}>
-                        <span className="color-hex">{c}</span>
-                        <button
-                          type="button"
-                          className="remove-color-badge"
-                          onClick={() => handleRemoveColor(c)}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <DressCodeTab
+            showDressCode={showDressCode}
+            setShowDressCode={setShowDressCode}
+            sections={sections}
+            setSections={setSections}
+            dressDescAm={dressDescAm}
+            setDressDescAm={setDressDescAm}
+            dressDescRu={dressDescRu}
+            setDressDescRu={setDressDescRu}
+            dressDescEn={dressDescEn}
+            setDressDescEn={setDressDescEn}
+            newColor={newColor}
+            setNewColor={setNewColor}
+            handleAddColor={handleAddColor}
+            dressColors={dressColors}
+            handleRemoveColor={handleRemoveColor}
+          />
         )}
 
-        {/* Tab 6: RSVP & Telegram */}
         {activeTab === "rsvp_telegram" && (
-          <div className="tab-pane">
-            <h3>Հաստատում (RSVP) & Ինտեգրումներ</h3>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>RSVP Վերջնաժամկետ (Deadline Date)</label>
-                <input
-                  type="date"
-                  value={rsvpDeadline}
-                  onChange={(e) => setRsvpDeadline(e.target.value)}
-                />
-              </div>
-
-              <div className="form-field full-width">
-                <label>Հրավիրողներ (Hosts)</label>
-                <div className="host-creator-row">
-                  <input
-                    type="text"
-                    placeholder="ID (օր.՝ robert)"
-                    value={newHostId}
-                    onChange={(e) => setNewHostId(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Անուն AM (օր.՝ Ռոբերտ)"
-                    value={newHostAm}
-                    onChange={(e) => setNewHostAm(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Անուն RU (օր.՝ Роберт)"
-                    value={newHostRu}
-                    onChange={(e) => setNewHostRu(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Անուն EN (օր.՝ Robert)"
-                    value={newHostEn}
-                    onChange={(e) => setNewHostEn(e.target.value)}
-                  />
-                  <button type="button" className="add-host-btn" onClick={handleAddHost}>
-                    + Ավելացնել
-                  </button>
-                </div>
-
-                <div className="hosts-table-container">
-                  <table className="hosts-table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Անուն AM</th>
-                        <th>Անուն RU</th>
-                        <th>Անուն EN</th>
-                        <th>Գործողություն</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {hosts.map((h) => (
-                        <tr key={h.id}>
-                          <td>{h.id}</td>
-                          <td>{h.am}</td>
-                          <td>{h.ru}</td>
-                          <td>{h.en || h.am}</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="delete-row-btn"
-                              onClick={() => handleRemoveHost(h.id)}
-                            >
-                              Ջնջել
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="form-divider full-width" />
-
-              <div className="form-field">
-                <label>Telegram Bot Token</label>
-                <input
-                  type="password"
-                  placeholder="123456789:ABCdefGh..."
-                  value={telegramBotToken}
-                  onChange={(e) => setTelegramBotToken(e.target.value)}
-                />
-              </div>
-              <div className="form-field">
-                <label>Telegram Chat ID</label>
-                <input
-                  type="text"
-                  placeholder="-10012345678"
-                  value={telegramChatId}
-                  onChange={(e) => setTelegramChatId(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
+          <RsvpTelegramTab
+            rsvpDeadline={rsvpDeadline}
+            setRsvpDeadline={setRsvpDeadline}
+            newHostId={newHostId}
+            setNewHostId={setNewHostId}
+            newHostAm={newHostAm}
+            setNewHostAm={setNewHostAm}
+            newHostRu={newHostRu}
+            setNewHostRu={setNewHostRu}
+            newHostEn={newHostEn}
+            setNewHostEn={setNewHostEn}
+            handleAddHost={handleAddHost}
+            hosts={hosts}
+            handleRemoveHost={handleRemoveHost}
+            telegramBotToken={telegramBotToken}
+            setTelegramBotToken={setTelegramBotToken}
+            telegramChatId={telegramChatId}
+            setTelegramChatId={setTelegramChatId}
+          />
         )}
       </form>
 

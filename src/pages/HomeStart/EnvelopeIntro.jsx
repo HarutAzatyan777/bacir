@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import "./Envelope.css"
 import { useLanguage } from "../../context/LanguageContext";
+import { FaSpinner } from "react-icons/fa";
 
 const translations = {
   am: {
@@ -100,20 +101,7 @@ return (
     {isLoading && (
       <div className={`loading-screen ${isHidingLoading ? "fade-out" : ""}`}>
       <div className="spinner-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-        <svg
-            className="spinner-icon"
-          width="48"
-          height="48"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-          <path d="M21 3v5h-5" />
-        </svg>
+        <FaSpinner className="spinner-icon" size={48} />
       </div>
       <p className="loading-text">{t.loading}{dots}</p>
     </div>

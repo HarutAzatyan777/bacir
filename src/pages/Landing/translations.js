@@ -96,6 +96,8 @@ export const translations = {
     pricingFeatVip4: "Առանց bacir.online լոգոտիպի (Branding-free)",
     pricingFeatVip5: "Անձնական մենեջերի և դիզայների աջակցություն",
 
+    termsOfService: "Օգտագործման Պայմաններ",
+    privacyPolicy: "Գաղտնիության Քաղաքականություն",
     footerText: "© 2026 bacir.online. Բոլոր իրավունքները պաշտպանված են:"
   },
   ru: {
@@ -195,6 +197,8 @@ export const translations = {
     pricingFeatVip4: "Без логотипа bacir.online (Branding-free)",
     pricingFeatVip5: "Поддержка персонального менеджера и дизайнера",
 
+    termsOfService: "Условия использования",
+    privacyPolicy: "Политика конфиденциальности",
     footerText: "© 2026 bacir.online. Все права защищены."
   },
   en: {
@@ -291,6 +295,8 @@ export const translations = {
     pricingFeatVip4: "No bacir.online logo (Branding-free)",
     pricingFeatVip5: "Personal manager & designer support",
 
+    termsOfService: "Terms of Service",
+    privacyPolicy: "Privacy Policy",
     footerText: "© 2026 bacir.online. All rights reserved."
   }
 };

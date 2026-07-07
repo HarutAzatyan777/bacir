@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaCloudUploadAlt, FaTrashAlt, FaExchangeAlt } from "react-icons/fa";
+import { UploadOutlined, DeleteOutlined, SwapOutlined } from "@ant-design/icons";
+import { Button, Typography, message } from "antd";
 import ImageCropperModal from "./ImageCropperModal";
 import "./ImageUpload.css";
+
+const { Text } = Typography;
 
 export default function ImageUpload({
   label,
@@ -50,7 +53,7 @@ export default function ImageUpload({
       if (droppedFile.type.startsWith("image/")) {
         setCropTargetFile(droppedFile);
       } else {
-        alert("Խնդրում ենք ընտրել միայն պատկերային ֆայլեր (images):");
+        message.warning("Խնդրում ենք ընտրել միայն պատկերային ֆայլեր (images):");
       }
     }
   };
@@ -104,22 +107,24 @@ export default function ImageUpload({
             <img src={preview} alt="Upload Preview" className="image-upload-img" />
             <div className="image-upload-overlay">
               <div className="image-upload-actions">
-                <button
-                  type="button"
-                  className="upload-action-btn edit-btn"
+                <Button
+                  type="primary"
+                  icon={<SwapOutlined />}
                   onClick={handleButtonClick}
                   title="Փոխել նկարը / Изменить"
+                  style={{ backgroundColor: "#2c3e35" }}
                 >
-                  <FaExchangeAlt /> <span>Փոխել / Изменить</span>
-                </button>
-                <button
-                  type="button"
-                  className="upload-action-btn delete-btn"
+                  Փոխել / Изменить
+                </Button>
+                <Button
+                  danger
+                  type="primary"
+                  icon={<DeleteOutlined />}
                   onClick={handleRemove}
                   title="Ջնջել / Удалить"
                 >
-                  <FaTrashAlt /> <span>Ջնջել / Удалить</span>
-                </button>
+                  Ջնջել / Удалить
+                </Button>
               </div>
             </div>
             
@@ -130,7 +135,7 @@ export default function ImageUpload({
         ) : (
           <div className="image-upload-placeholder">
             <div className="placeholder-icon-wrapper">
-              <FaCloudUploadAlt className="placeholder-icon" />
+              <UploadOutlined className="placeholder-icon" style={{ fontSize: "2rem", color: "#556b5e" }} />
             </div>
             <p className="placeholder-text">{placeholder}</p>
             <p className="placeholder-subtext">{subText}</p>

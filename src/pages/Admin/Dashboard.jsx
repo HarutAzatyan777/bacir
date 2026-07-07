@@ -3,10 +3,22 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
-import { FaMobileAlt } from "react-icons/fa";
+import { Card, Button, Row, Col, Spin, Empty, Popconfirm, Modal, Typography, message, Space } from "antd";
+import { 
+  PlusOutlined, 
+  LogoutOutlined, 
+  LeftOutlined, 
+  EyeOutlined, 
+  EditOutlined, 
+  TeamOutlined, 
+  MobileOutlined, 
+  DeleteOutlined 
+} from "@ant-design/icons";
 import InvitationForm from "./InvitationForm";
 import RsvpList from "./RsvpList";
 import "./Dashboard.css";
+
+const { Title, Text } = Typography;
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -48,6 +60,7 @@ export default function Dashboard() {
       setInvitations(list);
     } catch (err) {
       console.error("Error fetching invitations:", err);
+      message.error("Սխալ տեղի ունեցավ հրավերները բեռնելիս / Error fetching invitations.");
     } finally {
       setLoadingData(false);
     }
@@ -63,28 +76,28 @@ export default function Dashboard() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(`Վստա՞հ եք, որ ցանկանում եք ջնջել "${id}" հրավերը: \nВы уверены, что хотите удалить приглашение "${id}"?`)) {
-      return;
-    }
-
     try {
       // Delete main invitation
       await deleteDoc(doc(db, "invitations", id));
       // Delete secrets
       await deleteDoc(doc(db, "invitationSecrets", id));
       
+      message.success("Հրավերը հաջողությամբ ջնջվեց / Invitation deleted successfully.");
       // Refresh list
       fetchInvitations();
     } catch (err) {
       console.error("Error deleting invitation:", err);
-      alert("Ջնջելիս սխալ տեղի ունեցավ: / Произошла ошибка при удалении.");
+      message.error("Ջնջելիս սխալ տեղի ունեցավ: / An error occurred during deletion.");
     }
   };
 
   if (loadingUser) {
     return (
-      <div className="dashboard-loading">
-        <p>Բեռնվում է... / Загрузка...</p>
+      <div className="dashboard-container" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+        <Card bordered={false} style={{ textAlign: "center", padding: "40px" }}>
+          <Spin size="large" />
+          <Text style={{ display: "block", marginTop: 16 }}>Բեռնվում է... / Loading dashboard...</Text>
+        </Card>
       </div>
     );
   }
@@ -94,92 +107,133 @@ export default function Dashboard() {
       {/* Sidebar / Header */}
       <header className="dashboard-header">
         <div className="header-left">
-          <h1>ԿԱՌԱՎԱՐՄԱՆ ՎԱՀԱՆԱԿ</h1>
-          <p>{user?.email}</p>
+          <Title level={2} style={{ margin: 0 }}>ԿԱՌԱՎԱՐՄԱՆ ՎԱՀԱՆԱԿ</Title>
+          <Text type="secondary">{user?.email}</Text>
         </div>
         <div className="header-right">
-          {view !== "list" && (
-            <button className="back-btn" onClick={() => { setView("list"); fetchInvitations(); }}>
-              ← Հետ / Назад
-            </button>
-          )}
-          <button className="logout-btn" onClick={handleLogout}>
-            Ելք / Выйти
-          </button>
+          <Space>
+            {view !== "list" && (
+              <Button 
+                icon={<LeftOutlined />} 
+                onClick={() => { setView("list"); fetchInvitations(); }}
+              >
+                Հետ / Back
+              </Button>
+            )}
+            <Button 
+              danger 
+              icon={<LogoutOutlined />} 
+              onClick={handleLogout}
+            >
+              Ելք / Logout
+            </Button>
+          </Space>
         </div>
       </header>
 
       <main className="dashboard-main">
         {view === "list" && (
           <div className="list-view">
-            <div className="list-header">
-              <h2>Հրավերներ / Приглашения ({invitations.length})</h2>
-              <button className="create-btn" onClick={() => setView("create")}>
-                + Ստեղծել նոր հրավեր / Создать
-              </button>
+            <div className="list-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+              <Title level={3} style={{ margin: 0 }}>
+                Հրավերներ / Invitations ({invitations.length})
+              </Title>
+              <Button 
+                type="primary" 
+                icon={<PlusOutlined />} 
+                onClick={() => setView("create")}
+                style={{ backgroundColor: "#2c3e35" }}
+                size="large"
+              >
+                Ստեղծել նոր հրավեր / Create
+              </Button>
             </div>
 
             {loadingData ? (
-              <div className="data-spinner">Բեռնվում է...</div>
+              <div style={{ textAlign: "center", padding: "60px 0" }}>
+                <Spin size="large" />
+                <Text style={{ display: "block", marginTop: 16 }}>Բեռնվում է... / Loading...</Text>
+              </div>
             ) : invitations.length === 0 ? (
-              <div className="empty-state">
-                <p>Ոչ մի հրավեր դեռ չի ստեղծվել:</p>
-                <p>Нет созданных приглашений.</p>
-              </div>
+              <Card bordered={false} style={{ padding: "40px" }}>
+                <Empty description={
+                  <span>
+                    Ոչ մի հրավեր դեռ չի ստեղծվել: / No invitations created yet.
+                  </span>
+                } />
+              </Card>
             ) : (
-              <div className="invitations-grid">
+              <Row gutter={[24, 24]}>
                 {invitations.map((inv) => (
-                  <div key={inv.id} className="invitation-card">
-                    <div className="card-info">
-                      <h3>{inv.eventName || inv.id}</h3>
-                      <span className="slug-badge">/i/{inv.id}</span>
-                      <p className="card-date">
-                        Օր՝ {inv.calendar?.eventDate ? new Date(inv.calendar.eventDate).toLocaleDateString() : "Նշված չէ"}
-                      </p>
-                    </div>
-                    <div className="card-actions">
-                      <a
-                        href={`/i/${inv.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="action-link view-live"
-                      >
-                        Դիտել / Просмотр
-                      </a>
-                      <button
-                        className="action-btn rsvps"
-                        onClick={() => {
-                          setSelectedId(inv.id);
-                          setView("rsvps");
-                        }}
-                      >
-                        RSVP ({inv.rsvpCount || 0})
-                      </button>
-                      <button
-                        className="action-btn edit"
-                        onClick={() => {
-                          setSelectedId(inv.id);
-                          setView("edit");
-                        }}
-                      >
-                        Խմբագրել / Изменить
-                      </button>
-                      <button
-                        className="action-btn preview-btn"
-                        onClick={() => setPreviewInvitationId(inv.id)}
-                      >
-                        <FaMobileAlt style={{ marginRight: "4px" }} /> Նախադիտում / Превью
-                      </button>
-                      <button
-                        className="action-btn delete"
-                        onClick={() => handleDelete(inv.id)}
-                      >
-                        Ջնջել / Удалить
-                      </button>
-                    </div>
-                  </div>
+                  <Col xs={24} sm={12} md={8} key={inv.id}>
+                    <Card 
+                      title={<Text strong style={{ fontSize: "1.1rem" }}>{inv.eventName || inv.id}</Text>}
+                      extra={<Text type="secondary" copyable={{ text: `${window.location.origin}/i/${inv.id}` }}>/i/{inv.id}</Text>}
+                      bordered={false}
+                      className="invitation-card"
+                      actions={[
+                        <Button 
+                          type="link" 
+                          icon={<EyeOutlined />} 
+                          href={`/i/${inv.id}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          title="Դիտել / View"
+                        />,
+                        <Button 
+                          type="link" 
+                          icon={<TeamOutlined />} 
+                          onClick={() => {
+                            setSelectedId(inv.id);
+                            setView("rsvps");
+                          }}
+                          title={`RSVP (${inv.rsvpCount || 0})`}
+                        >
+                          <span style={{ fontSize: "0.85rem", marginLeft: "4px" }}>{inv.rsvpCount || 0}</span>
+                        </Button>,
+                        <Button 
+                          type="link" 
+                          icon={<EditOutlined />} 
+                          onClick={() => {
+                            setSelectedId(inv.id);
+                            setView("edit");
+                          }}
+                          title="Խմբագրել / Edit"
+                        />,
+                        <Button 
+                          type="link" 
+                          icon={<MobileOutlined />} 
+                          onClick={() => setPreviewInvitationId(inv.id)}
+                          title="Նախադիտում / Preview"
+                        />,
+                        <Popconfirm
+                          title="Համոզվա՞ծ եք, որ ցանկանում եք ջնջել այս հրավերը: / Are you sure you want to delete this invitation?"
+                          onConfirm={() => handleDelete(inv.id)}
+                          okText="Yes"
+                          cancelText="No"
+                          okButtonProps={{ danger: true }}
+                        >
+                          <Button 
+                            type="link" 
+                            danger 
+                            icon={<DeleteOutlined />} 
+                            title="Ջնջել / Delete"
+                          />
+                        </Popconfirm>
+                      ]}
+                    >
+                      <div className="card-info-content" style={{ minHeight: "60px" }}>
+                        <p style={{ margin: 0 }}>
+                          <Text type="secondary">Ամսաթիվ / Date: </Text>
+                          <Text strong>
+                            {inv.calendar?.eventDate ? new Date(inv.calendar.eventDate).toLocaleDateString() : "Նշված չէ / Not Set"}
+                          </Text>
+                        </p>
+                      </div>
+                    </Card>
+                  </Col>
                 ))}
-              </div>
+              </Row>
             )}
           </div>
         )}
@@ -216,39 +270,40 @@ export default function Dashboard() {
       </main>
 
       {/* iPhone 17 Preview Modal */}
-      {previewInvitationId && (
-        <div className="preview-modal-overlay" onClick={() => setPreviewInvitationId(null)}>
-          <div className="preview-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="preview-modal-header">
-              <h3>iPhone 17 Նախադիտում / Предпросмотр iPhone 17</h3>
-              <button className="preview-modal-close" onClick={() => setPreviewInvitationId(null)}>
-                &times;
-              </button>
+      <Modal
+        title="iPhone 17 Նախադիտում / Predпросмотр iPhone 17"
+        open={!!previewInvitationId}
+        onCancel={() => setPreviewInvitationId(null)}
+        footer={null}
+        width={380}
+        centered
+        className="preview-device-modal"
+        styles={{ body: { padding: 0 } }}
+      >
+        <div className="preview-device-container" style={{ display: "flex", justifyContent: "center", padding: "20px 0" }}>
+          <div className="iphone-17-frame">
+            {/* Dynamic Island */}
+            <div className="dynamic-island"></div>
+            {/* Screen frame */}
+            <div className="iphone-screen">
+              {previewInvitationId && (
+                <iframe 
+                  src={`/i/${previewInvitationId}?preview=true`} 
+                  title="iPhone 17 Preview"
+                  className="preview-iframe"
+                />
+              )}
             </div>
-            <div className="preview-device-container">
-              <div className="iphone-17-frame">
-                {/* Dynamic Island */}
-                <div className="dynamic-island"></div>
-                {/* Screen frame */}
-                <div className="iphone-screen">
-                  <iframe 
-                    src={`/i/${previewInvitationId}?preview=true`} 
-                    title="iPhone 17 Preview"
-                    className="preview-iframe"
-                  />
-                </div>
-                {/* Side buttons */}
-                <div className="iphone-btn volume-up"></div>
-                <div className="iphone-btn volume-down"></div>
-                <div className="iphone-btn action-button"></div>
-                <div className="iphone-btn power-button"></div>
-                {/* Home Indicator */}
-                <div className="home-indicator"></div>
-              </div>
-            </div>
+            {/* Side buttons */}
+            <div className="iphone-btn volume-up"></div>
+            <div className="iphone-btn volume-down"></div>
+            <div className="iphone-btn action-button"></div>
+            <div className="iphone-btn power-button"></div>
+            {/* Home Indicator */}
+            <div className="home-indicator"></div>
           </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }

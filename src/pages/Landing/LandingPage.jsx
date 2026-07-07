@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "./translations";
-import LandingHeader from "./components/LandingHeader";
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
 import HowItWorksSection from "./components/HowItWorksSection";
@@ -23,9 +22,6 @@ export default function LandingPage() {
       {/* Background Glows */}
       <div className="glow-1"></div>
       <div className="glow-2"></div>
-
-      {/* Landing Header/Navbar */}
-      <LandingHeader t={t} />
 
       {/* Hero Section */}
       <HeroSection t={t} />

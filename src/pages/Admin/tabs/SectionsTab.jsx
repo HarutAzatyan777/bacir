@@ -1,4 +1,9 @@
 import React from "react";
+import { Card, Button, Switch, Input, Tag, Space, Typography } from "antd";
+import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+
+const { Title, Text } = Typography;
+const { TextArea } = Input;
 
 export default function SectionsTab({
   sections,
@@ -21,12 +26,12 @@ export default function SectionsTab({
 
   return (
     <div className="tab-pane">
-      <h3>Բաժինների դասավորություն / Настройка разделов</h3>
-      <p className="tab-desc" style={{ color: "#a3b899", fontSize: "0.85rem", marginBottom: "20px" }}>
+      <Title level={4} style={{ color: "#2c3e35", marginBottom: 6 }}>Բաժինների դասավորություն / Sections Layout</Title>
+      <Text type="secondary" style={{ display: "block", marginBottom: 24 }}>
         Դասավորեք բաժինները ըստ ցանկության և միացրեք կամ անջատեք դրանք (ինչպես WordPress-ում):
-      </p>
+      </Text>
 
-      <div className="sections-list">
+      <div className="sections-list" style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "24px" }}>
         {sections.map((section, index) => {
           const isFirst = index === 0;
           const isLast = index === sections.length - 1;
@@ -35,110 +40,116 @@ export default function SectionsTab({
             : sectionNames[section.type] || section.type;
 
           return (
-            <div key={section.id} className="section-item-card">
-              <div className="section-item-header">
-                <div className="section-item-info">
-                  <span className="section-badge">{section.type}</span>
-                  <span className="section-title-label">{label}</span>
-                </div>
-                
-                <div className="section-item-actions">
-                  <button
-                    type="button"
-                    className="reorder-btn"
+            <Card 
+              key={section.id} 
+              size="small" 
+              bordered
+              style={{ border: "1px solid #cbd5e1" }}
+              title={
+                <Space>
+                  <Tag color="default" style={{ fontWeight: 600 }}>{section.type.toUpperCase()}</Tag>
+                  <Text strong>{label}</Text>
+                </Space>
+              }
+              extra={
+                <Space>
+                  <Button
+                    type="text"
+                    icon={<ArrowUpOutlined />}
                     onClick={() => moveSectionUp(index)}
                     disabled={isFirst}
                     title="Տեղափոխել վերև"
-                  >
-                    ▲
-                  </button>
-                  <button
-                    type="button"
-                    className="reorder-btn"
+                  />
+                  <Button
+                    type="text"
+                    icon={<ArrowDownOutlined />}
                     onClick={() => moveSectionDown(index)}
                     disabled={isLast}
                     title="Տեղափոխել ներքև"
-                  >
-                    ▼
-                  </button>
-                  
-                  <button
-                    type="button"
-                    className={`toggle-section-btn ${section.enabled ? "enabled" : "disabled"}`}
-                    onClick={() => toggleSectionEnabled(index)}
-                  >
-                    {section.enabled ? "Միացված / Вкл" : "Անջատված / Выкл"}
-                  </button>
-
+                  />
+                  <Switch
+                    checked={section.enabled}
+                    onChange={() => toggleSectionEnabled(index)}
+                    checkedChildren="Միացված"
+                    unCheckedChildren="Անջատված"
+                  />
                   {section.type === "customText" && (
-                    <button
-                      type="button"
-                      className="delete-section-btn"
+                    <Button
+                      type="primary"
+                      danger
+                      icon={<DeleteOutlined />}
                       onClick={() => removeCustomSection(section.id)}
                     >
-                      Ջնջել / Удалить
-                    </button>
+                      Ջնջել
+                    </Button>
                   )}
-                </div>
-              </div>
-
+                </Space>
+              }
+            >
               {section.type === "customText" && (
-                <div className="custom-section-edit-grid">
-                  <div className="form-field">
-                    <label>Վերնագիր AM</label>
-                    <input
-                      type="text"
+                <div className="custom-section-edit-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", padding: "8px 0" }}>
+                  <div className="form-field" style={{ gridColumn: "1" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Վերնագիր AM</label>
+                    <Input
                       value={section.title?.am || ""}
                       onChange={(e) => updateCustomSection(section.id, "title", "am", e.target.value)}
                     />
                   </div>
-                  <div className="form-field">
-                    <label>Վերնագիր RU</label>
-                    <input
-                      type="text"
+                  <div className="form-field" style={{ gridColumn: "2" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Վերնագիր RU</label>
+                    <Input
                       value={section.title?.ru || ""}
                       onChange={(e) => updateCustomSection(section.id, "title", "ru", e.target.value)}
                     />
                   </div>
-                  <div className="form-field">
-                    <label>Վերնագիր EN</label>
-                    <input
-                      type="text"
+                  <div className="form-field" style={{ gridColumn: "3" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Վերնագիր EN</label>
+                    <Input
                       value={section.title?.en || ""}
                       onChange={(e) => updateCustomSection(section.id, "title", "en", e.target.value)}
                     />
                   </div>
-                  <div className="form-field">
-                    <label>Տեքստ AM</label>
-                    <textarea
+                  <div className="form-field" style={{ gridColumn: "1" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Տեքստ AM</label>
+                    <TextArea
+                      rows={3}
                       value={section.content?.am || ""}
                       onChange={(e) => updateCustomSection(section.id, "content", "am", e.target.value)}
                     />
                   </div>
-                  <div className="form-field">
-                    <label>Տեքստ RU</label>
-                    <textarea
+                  <div className="form-field" style={{ gridColumn: "2" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Տեքստ RU</label>
+                    <TextArea
+                      rows={3}
                       value={section.content?.ru || ""}
                       onChange={(e) => updateCustomSection(section.id, "content", "ru", e.target.value)}
                     />
                   </div>
-                  <div className="form-field">
-                    <label>Տեքստ EN</label>
-                    <textarea
+                  <div className="form-field" style={{ gridColumn: "3" }}>
+                    <label style={{ fontWeight: 600, fontSize: "0.8rem", color: "#2c3e35", marginBottom: 6, display: "block" }}>Տեքստ EN</label>
+                    <TextArea
+                      rows={3}
                       value={section.content?.en || ""}
                       onChange={(e) => updateCustomSection(section.id, "content", "en", e.target.value)}
                     />
                   </div>
                 </div>
               )}
-            </div>
+            </Card>
           );
         })}
       </div>
 
-      <button type="button" className="add-section-btn" onClick={addCustomSection}>
-        + Ավելացնել հատուկ բաժին / Добавить свой раздел
-      </button>
+      <Button 
+        type="dashed" 
+        icon={<PlusOutlined />} 
+        onClick={addCustomSection}
+        size="large"
+        block
+        style={{ borderColor: "#2c3e35", color: "#2c3e35" }}
+      >
+        Ավելացնել հատուկ բաժին / Add Custom Section
+      </Button>
     </div>
   );
 }

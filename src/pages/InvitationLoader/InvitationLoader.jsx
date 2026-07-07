@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import EnvelopeIntro from "../HomeStart/EnvelopeIntro";
@@ -7,7 +7,9 @@ import Home from "../Home/Home";
 import "./InvitationLoader.css";
 
 export default function InvitationLoader() {
-  const { id } = useParams();
+  const { id: paramId } = useParams();
+  const [searchParams] = useSearchParams();
+  const id = paramId || searchParams.get("id");
   const [invitationData, setInvitationData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

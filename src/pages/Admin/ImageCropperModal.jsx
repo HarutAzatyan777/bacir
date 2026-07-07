@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaUndo } from "react-icons/fa";
+import { Modal, Slider, Button } from "antd";
+import { UndoOutlined } from "@ant-design/icons";
 import "./ImageCropperModal.css";
 
 export default function ImageCropperModal({
@@ -157,97 +158,101 @@ export default function ImageCropperModal({
   if (!file) return null;
 
   return (
-    <div className="cropper-modal-overlay">
-      <div className="cropper-modal-content">
-        <div className="cropper-modal-header">
-          <h4>Կտրել նկարը / Обрезать фото</h4>
-          <button type="button" className="close-x-btn" onClick={onCancel}>×</button>
-        </div>
-
-        <div className="cropper-viewport-container">
-          <div 
-            className="cropper-workspace"
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleMouseUp}
-          >
-            {imageSrc && (
-              <img
-                ref={imgRef}
-                src={imageSrc}
-                alt="To Crop"
-                className="cropper-preview-img"
-                onLoad={handleImageLoad}
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-                style={{
-                  transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
-                  cursor: isDragging ? "grabbing" : "grab"
-                }}
-              />
-            )}
-
-            {/* Dark Mask Overlay around the frame */}
-            <div className="cropper-overlay-mask"></div>
-
-            {/* Target Crop Box */}
-            <div
-              ref={frameRef}
-              className="cropper-crop-frame"
+    <Modal
+      title="Կտրել նկարը / Обрезать фото"
+      open={true}
+      onCancel={onCancel}
+      footer={[
+        <Button key="cancel" onClick={onCancel}>
+          Չեղարկել / Отмена
+        </Button>,
+        <Button key="crop" type="primary" onClick={handleCrop} style={{ backgroundColor: "#2c3e35" }}>
+          Կտրել և Պահպանել / Обрезать
+        </Button>
+      ]}
+      width={400}
+      centered
+      className="image-cropper-antd-modal"
+    >
+      <div className="cropper-viewport-container" style={{ display: "flex", justifyContent: "center", overflow: "hidden", position: "relative" }}>
+        <div 
+          className="cropper-workspace"
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleMouseUp}
+          style={{ width: "320px", height: "320px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          {imageSrc && (
+            <img
+              ref={imgRef}
+              src={imageSrc}
+              alt="To Crop"
+              className="cropper-preview-img"
+              onLoad={handleImageLoad}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
               style={{
-                width: `${frameW}px`,
-                height: `${frameH}px`
+                transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
+                cursor: isDragging ? "grabbing" : "grab",
+                position: "absolute",
+                maxWidth: "none",
+                maxHeight: "none"
               }}
-            >
-              <div className="frame-corner top-left"></div>
-              <div className="frame-corner top-right"></div>
-              <div className="frame-corner bottom-left"></div>
-              <div className="frame-corner bottom-right"></div>
-              
-              {/* Optional aspect indicator overlay */}
-              {aspectRatio && (
-                <div className="aspect-ratio-indicator">
-                  {aspectRatio === 1 ? "1:1" : aspectRatio > 1.7 ? "16:9" : aspectRatio < 0.6 ? "9:16" : "3:2"}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="cropper-controls">
-          <div className="zoom-control-row">
-            <span className="zoom-label">Մասշտաբ / Масштаб:</span>
-            <input
-              type="range"
-              min="1"
-              max="4"
-              step="0.02"
-              value={zoom}
-              onChange={(e) => setZoom(parseFloat(e.target.value))}
-              className="zoom-slider"
             />
-            <button 
-              type="button" 
-              className="cropper-reset-btn" 
-              onClick={handleReset} 
-              title="Կենտրոնացնել / Сбросить"
-            >
-              <FaUndo />
-            </button>
-          </div>
+          )}
 
-          <div className="cropper-modal-actions">
-            <button type="button" className="cropper-btn cancel-btn" onClick={onCancel}>
-              Չեղարկել / Отмена
-            </button>
-            <button type="button" className="cropper-btn crop-btn" onClick={handleCrop}>
-              Կտրել և Պահպանել / Обрезать
-            </button>
+          {/* Dark Mask Overlay around the frame */}
+          <div className="cropper-overlay-mask" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", pointerEvents: "none", zIndex: 5 }}></div>
+
+          {/* Target Crop Box */}
+          <div
+            ref={frameRef}
+            className="cropper-crop-frame"
+            style={{
+              width: `${frameW}px`,
+              height: `${frameH}px`,
+              position: "relative",
+              zIndex: 10,
+              boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.5)",
+              border: "2px solid #ffffff"
+            }}
+          >
+            <div className="frame-corner top-left"></div>
+            <div className="frame-corner top-right"></div>
+            <div className="frame-corner bottom-left"></div>
+            <div className="frame-corner bottom-right"></div>
+            
+            {/* Optional aspect indicator overlay */}
+            {aspectRatio && (
+              <div className="aspect-ratio-indicator">
+                {aspectRatio === 1 ? "1:1" : aspectRatio > 1.7 ? "16:9" : aspectRatio < 0.6 ? "9:16" : "3:2"}
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="cropper-controls" style={{ marginTop: "20px" }}>
+        <div className="zoom-control-row" style={{ display: "flex", alignItems: "center", gap: "12px", width: "100%" }}>
+          <span style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>Մասշտաբ:</span>
+          <Slider
+            min={1}
+            max={4}
+            step={0.02}
+            value={zoom}
+            onChange={setZoom}
+            style={{ flex: 1 }}
+          />
+          <Button 
+            shape="circle"
+            icon={<UndoOutlined />} 
+            onClick={handleReset} 
+            title="Կենտրոնացնել / Сбросить"
+          />
+        </div>
+      </div>
+    </Modal>
   );
 }

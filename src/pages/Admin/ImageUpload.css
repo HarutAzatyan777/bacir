@@ -1,5 +1,4 @@
 /* Premium Image Upload Styling */
-
 .image-upload-wrapper {
   display: flex;
   flex-direction: column;
@@ -12,7 +11,7 @@
 .image-upload-label {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2c3e35; /* Primary deep green/slate */
+  color: #2c3e35;
   letter-spacing: 0.01em;
 }
 
@@ -38,9 +37,8 @@
   box-shadow: 0 4px 12px rgba(44, 62, 53, 0.05);
 }
 
-/* Drag Active State */
 .image-upload-dropzone.drag-active {
-  border-color: #d4af37; /* Accent gold */
+  border-color: #d4af37;
   background-color: #fcf8eb;
   transform: scale(1.015);
   box-shadow: 0 8px 24px rgba(212, 175, 55, 0.12);
@@ -79,10 +77,6 @@
   background-color: #2c3e35;
   color: #ffffff;
   transform: translateY(-3px);
-}
-
-.placeholder-icon {
-  font-size: 24px;
 }
 
 .placeholder-text {
@@ -163,40 +157,6 @@
   transform: translateY(0);
 }
 
-.upload-action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.upload-action-btn.edit-btn {
-  background-color: #ffffff;
-  color: #2c3e35;
-}
-
-.upload-action-btn.edit-btn:hover {
-  background-color: #f3f6f5;
-  transform: translateY(-2px);
-}
-
-.upload-action-btn.delete-btn {
-  background-color: #ef4444;
-  color: #ffffff;
-}
-
-.upload-action-btn.delete-btn:hover {
-  background-color: #dc2626;
-  transform: translateY(-2px);
-}
-
 /* Badge overlay to indicate upload type */
 .preview-badge {
   position: absolute;
@@ -219,7 +179,6 @@
   opacity: 0.1;
 }
 
-/* Keyframes */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }

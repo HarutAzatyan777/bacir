@@ -1,4 +1,22 @@
 {
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/i/**",
+        "function": "seoHandler"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
   "firestore": {
     "database": "(default)",
     "location": "eur3",

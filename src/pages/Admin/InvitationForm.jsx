@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../../firebase";
-import { FaMobileAlt } from "react-icons/fa";
+import { Card, Button, Tabs, Modal, Spin, Typography, message, Space } from "antd";
+import { LeftOutlined, MobileOutlined, SaveOutlined } from "@ant-design/icons";
 import "./InvitationForm.css";
 
 // Sub-tab Components
@@ -14,6 +15,8 @@ import CalendarLocationTab from "./tabs/CalendarLocationTab";
 import GalleryTab from "./tabs/GalleryTab";
 import DressCodeTab from "./tabs/DressCodeTab";
 import RsvpTelegramTab from "./tabs/RsvpTelegramTab";
+
+const { Title, Text } = Typography;
 
 export default function InvitationForm({ mode, invitationId, onSuccess, onCancel }) {
   const [activeTab, setActiveTab] = useState("general");
@@ -273,7 +276,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       }
     } catch (err) {
       console.error("Error loading invitation:", err);
-      alert("Տվյալները բեռնելիս սխալ տեղի ունեցավ:");
+      message.error("Տվյալները բեռնելիս սխալ տեղի ունեցավ / Error loading details.");
     } finally {
       setLoading(false);
     }
@@ -297,7 +300,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       if (!churchTitleEn || churchTitleEn === "CHURCH") setChurchTitleEn("CHURCH");
       
       if (!partyTitleAm || partyTitleAm === "ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ" || partyTitleAm === "ՀԱՑԿԵՐՈՒՅԹ") setPartyTitleAm("ՌԵՍՏՈՐԱՆ");
-      if (!partyTitleRu || partyTitleRu === "БАНКЕТНЫЙ ЗАЛ" || partyTitleRu === "ЗАСТОЛЬЕ") setPartyTitleRu("РЕСТОРАН");
+      if (!partyTitleRu || partyTitleRu === "БАНԿЕТНЫЙ ЗАЛ" || partyTitleRu === "ЗАСТОЛЬԵ") setPartyTitleRu("РЕСТОРАН");
       if (!partyTitleEn || partyTitleEn === "BANQUET HALL" || partyTitleEn === "RECEPTION") setPartyTitleEn("RESTAURANT");
     } else if (type === "birthday") {
       setShowChurch(false);
@@ -309,7 +312,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       if (!heroTitleEn || heroTitleEn === "Wedding Day" || heroTitleEn === "Holy Baptism") setHeroTitleEn("Birthday Party");
       
       if (!partyTitleAm || partyTitleAm === "ՌԵՍՏՈՐԱՆ" || partyTitleAm === "ՀԱՑԿԵՐՈՒՅԹ") setPartyTitleAm("ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ");
-      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "ЗАСТОЛЬЕ") setPartyTitleRu("БАНКЕТНЫЙ ЗАЛ");
+      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "ЗАСТОЛЬԵ") setPartyTitleRu("БАНԿЕТНЫЙ ЗАЛ");
       if (!partyTitleEn || partyTitleEn === "RESTAURANT" || partyTitleEn === "RECEPTION") setPartyTitleEn("BANQUET HALL");
     } else if (type === "baptism") {
       setShowChurch(true);
@@ -325,7 +328,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       if (!churchTitleEn || churchTitleEn === "CHURCH") setChurchTitleEn("CHURCH");
       
       if (!partyTitleAm || partyTitleAm === "ՌԵՍՏՈՐԱՆ" || partyTitleAm === "ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ") setPartyTitleAm("ՀԱՑԿԵՐՈՒՅԹ");
-      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "БАНКЕТНЫЙ ЗАЛ") setPartyTitleRu("ЗАСТОЛЬԵ");
+      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "БАНԿЕТНЫЙ ЗАЛ") setPartyTitleRu("ЗАСТОЛЬԵ");
       if (!partyTitleEn || partyTitleEn === "RESTAURANT" || partyTitleEn === "BANQUET HALL") setPartyTitleEn("RECEPTION");
     }
   };
@@ -403,9 +406,16 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   };
 
   const removeCustomSection = (id) => {
-    if (window.confirm("Վստա՞հ եք, որ ցանկանում եք ջնջել այս բաժինը / Вы уверены, что хотите удалить этот раздел?")) {
-      setSections(sections.filter((s) => s.id !== id));
-    }
+    Modal.confirm({
+      title: "Ջնջել բաժինը / Удалить раздел",
+      content: "Վստա՞հ եք, որ ցանկանում եք ջնջել այս բաժինը / Вы уверены, что хотите удалить этот раздел?",
+      okText: "Yes",
+      cancelText: "No",
+      okButtonProps: { danger: true },
+      onOk: () => {
+        setSections(sections.filter((s) => s.id !== id));
+      }
+    });
   };
 
   const updateCustomSection = (id, field, lang, value) => {
@@ -428,7 +438,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const saveData = async () => {
     const cleanSlug = slug.trim().toLowerCase().replace(/[^a-z0-9-_]/g, "");
     if (!cleanSlug) {
-      alert("Խնդրում ենք նշել վավեր հասցե (Slug):");
+      message.warning("Խնդրում ենք նշել վավեր հասցե (Slug): / Please specify a valid slug.");
       return null;
     }
 
@@ -573,7 +583,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       return cleanSlug;
     } catch (err) {
       console.error("Error saving invitation:", err);
-      alert("Պահպանելիս սխալ տեղի ունեցավ:");
+      message.error("Պահպանելիս սխալ տեղի ունեցավ / Error saving details.");
       return null;
     } finally {
       setSaving(false);
@@ -584,7 +594,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     if (e) e.preventDefault();
     const cleanSlug = await saveData();
     if (cleanSlug) {
-      alert("Հաջողությամբ պահպանվեց:");
+      message.success("Հաջողությամբ պահպանվեց / Saved successfully.");
       onSuccess();
     }
   };
@@ -598,301 +608,340 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   };
 
   if (loading) {
-    return <div className="form-loading">Բեռնվում է...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0" }}>
+        <Spin size="large" />
+        <Text style={{ display: "block", marginTop: 16 }}>Բեռնվում է... / Loading form details...</Text>
+      </div>
+    );
   }
+
+  const tabItems = [
+    {
+      key: "general",
+      label: "GENERAL",
+      children: (
+        <GeneralTab
+          mode={mode}
+          slug={slug}
+          setSlug={setSlug}
+          eventName={eventName}
+          setEventName={setEventName}
+          eventType={eventType}
+          handleEventTypeChange={handleEventTypeChange}
+          sealInitials={sealInitials}
+          setSealInitials={setSealInitials}
+          musicUrl={musicUrl}
+          setMusicUrl={setMusicUrl}
+          envelopeBgFile={envelopeBgFile}
+          setEnvelopeBgFile={setEnvelopeBgFile}
+          envelopeBgUrl={envelopeBgUrl}
+          setEnvelopeBgUrl={setEnvelopeBgUrl}
+        />
+      )
+    },
+    {
+      key: "sections",
+      label: "SECTIONS",
+      children: (
+        <SectionsTab
+          sections={sections}
+          moveSectionUp={moveSectionUp}
+          moveSectionDown={moveSectionDown}
+          toggleSectionEnabled={toggleSectionEnabled}
+          addCustomSection={addCustomSection}
+          removeCustomSection={removeCustomSection}
+          updateCustomSection={updateCustomSection}
+        />
+      )
+    },
+    {
+      key: "theme",
+      label: "THEME",
+      children: (
+        <ThemeTab
+          primaryColor={primaryColor}
+          setPrimaryColor={setPrimaryColor}
+          accentColor={accentColor}
+          setAccentColor={setAccentColor}
+          bgColor={bgColor}
+          setBgColor={setBgColor}
+          textColor={textColor}
+          setTextColor={setTextColor}
+          sectionPadding={sectionPadding}
+          setSectionPadding={setSectionPadding}
+          containerWidth={containerWidth}
+          setContainerWidth={setContainerWidth}
+          fontMain={fontMain}
+          setFontMain={setFontMain}
+        />
+      )
+    },
+    {
+      key: "hero",
+      label: "HERO IMAGE",
+      children: (
+        <HeroTab
+          heroNamesAm={heroNamesAm}
+          setHeroNamesAm={setHeroNamesAm}
+          heroNamesRu={heroNamesRu}
+          setHeroNamesRu={setHeroNamesRu}
+          heroNamesEn={heroNamesEn}
+          setHeroNamesEn={setHeroNamesEn}
+          heroTitleAm={heroTitleAm}
+          setHeroTitleAm={setHeroTitleAm}
+          heroTitleRu={heroTitleRu}
+          setHeroTitleRu={setHeroTitleRu}
+          heroTitleEn={heroTitleEn}
+          setHeroTitleEn={setHeroTitleEn}
+          heroBgMobileFile={heroBgMobileFile}
+          setHeroBgMobileFile={setHeroBgMobileFile}
+          heroBgMobileUrl={heroBgMobileUrl}
+          setHeroBgMobileUrl={setHeroBgMobileUrl}
+          heroBgDesktopFile={heroBgDesktopFile}
+          setHeroBgDesktopFile={setHeroBgDesktopFile}
+          heroBgDesktopUrl={heroBgDesktopUrl}
+          setHeroBgDesktopUrl={setHeroBgDesktopUrl}
+        />
+      )
+    },
+    {
+      key: "calendar_location",
+      label: "CALENDAR & LOCATION",
+      children: (
+        <CalendarLocationTab
+          eventDate={eventDate}
+          setEventDate={setEventDate}
+          calBgFile={calBgFile}
+          setCalBgFile={setCalBgFile}
+          calBgUrl={calBgUrl}
+          setCalBgUrl={setCalBgUrl}
+          calTitleAm={calTitleAm}
+          setCalTitleAm={setCalTitleAm}
+          calTitleRu={calTitleRu}
+          setCalTitleRu={setCalTitleRu}
+          calTitleEn={calTitleEn}
+          setCalTitleEn={setCalTitleEn}
+          calIntroAm={calIntroAm}
+          setCalIntroAm={setCalIntroAm}
+          calIntroRu={calIntroRu}
+          setCalIntroRu={setCalIntroRu}
+          calIntroEn={calIntroEn}
+          setCalIntroEn={setCalIntroEn}
+          calInviteAm={calInviteAm}
+          setCalInviteAm={setCalInviteAm}
+          calInviteRu={calInviteRu}
+          setCalInviteRu={setCalInviteRu}
+          calInviteEn={calInviteEn}
+          setCalInviteEn={setCalInviteEn}
+          showChurch={showChurch}
+          setShowChurch={setShowChurch}
+          showParty={showParty}
+          setShowParty={setShowParty}
+          churchTitleAm={churchTitleAm}
+          setChurchTitleAm={setChurchTitleAm}
+          churchTitleRu={churchTitleRu}
+          setChurchTitleRu={setChurchTitleRu}
+          churchTitleEn={churchTitleEn}
+          setChurchTitleEn={setChurchTitleEn}
+          churchNameAm={churchNameAm}
+          setChurchNameAm={setChurchNameAm}
+          churchNameRu={churchNameRu}
+          setChurchNameRu={setChurchNameRu}
+          churchNameEn={churchNameEn}
+          setChurchNameEn={setChurchNameEn}
+          churchAddr1Am={churchAddr1Am}
+          setChurchAddr1Am={setChurchAddr1Am}
+          churchAddr1Ru={churchAddr1Ru}
+          setChurchAddr1Ru={setChurchAddr1Ru}
+          churchAddr1En={churchAddr1En}
+          setChurchAddr1En={setChurchAddr1En}
+          churchAddr2Am={churchAddr2Am}
+          setChurchAddr2Am={setChurchAddr2Am}
+          churchAddr2Ru={churchAddr2Ru}
+          setChurchAddr2Ru={setChurchAddr2Ru}
+          churchAddr2En={churchAddr2En}
+          setChurchAddr2En={setChurchAddr2En}
+          churchTime={churchTime}
+          setChurchTime={setChurchTime}
+          churchMapLink={churchMapLink}
+          setChurchMapLink={setChurchMapLink}
+          partyTitleAm={partyTitleAm}
+          setPartyTitleAm={setPartyTitleAm}
+          partyTitleRu={partyTitleRu}
+          setPartyTitleRu={setPartyTitleRu}
+          partyTitleEn={partyTitleEn}
+          setPartyTitleEn={setPartyTitleEn}
+          partyNameAm={partyNameAm}
+          setPartyNameAm={setPartyNameAm}
+          partyNameRu={partyNameRu}
+          setPartyNameRu={setPartyNameRu}
+          partyNameEn={partyNameEn}
+          setPartyNameEn={setPartyNameEn}
+          partyAddrExtraAm={partyAddrExtraAm}
+          setPartyAddrExtraAm={setPartyAddrExtraAm}
+          partyAddrExtraRu={partyAddrExtraRu}
+          setPartyAddrExtraRu={setPartyAddrExtraRu}
+          partyAddrExtraEn={partyAddrExtraEn}
+          setPartyAddrExtraEn={setPartyAddrExtraEn}
+          partyAddr1Am={partyAddr1Am}
+          setPartyAddr1Am={setPartyAddr1Am}
+          partyAddr1Ru={partyAddr1Ru}
+          setPartyAddr1Ru={setPartyAddr1Ru}
+          partyAddr1En={partyAddr1En}
+          setPartyAddr1En={setPartyAddr1En}
+          partyAddr2Am={partyAddr2Am}
+          setPartyAddr2Am={setPartyAddr2Am}
+          partyAddr2Ru={partyAddr2Ru}
+          setPartyAddr2Ru={setPartyAddr2Ru}
+          partyAddr2En={partyAddr2En}
+          setPartyAddr2En={setPartyAddr2En}
+          partyTime={partyTime}
+          setPartyTime={setPartyTime}
+          partyMapLink={partyMapLink}
+          setPartyMapLink={setPartyMapLink}
+          locBgFile={locBgFile}
+          setLocBgFile={setLocBgFile}
+          locBgUrl={locBgUrl}
+          setLocBgUrl={setLocBgUrl}
+        />
+      )
+    },
+    {
+      key: "gallery",
+      label: "GALLERY",
+      children: (
+        <GalleryTab
+          setGalleryFiles={setGalleryFiles}
+          galleryFiles={galleryFiles}
+          galleryUrls={galleryUrls}
+          setGalleryUrls={setGalleryUrls}
+        />
+      )
+    },
+    {
+      key: "dress_code",
+      label: "DRESS CODE",
+      children: (
+        <DressCodeTab
+          showDressCode={showDressCode}
+          setShowDressCode={setShowDressCode}
+          sections={sections}
+          setSections={setSections}
+          dressDescAm={dressDescAm}
+          setDressDescAm={setDressDescAm}
+          dressDescRu={dressDescRu}
+          setDressDescRu={setDressDescRu}
+          dressDescEn={dressDescEn}
+          setDressDescEn={setDressDescEn}
+          newColor={newColor}
+          setNewColor={setNewColor}
+          handleAddColor={handleAddColor}
+          dressColors={dressColors}
+          handleRemoveColor={handleRemoveColor}
+        />
+      )
+    },
+    {
+      key: "rsvp_telegram",
+      label: "RSVP & TELEGRAM",
+      children: (
+        <RsvpTelegramTab
+          rsvpDeadline={rsvpDeadline}
+          setRsvpDeadline={setRsvpDeadline}
+          newHostId={newHostId}
+          setNewHostId={setNewHostId}
+          newHostAm={newHostAm}
+          setNewHostAm={setNewHostAm}
+          newHostRu={newHostRu}
+          setNewHostRu={setNewHostRu}
+          newHostEn={newHostEn}
+          setNewHostEn={setNewHostEn}
+          handleAddHost={handleAddHost}
+          hosts={hosts}
+          handleRemoveHost={handleRemoveHost}
+          telegramBotToken={telegramBotToken}
+          setTelegramBotToken={setTelegramBotToken}
+          telegramChatId={telegramChatId}
+          setTelegramChatId={setTelegramChatId}
+        />
+      )
+    }
+  ];
 
   return (
     <div className="form-container">
-      <div className="form-title-row">
-        <h2>{mode === "create" ? "Ստեղծել նոր հրավեր" : "Խմբագրել հրավերը"}</h2>
-        <div className="form-actions-top">
-          <button type="button" className="cancel-btn" onClick={onCancel}>
-            Չեղարկել / Отмена
-          </button>
-          <button type="button" className="preview-btn" onClick={handlePreview} disabled={saving}>
-            <FaMobileAlt style={{ marginRight: "4px" }} /> Նախադիտում / Превью
-          </button>
-          <button type="button" className="save-btn" onClick={handleSubmit} disabled={saving}>
-            {saving ? "Պահպանվում է..." : "Պահպանել / Сохранить"}
-          </button>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="form-tabs">
-        {["general", "sections", "theme", "hero", "calendar_location", "gallery", "dress_code", "rsvp_telegram"].map((tab) => (
-          <button
-            key={tab}
-            className={`tab-btn ${activeTab === tab ? "active" : ""}`}
-            onClick={() => setActiveTab(tab)}
+      <div className="form-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <Title level={2} style={{ margin: 0 }}>
+          {mode === "create" ? "Ստեղծել նոր հրավեր" : "Խմբագրել հրավերը"}
+        </Title>
+        <Space>
+          <Button onClick={onCancel}>
+            Չեղարկել / Cancel
+          </Button>
+          <Button 
+            icon={<MobileOutlined />} 
+            onClick={handlePreview} 
+            disabled={saving}
           >
-            {tab.replace("_", " ").toUpperCase()}
-          </button>
-        ))}
+            Նախադիտում / Preview
+          </Button>
+          <Button 
+            type="primary" 
+            icon={<SaveOutlined />} 
+            onClick={handleSubmit} 
+            loading={saving}
+            style={{ backgroundColor: "#2c3e35" }}
+          >
+            Պահպանել / Save
+          </Button>
+        </Space>
       </div>
 
-      <form onSubmit={handleSubmit} className="form-body">
-        {activeTab === "general" && (
-          <GeneralTab
-            mode={mode}
-            slug={slug}
-            setSlug={setSlug}
-            eventName={eventName}
-            setEventName={setEventName}
-            eventType={eventType}
-            handleEventTypeChange={handleEventTypeChange}
-            sealInitials={sealInitials}
-            setSealInitials={setSealInitials}
-            musicUrl={musicUrl}
-            setMusicUrl={setMusicUrl}
-            envelopeBgFile={envelopeBgFile}
-            setEnvelopeBgFile={setEnvelopeBgFile}
-            envelopeBgUrl={envelopeBgUrl}
-            setEnvelopeBgUrl={setEnvelopeBgUrl}
-          />
-        )}
-
-        {activeTab === "sections" && (
-          <SectionsTab
-            sections={sections}
-            moveSectionUp={moveSectionUp}
-            moveSectionDown={moveSectionDown}
-            toggleSectionEnabled={toggleSectionEnabled}
-            addCustomSection={addCustomSection}
-            removeCustomSection={removeCustomSection}
-            updateCustomSection={updateCustomSection}
-          />
-        )}
-
-        {activeTab === "theme" && (
-          <ThemeTab
-            primaryColor={primaryColor}
-            setPrimaryColor={setPrimaryColor}
-            accentColor={accentColor}
-            setAccentColor={setAccentColor}
-            bgColor={bgColor}
-            setBgColor={setBgColor}
-            textColor={textColor}
-            setTextColor={setTextColor}
-            sectionPadding={sectionPadding}
-            setSectionPadding={setSectionPadding}
-            containerWidth={containerWidth}
-            setContainerWidth={setContainerWidth}
-            fontMain={fontMain}
-            setFontMain={setFontMain}
-          />
-        )}
-
-        {activeTab === "hero" && (
-          <HeroTab
-            heroNamesAm={heroNamesAm}
-            setHeroNamesAm={setHeroNamesAm}
-            heroNamesRu={heroNamesRu}
-            setHeroNamesRu={setHeroNamesRu}
-            heroNamesEn={heroNamesEn}
-            setHeroNamesEn={setHeroNamesEn}
-            heroTitleAm={heroTitleAm}
-            setHeroTitleAm={setHeroTitleAm}
-            heroTitleRu={heroTitleRu}
-            setHeroTitleRu={setHeroTitleRu}
-            heroTitleEn={heroTitleEn}
-            setHeroTitleEn={setHeroTitleEn}
-            heroBgMobileFile={heroBgMobileFile}
-            setHeroBgMobileFile={setHeroBgMobileFile}
-            heroBgMobileUrl={heroBgMobileUrl}
-            setHeroBgMobileUrl={setHeroBgMobileUrl}
-            heroBgDesktopFile={heroBgDesktopFile}
-            setHeroBgDesktopFile={setHeroBgDesktopFile}
-            heroBgDesktopUrl={heroBgDesktopUrl}
-            setHeroBgDesktopUrl={setHeroBgDesktopUrl}
-          />
-        )}
-
-        {activeTab === "calendar_location" && (
-          <CalendarLocationTab
-            eventDate={eventDate}
-            setEventDate={setEventDate}
-            calBgFile={calBgFile}
-            setCalBgFile={setCalBgFile}
-            calBgUrl={calBgUrl}
-            setCalBgUrl={setCalBgUrl}
-            calTitleAm={calTitleAm}
-            setCalTitleAm={setCalTitleAm}
-            calTitleRu={calTitleRu}
-            setCalTitleRu={setCalTitleRu}
-            calTitleEn={calTitleEn}
-            setCalTitleEn={setCalTitleEn}
-            calIntroAm={calIntroAm}
-            setCalIntroAm={setCalIntroAm}
-            calIntroRu={calIntroRu}
-            setCalIntroRu={setCalIntroRu}
-            calIntroEn={calIntroEn}
-            setCalIntroEn={setCalIntroEn}
-            calInviteAm={calInviteAm}
-            setCalInviteAm={setCalInviteAm}
-            calInviteRu={calInviteRu}
-            setCalInviteRu={setCalInviteRu}
-            calInviteEn={calInviteEn}
-            setCalInviteEn={setCalInviteEn}
-            showChurch={showChurch}
-            setShowChurch={setShowChurch}
-            showParty={showParty}
-            setShowParty={setShowParty}
-            churchTitleAm={churchTitleAm}
-            setChurchTitleAm={setChurchTitleAm}
-            churchTitleRu={churchTitleRu}
-            setChurchTitleRu={setChurchTitleRu}
-            churchTitleEn={churchTitleEn}
-            setChurchTitleEn={setChurchTitleEn}
-            churchNameAm={churchNameAm}
-            setChurchNameAm={setChurchNameAm}
-            churchNameRu={churchNameRu}
-            setChurchNameRu={setChurchNameRu}
-            churchNameEn={churchNameEn}
-            setChurchNameEn={setChurchNameEn}
-            churchAddr1Am={churchAddr1Am}
-            setChurchAddr1Am={setChurchAddr1Am}
-            churchAddr1Ru={churchAddr1Ru}
-            setChurchAddr1Ru={setChurchAddr1Ru}
-            churchAddr1En={churchAddr1En}
-            setChurchAddr1En={setChurchAddr1En}
-            churchAddr2Am={churchAddr2Am}
-            setChurchAddr2Am={setChurchAddr2Am}
-            churchAddr2Ru={churchAddr2Ru}
-            setChurchAddr2Ru={setChurchAddr2Ru}
-            churchAddr2En={churchAddr2En}
-            setChurchAddr2En={setChurchAddr2En}
-            churchTime={churchTime}
-            setChurchTime={setChurchTime}
-            churchMapLink={churchMapLink}
-            setChurchMapLink={setChurchMapLink}
-            partyTitleAm={partyTitleAm}
-            setPartyTitleAm={setPartyTitleAm}
-            partyTitleRu={partyTitleRu}
-            setPartyTitleRu={setPartyTitleRu}
-            partyTitleEn={partyTitleEn}
-            setPartyTitleEn={setPartyTitleEn}
-            partyNameAm={partyNameAm}
-            setPartyNameAm={setPartyNameAm}
-            partyNameRu={partyNameRu}
-            setPartyNameRu={setPartyNameRu}
-            partyNameEn={partyNameEn}
-            setPartyNameEn={setPartyNameEn}
-            partyAddrExtraAm={partyAddrExtraAm}
-            setPartyAddrExtraAm={setPartyAddrExtraAm}
-            partyAddrExtraRu={partyAddrExtraRu}
-            setPartyAddrExtraRu={setPartyAddrExtraRu}
-            partyAddrExtraEn={partyAddrExtraEn}
-            setPartyAddrExtraEn={setPartyAddrExtraEn}
-            partyAddr1Am={partyAddr1Am}
-            setPartyAddr1Am={setPartyAddr1Am}
-            partyAddr1Ru={partyAddr1Ru}
-            setPartyAddr1Ru={setPartyAddr1Ru}
-            partyAddr1En={partyAddr1En}
-            setPartyAddr1En={setPartyAddr1En}
-            partyAddr2Am={partyAddr2Am}
-            setPartyAddr2Am={setPartyAddr2Am}
-            partyAddr2Ru={partyAddr2Ru}
-            setPartyAddr2Ru={setPartyAddr2Ru}
-            partyAddr2En={partyAddr2En}
-            setPartyAddr2En={setPartyAddr2En}
-            partyTime={partyTime}
-            setPartyTime={setPartyTime}
-            partyMapLink={partyMapLink}
-            setPartyMapLink={setPartyMapLink}
-            locBgFile={locBgFile}
-            setLocBgFile={setLocBgFile}
-            locBgUrl={locBgUrl}
-            setLocBgUrl={setLocBgUrl}
-          />
-        )}
-
-        {activeTab === "gallery" && (
-          <GalleryTab
-            setGalleryFiles={setGalleryFiles}
-            galleryFiles={galleryFiles}
-            galleryUrls={galleryUrls}
-            setGalleryUrls={setGalleryUrls}
-          />
-        )}
-
-        {activeTab === "dress_code" && (
-          <DressCodeTab
-            showDressCode={showDressCode}
-            setShowDressCode={setShowDressCode}
-            sections={sections}
-            setSections={setSections}
-            dressDescAm={dressDescAm}
-            setDressDescAm={setDressDescAm}
-            dressDescRu={dressDescRu}
-            setDressDescRu={setDressDescRu}
-            dressDescEn={dressDescEn}
-            setDressDescEn={setDressDescEn}
-            newColor={newColor}
-            setNewColor={setNewColor}
-            handleAddColor={handleAddColor}
-            dressColors={dressColors}
-            handleRemoveColor={handleRemoveColor}
-          />
-        )}
-
-        {activeTab === "rsvp_telegram" && (
-          <RsvpTelegramTab
-            rsvpDeadline={rsvpDeadline}
-            setRsvpDeadline={setRsvpDeadline}
-            newHostId={newHostId}
-            setNewHostId={setNewHostId}
-            newHostAm={newHostAm}
-            setNewHostAm={setNewHostAm}
-            newHostRu={newHostRu}
-            setNewHostRu={setNewHostRu}
-            newHostEn={newHostEn}
-            setNewHostEn={setNewHostEn}
-            handleAddHost={handleAddHost}
-            hosts={hosts}
-            handleRemoveHost={handleRemoveHost}
-            telegramBotToken={telegramBotToken}
-            setTelegramBotToken={setTelegramBotToken}
-            telegramChatId={telegramChatId}
-            setTelegramChatId={setTelegramChatId}
-          />
-        )}
-      </form>
+      <Card bordered={false} styles={{ body: { padding: "10px 24px" } }}>
+        <Tabs 
+          activeKey={activeTab} 
+          onChange={setActiveTab} 
+          items={tabItems}
+          type="card"
+        />
+      </Card>
 
       {/* iPhone 17 Preview Modal */}
-      {showPreviewModal && previewSlug && (
-        <div className="preview-modal-overlay" onClick={() => setShowPreviewModal(false)}>
-          <div className="preview-modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="preview-modal-header">
-              <h3>iPhone 17 Նախադիտում / Предпросмотр iPhone 17</h3>
-              <button className="preview-modal-close" onClick={() => setShowPreviewModal(false)}>
-                &times;
-              </button>
+      <Modal
+        title="iPhone 17 Նախադիտում / Предпросмотр iPhone 17"
+        open={showPreviewModal}
+        onCancel={() => setShowPreviewModal(false)}
+        footer={null}
+        width={380}
+        centered
+        className="preview-device-modal"
+        styles={{ body: { padding: 0 } }}
+      >
+        <div className="preview-device-container" style={{ display: "flex", justifyContent: "center", padding: "20px 0" }}>
+          <div className="iphone-17-frame">
+            {/* Dynamic Island */}
+            <div className="dynamic-island"></div>
+            {/* Screen frame */}
+            <div className="iphone-screen">
+              {previewSlug && (
+                <iframe 
+                  src={`/i/${previewSlug}?preview=true`} 
+                  title="iPhone 17 Preview"
+                  className="preview-iframe"
+                />
+              )}
             </div>
-            <div className="preview-device-container">
-              <div className="iphone-17-frame">
-                {/* Dynamic Island */}
-                <div className="dynamic-island"></div>
-                {/* Screen frame */}
-                <div className="iphone-screen">
-                  <iframe 
-                    src={`/i/${previewSlug}?preview=true`} 
-                    title="iPhone 17 Preview"
-                    className="preview-iframe"
-                  />
-                </div>
-                {/* Side buttons */}
-                <div className="iphone-btn volume-up"></div>
-                <div className="iphone-btn volume-down"></div>
-                <div className="iphone-btn action-button"></div>
-                <div className="iphone-btn power-button"></div>
-                {/* Home Indicator */}
-                <div className="home-indicator"></div>
-              </div>
-            </div>
+            {/* Side buttons */}
+            <div className="iphone-btn volume-up"></div>
+            <div className="iphone-btn volume-down"></div>
+            <div className="iphone-btn action-button"></div>
+            <div className="iphone-btn power-button"></div>
+            {/* Home Indicator */}
+            <div className="home-indicator"></div>
           </div>
         </div>
-      )}
+      </Modal>
     </div>
   );
 }

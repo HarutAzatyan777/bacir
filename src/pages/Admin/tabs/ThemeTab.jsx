@@ -1,4 +1,8 @@
 import React from "react";
+import { Input, Select, Typography } from "antd";
+
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 export default function ThemeTab({
   primaryColor,
@@ -18,128 +22,120 @@ export default function ThemeTab({
 }) {
   return (
     <div className="tab-pane">
-      <h3>Դիզայնի կարգավորումներ / Настройка дизайна (Styler)</h3>
-      <p className="tab-desc" style={{ color: "#a3b899", fontSize: "0.85rem", marginBottom: "20px" }}>
+      <Title level={4} style={{ color: "#2c3e35", marginBottom: 6 }}>Դիզայնի կարգավորումներ / Theme Settings</Title>
+      <Text type="secondary" style={{ display: "block", marginBottom: 24 }}>
         Անհատականացրեք ձեր հրավիրատոմսի գույները, տառատեսակները և դասավորությունը:
-      </p>
+      </Text>
 
       <div className="form-grid">
         <div className="form-field">
-          <label>Հիմնական գույն (Primary Color)</label>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Հիմնական գույն (Primary Color)</label>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <input
               type="color"
               value={primaryColor}
               onChange={(e) => setPrimaryColor(e.target.value)}
-              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
             />
-            <input
-              type="text"
+            <Input
               value={primaryColor}
               onChange={(e) => setPrimaryColor(e.target.value)}
+              size="large"
               style={{ flex: 1 }}
             />
           </div>
         </div>
 
         <div className="form-field">
-          <label>Ակցենտային գույն (Accent/Gold Color)</label>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Ակցենտային գույն (Accent/Gold Color)</label>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <input
               type="color"
               value={accentColor}
               onChange={(e) => setAccentColor(e.target.value)}
-              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
             />
-            <input
-              type="text"
+            <Input
               value={accentColor}
               onChange={(e) => setAccentColor(e.target.value)}
+              size="large"
               style={{ flex: 1 }}
             />
           </div>
         </div>
 
         <div className="form-field">
-          <label>Ֆոնի գույն (Background Color)</label>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Ֆոնի գույն (Background Color)</label>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <input
               type="color"
               value={bgColor}
               onChange={(e) => setBgColor(e.target.value)}
-              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
             />
-            <input
-              type="text"
+            <Input
               value={bgColor}
               onChange={(e) => setBgColor(e.target.value)}
+              size="large"
               style={{ flex: 1 }}
             />
           </div>
         </div>
 
         <div className="form-field">
-          <label>Տեքստի գույն (Text Color)</label>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Տեքստի գույն (Text Color)</label>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             <input
               type="color"
               value={textColor}
               onChange={(e) => setTextColor(e.target.value)}
-              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid rgba(255,255,255,0.2)", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
             />
-            <input
-              type="text"
+            <Input
               value={textColor}
               onChange={(e) => setTextColor(e.target.value)}
+              size="large"
               style={{ flex: 1 }}
             />
           </div>
         </div>
 
         <div className="form-field">
-          <label>Բաժնի հեռավորություն (Section Padding)</label>
-          <input
-            type="text"
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Բաժնի հեռավորություն (Section Padding)</label>
+          <Input
             placeholder="80px 20px"
             value={sectionPadding}
             onChange={(e) => setSectionPadding(e.target.value)}
+            size="large"
           />
-          <small>Օրինակ՝ `80px 20px` (վերև/ներքև և աջ/ձախ):</small>
+          <small style={{ display: "block", marginTop: 4, color: "#64748b" }}>Օրինակ՝ `80px 20px` (վերև/ներքև և աջ/ձախ):</small>
         </div>
 
         <div className="form-field">
-          <label>Առավելագույն լայնություն (Container Width)</label>
-          <input
-            type="text"
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Առավելագույն լայնություն (Container Width)</label>
+          <Input
             placeholder="1200px"
             value={containerWidth}
             onChange={(e) => setContainerWidth(e.target.value)}
+            size="large"
           />
-          <small>Օրինակ՝ `1200px` կամ `100%`:</small>
+          <small style={{ display: "block", marginTop: 4, color: "#64748b" }}>Օրինակ՝ `1200px` կամ `100%`:</small>
         </div>
 
         <div className="form-field full-width">
-          <label>Տառատեսակ (Main Font)</label>
-          <select
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Տառատեսակ (Main Font)</label>
+          <Select
             value={fontMain}
-            onChange={(e) => setFontMain(e.target.value)}
-            style={{
-              padding: "12px",
-              background: "rgba(255, 255, 255, 0.03)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "6px",
-              color: "#fff",
-              fontSize: "0.95rem",
-              outline: "none",
-              cursor: "pointer"
-            }}
+            onChange={setFontMain}
+            size="large"
+            style={{ width: "100%" }}
           >
-            <option style={{ background: "#1c2e24", color: "#fff" }} value="'Montserrat', sans-serif">Montserrat (Modern Sans-Serif)</option>
-            <option style={{ background: "#1c2e24", color: "#fff" }} value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
-            <option style={{ background: "#1c2e24", color: "#fff" }} value="'Inter', sans-serif">Inter (Clean Neutral)</option>
-            <option style={{ background: "#1c2e24", color: "#fff" }} value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Wedding Serif)</option>
-            <option style={{ background: "#1c2e24", color: "#fff" }} value="'Great Vibes', cursive">Great Vibes (Romantic Script)</option>
-          </select>
+            <Option value="'Montserrat', sans-serif">Montserrat (Modern Sans-Serif)</Option>
+            <Option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</Option>
+            <Option value="'Inter', sans-serif">Inter (Clean Neutral)</Option>
+            <Option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Wedding Serif)</Option>
+            <Option value="'Great Vibes', cursive">Great Vibes (Romantic Script)</Option>
+          </Select>
         </div>
       </div>
     </div>

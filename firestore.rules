@@ -1,29 +1,78 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Invitations collection
+
+    // ==========================================
+    // HELPER FUNCTIONS
+    // ==========================================
+
+    // Check if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Retrieve the parent invitation document and verify if the current user is the owner
+    function isParentInvitationOwner(invitationId) {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/invitations/$(invitationId)).data.ownerId == request.auth.uid;
+    }
+
+    // ==========================================
+    // USERS COLLECTION
+    // ==========================================
+    match /users/{userId} {
+      // Users can only read and write their own profile document
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ==========================================
+    // INVITATIONS COLLECTION
+    // ==========================================
     match /invitations/{invitationId} {
-      allow read: if true; // Readable by everyone (guests)
+      // Publicly readable so guests can view the invitation details
+      allow read: if true;
       
-      // Allow create if user is authenticated and sets themselves as the owner
-      allow create: if request.auth != null && request.resource.data.ownerId == request.auth.uid;
+      // Authenticated users can create an invitation only if they set themselves as the owner
+      allow create: if isAuthenticated() && 
+        request.resource.data.ownerId == request.auth.uid;
       
-      // Allow update/delete only if the user is the owner of the document
-      allow update, delete: if request.auth != null && resource.data.ownerId == request.auth.uid;
-      
-      // Responses subcollection (RSVP replies from guests)
+      // Only the authenticated owner of the document can update or delete it.
+      // The update rule guarantees the owner cannot transfer ownership (ownerId must not be changed).
+      allow update: if isAuthenticated() && 
+        resource.data.ownerId == request.auth.uid && 
+        request.resource.data.ownerId == request.auth.uid;
+        
+      allow delete: if isAuthenticated() && 
+        resource.data.ownerId == request.auth.uid;
+
+      // ==========================================
+      // RESPONSES SUBCOLLECTION
+      // ==========================================
       match /responses/{responseId} {
-        // Only the owner of the parent invitation can read the RSVP responses
-        allow read: if request.auth != null && get(/databases/$(database)/documents/invitations/$(invitationId)).data.ownerId == request.auth.uid;
-        allow write: if true; // Writable by everyone (guests submitting RSVPs)
+        // Only the owner of the parent invitation can read these RSVP responses
+        allow read: if isParentInvitationOwner(invitationId);
+        
+        // Publicly writable (so guests can RSVP)
+        // Must contain at least 'name' and 'status' with type checks and size limits to prevent spam / DoS
+        allow create: if request.resource.data.keys().hasAll(['name', 'status']) &&
+          request.resource.data.name is string && 
+          request.resource.data.name.size() > 0 && 
+          request.resource.data.name.size() <= 100 &&
+          request.resource.data.status is string && 
+          request.resource.data.status.size() > 0 && 
+          request.resource.data.status.size() <= 50;
+          
+        // Deny updates and deletes (guests cannot modify or delete their RSVPs once submitted)
+        allow update, delete: if false;
       }
     }
 
-    // Invitation Secrets (Telegram Bot Token & Chat ID)
+    // ==========================================
+    // INVITATION SECRETS COLLECTION
+    // ==========================================
     match /invitationSecrets/{invitationId} {
-      // Only the owner of the parent invitation can read or write its secrets
-      allow read, write: if request.auth != null && get(/databases/$(database)/documents/invitations/$(invitationId)).data.ownerId == request.auth.uid;
+      // Only the owner of the corresponding parent invitation can read or write here
+      allow read, write: if isParentInvitationOwner(invitationId);
     }
   }
 }

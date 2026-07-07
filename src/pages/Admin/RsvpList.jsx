@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
+import { Card, Table, Tag, Button, Spin, Statistic, Row, Col, Typography, Space } from "antd";
+import { LeftOutlined, DownloadOutlined, CheckCircleOutlined, CloseCircleOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import "./RsvpList.css";
+
+const { Title, Text } = Typography;
 
 export default function RsvpList({ invitationId, onBack }) {
   const [rsvps, setRsvps] = useState([]);
@@ -84,84 +88,129 @@ export default function RsvpList({ invitationId, onBack }) {
   };
 
   if (loading) {
-    return <div className="rsvp-loading">Բեռնվում է...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0" }}>
+        <Spin size="large" />
+        <Text style={{ display: "block", marginTop: 16 }}>Բեռնվում է... / Loading RSVPs...</Text>
+      </div>
+    );
   }
+
+  const columns = [
+    {
+      title: "Անուններ / Имена",
+      dataIndex: "names",
+      key: "names",
+      render: (names) => (
+        <Space wrap>
+          {names ? names.map((name, i) => (
+            <Tag key={i} color="geekblue" style={{ fontSize: "0.85rem" }}>{name}</Tag>
+          )) : "-"}
+        </Space>
+      ),
+    },
+    {
+      title: "Ներկայություն / Присутствие",
+      dataIndex: "attendance",
+      key: "attendance",
+      render: (attendance) => (
+        <Tag 
+          color={attendance === "yes" ? "success" : "error"}
+          icon={attendance === "yes" ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
+          style={{ fontSize: "0.85rem", padding: "4px 8px" }}
+        >
+          {attendance === "yes" ? "Այո / Да" : "Ոչ / Нет"}
+        </Tag>
+      ),
+    },
+    {
+      title: "Քանակ / Кол-во",
+      dataIndex: "guests",
+      key: "guests",
+      render: (guests) => <Text strong>{guests || 1}</Text>,
+    },
+    {
+      title: "Հրավիրող / Кем приглашен",
+      dataIndex: "invitedBy",
+      key: "invitedBy",
+      render: (invitedBy) => invitedBy || "-",
+    },
+    {
+      title: "Ամսաթիվ / Дата",
+      dataIndex: "submittedAt",
+      key: "submittedAt",
+      render: (submittedAt) => submittedAt ? new Date(submittedAt).toLocaleString() : "-",
+    },
+  ];
 
   return (
     <div className="rsvp-container">
-      <div className="rsvp-header-row">
-        <h3>RSVP Պատասխաններ / Ответы ({rsvps.length})</h3>
-        <div className="rsvp-actions">
-          <button className="export-btn" onClick={exportToCSV} disabled={rsvps.length === 0}>
-            Արտահանել Excel (CSV) / Экспорт
-          </button>
-          <button className="back-btn-secondary" onClick={onBack}>
-            ← Հետ / Назад
-          </button>
-        </div>
+      <div className="rsvp-header-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <Title level={3} style={{ margin: 0 }}>RSVP Պատասխաններ / Ответы ({rsvps.length})</Title>
+        <Space>
+          <Button 
+            type="primary"
+            icon={<DownloadOutlined />} 
+            onClick={exportToCSV} 
+            disabled={rsvps.length === 0}
+            style={{ backgroundColor: "#2c3e35" }}
+          >
+            Արտահանել Excel (CSV)
+          </Button>
+          <Button icon={<LeftOutlined />} onClick={onBack}>
+            Հետ / Back
+          </Button>
+        </Space>
       </div>
 
       {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stats-card">
-          <h4>Մասնակցում են / Придут</h4>
-          <span className="stats-number positive">{stats.attending}</span>
-          <p>խումբ / групп</p>
-        </div>
-        <div className="stats-card">
-          <h4>Ընդհանուր հյուրեր / Всего гостей</h4>
-          <span className="stats-number highlight">{stats.totalGuests}</span>
-          <p>հոգի / человек</p>
-        </div>
-        <div className="stats-card">
-          <h4>Չեն մասնակցում / Не придут</h4>
-          <span className="stats-number negative">{stats.declined}</span>
-          <p>խումբ / групп</p>
-        </div>
-      </div>
+      <Row gutter={[16, 16]} style={{ marginBottom: "30px" }}>
+        <Col xs={24} sm={8}>
+          <Card bordered={false} className="stats-card">
+            <Statistic 
+              title="Մասնակցում են / Придут"
+              value={stats.attending}
+              valueStyle={{ color: "#3f8600" }}
+              prefix={<CheckCircleOutlined />}
+              suffix="խումբ"
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={8}>
+          <Card bordered={false} className="stats-card">
+            <Statistic 
+              title="Ընդհանուր հյուրեր / Всего гостей"
+              value={stats.totalGuests}
+              valueStyle={{ color: "#d4af37" }}
+              prefix={<UsergroupAddOutlined />}
+              suffix="հոգի"
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={8}>
+          <Card bordered={false} className="stats-card">
+            <Statistic 
+              title="Չեն մասնակցում / Не придут"
+              value={stats.declined}
+              valueStyle={{ color: "#cf1322" }}
+              prefix={<CloseCircleOutlined />}
+              suffix="խումբ"
+            />
+          </Card>
+        </Col>
+      </Row>
 
       {/* RSVP List Table */}
-      {rsvps.length === 0 ? (
-        <div className="empty-rsvps">
-          <p>Առայժմ ոչ մի պատասխան չկա:</p>
-          <p>Ответов пока нет.</p>
-        </div>
-      ) : (
-        <div className="table-responsive">
-          <table className="rsvp-table">
-            <thead>
-              <tr>
-                <th>Անուններ / Имена</th>
-                <th>Ներկայություն / Присутствие</th>
-                <th>Քանակ / Кол-во</th>
-                <th>Հրավիրող / Кем приглашен</th>
-                <th>Ամսաթիվ / Дата</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rsvps.map((r) => (
-                <tr key={r.id} className={r.attendance === "yes" ? "row-attending" : "row-declined"}>
-                  <td className="guest-names">
-                    {r.names ? r.names.map((name, i) => (
-                      <span key={i} className="guest-name-badge">{name}</span>
-                    )) : "-"}
-                  </td>
-                  <td>
-                    <span className={`status-badge ${r.attendance === "yes" ? "yes" : "no"}`}>
-                      {r.attendance === "yes" ? "Այո / Да" : "Ոչ / Нет"}
-                    </span>
-                  </td>
-                  <td className="guest-count">{r.guests || 1}</td>
-                  <td className="invited-by">{r.invitedBy}</td>
-                  <td className="submit-date">
-                    {r.submittedAt ? new Date(r.submittedAt).toLocaleString() : "-"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <Card bordered={false}>
+        <Table 
+          dataSource={rsvps}
+          columns={columns}
+          rowKey="id"
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: true }}
+          locale={{ emptyText: "Առայժմ ոչ մի պատասխան չկա: / No responses yet." }}
+        />
+      </Card>
     </div>
   );
 }

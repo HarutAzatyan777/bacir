@@ -8,17 +8,6 @@
   flex-direction: column;
 }
 
-.dashboard-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #f8faf9;
-  color: #2c3e35;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-}
-
 /* Header styling */
 .dashboard-header {
   display: flex;
@@ -37,49 +26,9 @@
   color: #2c3e35;
 }
 
-.header-left p {
-  font-size: 0.85rem;
-  color: #556b5e;
-  margin: 5px 0 0 0;
-  font-weight: 400;
-}
-
 .header-right {
   display: flex;
   gap: 15px;
-}
-
-.logout-btn, .back-btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-}
-
-.logout-btn {
-  background: transparent;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-}
-
-.logout-btn:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
-  color: #1e293b;
-}
-
-.back-btn {
-  background: #f0f5f2;
-  border: 1px solid rgba(44, 62, 53, 0.2);
-  color: #2c3e35;
-}
-
-.back-btn:hover {
-  background: #2c3e35;
-  color: #ffffff;
-  border-color: #2c3e35;
 }
 
 /* Main Area */
@@ -92,295 +41,46 @@
   margin: 0 auto;
 }
 
-/* List View */
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.list-header h2 {
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #2c3e35;
-  margin: 0;
-}
-
-.create-btn {
-  padding: 12px 24px;
-  background: #2c3e35;
-  border: none;
-  color: #ffffff;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.create-btn:hover {
-  background: #3d5a49;
-  box-shadow: 0 4px 12px rgba(44, 62, 53, 0.15);
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px;
-  background: #ffffff;
-  border: 1px dashed #cbd5e1;
-  border-radius: 12px;
-  color: #556b5e;
-}
-
-.empty-state p {
-  margin: 5px 0;
-  font-weight: 400;
-}
-
-/* Invitations Grid */
-.invitations-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 25px;
-}
-
+/* Invitation Card overrides */
 .invitation-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02) !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  transition: all 0.3s ease !important;
 }
 
 .invitation-card:hover {
   transform: translateY(-4px);
-  border-color: #cbd5e1;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
 }
 
-.card-info h3 {
-  font-size: 1.3rem;
-  margin: 0 0 10px 0;
-  font-weight: 500;
-  color: #2c3e35;
-}
-
-.slug-badge {
-  display: inline-block;
-  font-family: monospace;
-  background: #f0f5f2;
-  color: #2c3e35;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  margin-bottom: 15px;
-}
-
-.card-date {
-  font-size: 0.9rem;
-  color: #556b5e;
-  margin: 5px 0;
-  font-weight: 400;
-}
-
-.card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.action-btn, .action-link {
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-  text-decoration: none;
-  box-sizing: border-box;
-}
-
-.view-live {
-  background: #f1f5f9;
-  color: #475569;
-  border-color: #cbd5e1;
-}
-
-.view-live:hover {
-  background: #e2e8f0;
-  color: #1e293b;
-}
-
-.rsvps {
-  background: #f0f5f2;
-  color: #2c3e35;
-  border-color: rgba(44, 62, 53, 0.15);
-}
-
-.rsvps:hover {
-  background: #e2ede7;
-  border-color: #2c3e35;
-}
-
-.edit {
-  background: #ffffff;
-  color: #475569;
-  border-color: #cbd5e1;
-}
-
-.edit:hover {
-  background: #f8fafc;
-  color: #1e293b;
-  border-color: #94a3b8;
-}
-
-.delete {
-  background: #fef2f2;
-  color: #dc2626;
-  border-color: #fca5a5;
-}
-
-.delete:hover {
-  background: #fee2e2;
-  color: #991b1b;
-  border-color: #f87171;
-}
-
-.preview-btn {
-  background: #f0f5f2;
-  color: #2c3e35;
-  border-color: rgba(44, 62, 53, 0.15);
-}
-
-.preview-btn:hover {
-  background: #e2ede7;
-  border-color: #2c3e35;
-}
-
-.card-actions .delete {
-  grid-column: span 2;
-}
-
-.data-spinner {
-  text-align: center;
-  padding: 40px;
-  color: #556b5e;
-}
-
-@media (max-width: 768px) {
-  .dashboard-header {
-    padding: 20px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-  .dashboard-main {
-    padding: 20px;
-  }
-  .list-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  .create-btn {
-    width: 100%;
-  }
-}
-
-/* Modal Preview Styles */
-.preview-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100000;
-  animation: fadeIn 0.25s ease-out;
-}
-
-.preview-modal-content {
-  background: #ffffff;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 550px;
-  height: 90vh;
-  max-height: 960px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Modal styling for preview device */
+.preview-device-modal .ant-modal-content {
+  border-radius: 16px !important;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-}
-
-.preview-modal-header {
-  padding: 15px 24px;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffff;
-}
-
-.preview-modal-header h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #2c3e35;
-}
-
-.preview-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  color: #64748b;
-  line-height: 1;
-  padding: 0;
-  transition: color 0.2s;
-}
-
-.preview-modal-close:hover {
-  color: #ef4444;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
 }
 
 .preview-device-container {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f8fafc;
-  overflow-y: auto;
-  padding: 20px;
+  overflow: hidden;
+  padding: 10px;
 }
 
 /* iPhone 17 Frame Mockup */
 .iphone-17-frame {
   position: relative;
-  width: 393px;
-  height: 852px;
+  width: 330px;
+  height: 670px;
   background: #000000;
-  border: 12px solid #2d302e;
-  border-radius: 54px;
+  border: 10px solid #2d302e;
+  border-radius: 46px;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    0 20px 40px -10px rgba(0, 0, 0, 0.3),
     0 0 0 2px rgba(255, 255, 255, 0.05),
     inset 0 0 4px 2px rgba(255, 255, 255, 0.1);
   display: flex;
@@ -396,45 +96,45 @@
   position: absolute;
   background: #2d302e;
   border-radius: 3px;
-  left: -16px;
+  left: -14px;
 }
 
 .iphone-btn.volume-up {
-  top: 180px;
+  top: 140px;
   width: 4px;
-  height: 60px;
+  height: 48px;
 }
 
 .iphone-btn.volume-down {
-  top: 255px;
+  top: 200px;
   width: 4px;
-  height: 60px;
+  height: 48px;
 }
 
 .iphone-btn.action-button {
-  top: 120px;
+  top: 95px;
   width: 4px;
-  height: 35px;
+  height: 28px;
 }
 
 .iphone-btn.power-button {
-  top: 210px;
+  top: 160px;
   left: auto;
-  right: -16px;
+  right: -14px;
   width: 4px;
-  height: 85px;
+  height: 68px;
 }
 
 /* Dynamic Island */
 .dynamic-island {
   position: absolute;
-  top: 15px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;
-  height: 30px;
+  width: 90px;
+  height: 24px;
   background: #000000;
-  border-radius: 20px;
+  border-radius: 16px;
   z-index: 100;
   pointer-events: none;
   box-shadow: inset 0 0 2px rgba(255,255,255,0.2);
@@ -443,7 +143,7 @@
 /* Screen */
 .iphone-screen {
   flex: 1;
-  border-radius: 42px;
+  border-radius: 36px;
   overflow: hidden;
   background: #ffffff;
   position: relative;
@@ -465,8 +165,8 @@
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 130px;
-  height: 5px;
+  width: 110px;
+  height: 4px;
   background: #000000;
   border-radius: 10px;
   z-index: 100;
@@ -474,47 +174,17 @@
   pointer-events: none;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* Responsive scaling for different screen heights */
-@media (max-height: 960px) {
-  .iphone-17-frame {
-    transform: scale(0.85);
-    transform-origin: center center;
-    margin: -60px 0;
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .header-right {
+    width: 100%;
+  }
+  .dashboard-main {
+    padding: 20px;
   }
 }
-
-@media (max-height: 820px) {
-  .iphone-17-frame {
-    transform: scale(0.72);
-    transform-origin: center center;
-    margin: -110px 0;
-  }
-}
-
-@media (max-height: 700px) {
-  .iphone-17-frame {
-    transform: scale(0.6);
-    transform-origin: center center;
-    margin: -170px 0;
-  }
-}
-
-@media (max-height: 600px) {
-  .iphone-17-frame {
-    transform: scale(0.48);
-    transform-origin: center center;
-    margin: -220px 0;
-  }
-}
-

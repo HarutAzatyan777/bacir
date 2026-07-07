@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
+import Logo from "../../../components/Logo/Logo";
 
 export default function LandingHeader({ t }) {
   const { currentLang, changeLanguage } = useLanguage();
@@ -17,9 +18,8 @@ export default function LandingHeader({ t }) {
 
   return (
     <header className="landing-header">
-      <div className="logo-section" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
-        <span className="logo-gold">BACIR</span>
-        <span className="logo-sub">ONLINE</span>
+      <div className="logo-section" onClick={handleLogoClick} style={{ cursor: "pointer", display: "inline-flex" }}>
+        <Logo variant="horizontal" height={32} theme="gold" />
       </div>
       <div className="nav-actions">
         <div className="lang-selector-glass">

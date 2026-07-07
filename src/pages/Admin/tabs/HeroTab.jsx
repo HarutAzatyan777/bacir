@@ -1,5 +1,8 @@
 import React from "react";
+import { Input, Typography } from "antd";
 import ImageUpload from "../ImageUpload";
+
+const { Title } = Typography;
 
 export default function HeroTab({
   heroNamesAm,
@@ -25,35 +28,35 @@ export default function HeroTab({
 }) {
   return (
     <div className="tab-pane">
-      <h3>Գլխավոր Էջ / Hero Section</h3>
+      <Title level={4} style={{ color: "#2c3e35", marginBottom: 20 }}>Գլխավոր Էջ / Hero Section</Title>
       <div className="form-grid">
         <div className="form-field">
-          <label>Անուններ (Հայերեն)</label>
-          <input type="text" value={heroNamesAm} onChange={(e) => setHeroNamesAm(e.target.value)} required />
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Անուններ (Հայերեն)</label>
+          <Input value={heroNamesAm} onChange={(e) => setHeroNamesAm(e.target.value)} required size="large" />
         </div>
         <div className="form-field">
-          <label>Անուններ (Ռուսերեն)</label>
-          <input type="text" value={heroNamesRu} onChange={(e) => setHeroNamesRu(e.target.value)} required />
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Անուններ (Ռուսերեն)</label>
+          <Input value={heroNamesRu} onChange={(e) => setHeroNamesRu(e.target.value)} required size="large" />
         </div>
         <div className="form-field">
-          <label>Անուններ (Անգլերեն)</label>
-          <input type="text" value={heroNamesEn} onChange={(e) => setHeroNamesEn(e.target.value)} required />
-        </div>
-
-        <div className="form-field">
-          <label>Վերնագիր (Հայերեն)</label>
-          <input type="text" value={heroTitleAm} onChange={(e) => setHeroTitleAm(e.target.value)} />
-        </div>
-        <div className="form-field">
-          <label>Վերնագիր (Ռուսերեն)</label>
-          <input type="text" value={heroTitleRu} onChange={(e) => setHeroTitleRu(e.target.value)} />
-        </div>
-        <div className="form-field">
-          <label>Վերնագիր (Անգլերեն)</label>
-          <input type="text" value={heroTitleEn} onChange={(e) => setHeroTitleEn(e.target.value)} />
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Անուններ (Անգլերեն)</label>
+          <Input value={heroNamesEn} onChange={(e) => setHeroNamesEn(e.target.value)} required size="large" />
         </div>
 
         <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Վերնագիր (Հայերեն)</label>
+          <Input value={heroTitleAm} onChange={(e) => setHeroTitleAm(e.target.value)} size="large" />
+        </div>
+        <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Վերնագիր (Ռուսերեն)</label>
+          <Input value={heroTitleRu} onChange={(e) => setHeroTitleRu(e.target.value)} size="large" />
+        </div>
+        <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Վերնագիր (Անգլերեն)</label>
+          <Input value={heroTitleEn} onChange={(e) => setHeroTitleEn(e.target.value)} size="large" />
+        </div>
+
+        <div className="form-field" style={{ marginTop: 10 }}>
           <ImageUpload
             label="Հեռախոսի ֆոնային նկար (Mobile BG)"
             file={heroBgMobileFile}
@@ -64,7 +67,7 @@ export default function HeroTab({
           />
         </div>
 
-        <div className="form-field">
+        <div className="form-field" style={{ marginTop: 10 }}>
           <ImageUpload
             label="Համակարգչի ֆոնային նկար (Desktop BG)"
             file={heroBgDesktopFile}

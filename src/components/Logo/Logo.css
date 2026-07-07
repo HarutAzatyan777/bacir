@@ -1,0 +1,170 @@
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  user-select: none;
+  transition: opacity 0.2s ease;
+}
+
+.logo-container:hover {
+  opacity: 0.95;
+}
+
+/* Variants */
+.logo-container.variant-horizontal {
+  flex-direction: row;
+  gap: 12px;
+}
+
+.logo-container.variant-vertical {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+}
+
+/* SVG styling */
+.logo-svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.logo-svg {
+  height: 100%;
+  width: auto;
+  overflow: visible;
+}
+
+/* Text styling */
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-container.variant-horizontal .logo-text-group {
+  align-items: flex-start;
+  line-height: 1.05;
+}
+
+.logo-container.variant-vertical .logo-text-group {
+  align-items: center;
+  line-height: 1.15;
+}
+
+.logo-main-text {
+  font-family: 'Montserrat', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+}
+
+.logo-container.variant-horizontal .logo-main-text {
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+}
+
+.logo-container.variant-vertical .logo-main-text {
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+}
+
+.logo-sub-text {
+  font-family: 'Montserrat', 'Inter', -apple-system, sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+}
+
+.logo-container.variant-horizontal .logo-sub-text {
+  font-size: 0.62rem;
+  letter-spacing: 4.5px;
+  margin-top: 1px;
+}
+
+.logo-container.variant-vertical .logo-sub-text {
+  font-size: 0.75rem;
+  letter-spacing: 6px;
+  margin-top: 4px;
+}
+
+/* Themes */
+
+/* Gold theme */
+.logo-container.theme-gold .logo-main-text {
+  background: linear-gradient(135deg, #2c3e35 0%, #3e5a49 45%, #bfa15f 80%, #aa8c4c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-container.theme-gold .logo-sub-text {
+  color: #a38952;
+}
+
+/* Light theme (for dark backgrounds) */
+.logo-container.theme-light .logo-main-text {
+  color: #ffffff;
+}
+
+.logo-container.theme-light .logo-sub-text {
+  color: #C1CFA1;
+  opacity: 0.9;
+}
+
+/* Dark theme */
+.logo-container.theme-dark .logo-main-text {
+  color: #2c3e35;
+}
+
+.logo-container.theme-dark .logo-sub-text {
+  color: #5a7a60;
+}
+
+/* SVG Animations and Micro-interactions */
+.logo-sparkle {
+  transform-origin: center;
+  animation: logo-sparkle-pulse 3s infinite ease-in-out;
+}
+
+.logo-sparkle-1 {
+  animation-delay: 0s;
+}
+
+.logo-sparkle-2 {
+  animation-delay: 1.5s;
+}
+
+.logo-envelope-flap {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: 50px 30px;
+}
+
+.logo-container:hover .logo-envelope-flap {
+  transform: scaleY(-0.8) translateY(-4px);
+}
+
+.logo-wax-seal {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  transform-origin: 50px 58px;
+}
+
+.logo-container:hover .logo-wax-seal {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 2px 4px rgba(170, 140, 76, 0.4));
+}
+
+@keyframes logo-sparkle-pulse {
+  0%, 100% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.2) rotate(45deg);
+    opacity: 1;
+  }
+}

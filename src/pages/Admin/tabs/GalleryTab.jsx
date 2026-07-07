@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaCloudUploadAlt, FaImages } from "react-icons/fa";
+import { UploadOutlined, PictureOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Typography, Space, message, Card } from "antd";
+
+const { Title, Text } = Typography;
 
 function NewFileCard({ file, onRemove }) {
   const [preview, setPreview] = useState("");
@@ -13,17 +16,21 @@ function NewFileCard({ file, onRemove }) {
   if (!preview) return null;
 
   return (
-    <div className="gallery-thumb-card new-thumb">
-      <img src={preview} alt="New Preview" />
-      <span className="gallery-badge new-badge">Նոր / Новый</span>
-      <button
-        type="button"
-        className="delete-thumb-btn"
+    <div className="gallery-thumb-card new-thumb" style={{ position: "relative", width: "120px", height: "120px", borderRadius: "8px", overflow: "hidden", border: "2px solid #2d3748" }}>
+      <img src={preview} alt="New Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      <span className="gallery-badge new-badge" style={{ position: "absolute", bottom: 4, left: 4, background: "#d4af37", color: "#fff", fontSize: "0.65rem", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+        Նոր
+      </span>
+      <Button
+        type="primary"
+        danger
+        shape="circle"
+        size="small"
+        icon={<DeleteOutlined style={{ fontSize: "10px" }} />}
         onClick={onRemove}
         title="Ջնջել / Удалить"
-      >
-        ×
-      </button>
+        style={{ position: "absolute", top: 4, right: 4, width: "20px", height: "20px", minWidth: "auto" }}
+      />
     </div>
   );
 }
@@ -62,7 +69,7 @@ export default function GalleryTab({
       if (droppedFiles.length > 0) {
         setGalleryFiles([...filesArray, ...droppedFiles]);
       } else {
-        alert("Խնդրում ենք ընտրել միայն պատկերային ֆայլեր (images):");
+        message.warning("Խնդրում ենք ընտրել միայն պատկերային ֆայլեր (images):");
       }
     }
   };
@@ -82,7 +89,7 @@ export default function GalleryTab({
 
   return (
     <div className="tab-pane">
-      <h3>Լուսանկարների Սրահ / Gallery</h3>
+      <Title level={4} style={{ color: "#2c3e35", marginBottom: 20 }}>Լուսանկարների Սրահ / Gallery</Title>
       
       <div className="gallery-upload-section" style={{ marginBottom: "25px" }}>
         <div
@@ -118,6 +125,7 @@ export default function GalleryTab({
           <div className="placeholder-icon-wrapper" style={{
             width: "50px",
             height: "50px",
+            borderRef: "50%",
             borderRadius: "50%",
             background: "rgba(44, 62, 53, 0.06)",
             display: "flex",
@@ -126,7 +134,7 @@ export default function GalleryTab({
             color: "#2c3e35",
             fontSize: "20px"
           }}>
-            <FaCloudUploadAlt />
+            <UploadOutlined />
           </div>
           <span style={{ fontWeight: "600", color: "#2c3e35" }}>
             + Ավելացնել լուսանկարներ / Добавить фото
@@ -138,7 +146,9 @@ export default function GalleryTab({
       </div>
 
       <div className="existing-gallery">
-        <h4>Նկարների ցանկ ({galleryUrls.length + filesArray.length})</h4>
+        <Title level={5} style={{ color: "#2c3e35", marginBottom: 12 }}>
+          Նկարների ցանկ / Image List ({galleryUrls.length + filesArray.length})
+        </Title>
         
         {galleryUrls.length === 0 && filesArray.length === 0 ? (
           <div className="no-images-placeholder" style={{
@@ -148,11 +158,11 @@ export default function GalleryTab({
             borderRadius: "8px",
             color: "#64748b"
           }}>
-            <FaImages style={{ fontSize: "36px", marginBottom: "10px", opacity: 0.5 }} />
+            <PictureOutlined style={{ fontSize: "36px", marginBottom: "10px", opacity: 0.5 }} />
             <p>Նկարներ դեռ չկան: Ընտրեք նկարներ վերևի դաշտից:</p>
           </div>
         ) : (
-          <div className="gallery-thumbs-grid">
+          <div className="gallery-thumbs-grid" style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {/* 1. Newly selected files */}
             {filesArray.map((file, idx) => (
               <NewFileCard
@@ -164,17 +174,21 @@ export default function GalleryTab({
 
             {/* 2. Existing files */}
             {galleryUrls.map((url, idx) => (
-              <div key={`existing-${idx}`} className="gallery-thumb-card existing-thumb">
-                <img src={url} alt={`Gallery ${idx}`} />
-                <span className="gallery-badge existing-badge">Առկա / Загружено</span>
-                <button
-                  type="button"
-                  className="delete-thumb-btn"
+              <div key={`existing-${idx}`} className="gallery-thumb-card existing-thumb" style={{ position: "relative", width: "120px", height: "120px", borderRadius: "8px", overflow: "hidden", border: "1px solid #cbd5e1" }}>
+                <img src={url} alt={`Gallery ${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <span className="gallery-badge existing-badge" style={{ position: "absolute", bottom: 4, left: 4, background: "#52c41a", color: "#fff", fontSize: "0.65rem", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+                  Առկա
+                </span>
+                <Button
+                  type="primary"
+                  danger
+                  shape="circle"
+                  size="small"
+                  icon={<DeleteOutlined style={{ fontSize: "10px" }} />}
                   onClick={() => setGalleryUrls(galleryUrls.filter((_, i) => i !== idx))}
                   title="Ջնջել / Удалить"
-                >
-                  ×
-                </button>
+                  style={{ position: "absolute", top: 4, right: 4, width: "20px", height: "20px", minWidth: "auto" }}
+                />
               </div>
             ))}
           </div>

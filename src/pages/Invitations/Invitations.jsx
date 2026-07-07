@@ -3,7 +3,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { useLanguage } from "../../context/LanguageContext";
-import LandingHeader from "../Landing/components/LandingHeader";
 import { FaCalendarAlt, FaHeart, FaBirthdayCake, FaCross, FaEnvelopeOpenText, FaInfoCircle } from "react-icons/fa";
 import { translations as landingTranslations } from "../Landing/translations";
 import "./Invitations.css";
@@ -118,8 +117,6 @@ export default function Invitations() {
       {/* Background Glows */}
       <div className="gallery-glow-1"></div>
       <div className="gallery-glow-2"></div>
-
-      <LandingHeader t={lt} />
 
       <main className="gallery-main-container">
         <div className="gallery-header-block">

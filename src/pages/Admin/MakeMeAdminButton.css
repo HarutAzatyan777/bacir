@@ -1,0 +1,8 @@
+.admin-setup-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 20px auto;
+  font-family: 'Montserrat', 'Inter', sans-serif;
+}

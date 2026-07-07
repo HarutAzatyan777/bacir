@@ -1,8 +1,7 @@
 import React from "react";
-import { Switch, Input, Button, Tag, Space, Typography } from "antd";
+import { Switch, Input, Button, Tag, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
 const { TextArea } = Input;
 
 export default function DressCodeTab({

@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { UploadOutlined, PictureOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Button, Typography, Space, message, Card } from "antd";
-
-const { Title, Text } = Typography;
+import { Button, message } from "antd";
 
 function NewFileCard({ file, onRemove }) {
   const [preview, setPreview] = useState("");

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { useLanguage } from "../../context/LanguageContext";
 import { FaCalendarAlt, FaHeart, FaBirthdayCake, FaCross, FaEnvelopeOpenText, FaInfoCircle } from "react-icons/fa";
-import { translations as landingTranslations } from "../Landing/translations";
 import "./Invitations.css";
 
 const localTranslations = {
@@ -57,7 +56,6 @@ export default function Invitations() {
   const [error, setError] = useState(false);
 
   const t = localTranslations[currentLang] || localTranslations.am;
-  const lt = landingTranslations[currentLang] || landingTranslations.am;
 
   useEffect(() => {
     const fetchInvitations = async () => {

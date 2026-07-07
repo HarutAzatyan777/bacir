@@ -5,7 +5,7 @@ import { httpsCallable } from "firebase/functions";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db, functions } from "../../firebase";
 import { Card, Table, Tag, Input, Button, Popconfirm, Tabs, Spin, Typography, message } from "antd";
-import { SafetyCertificateOutlined, CrownOutlined, UserOutlined } from "@ant-design/icons";
+import { CrownOutlined, UserOutlined } from "@ant-design/icons";
 import "./SuperAdminDashboard.css";
 
 const { Title, Text, Paragraph } = Typography;

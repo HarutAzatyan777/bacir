@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./LandingFooter.css";
 
 export default function LandingFooter({ t }) {
   return (

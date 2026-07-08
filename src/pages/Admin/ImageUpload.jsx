@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { UploadOutlined, DeleteOutlined, SwapOutlined } from "@ant-design/icons";
-import { Button, Typography, message } from "antd";
+import { Button, message } from "antd";
 import ImageCropperModal from "./ImageCropperModal";
 import "./ImageUpload.css";
-
-const { Text } = Typography;
 
 export default function ImageUpload({
   label,

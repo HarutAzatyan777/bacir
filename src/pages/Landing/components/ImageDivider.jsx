@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import "./ImageDivider.css";
 
 export default function ImageDivider({ bgImage, text1, text2 }) {
   return (

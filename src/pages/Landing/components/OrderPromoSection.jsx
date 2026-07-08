@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheck, FaPaperPlane, FaTelegramPlane, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
+import "./OrderPromoSection.css";
 
 export default function OrderPromoSection({ t, selectedPlan }) {
   const [formData, setFormData] = useState({

@@ -1,0 +1,81 @@
+/* HowItWorksSection.css */
+
+.how-it-works-section {
+  padding: 100px 5%;
+  background: rgba(232, 224, 213, 0.35);
+  border-top: 1px solid rgba(58, 90, 64, 0.06);
+  border-bottom: 1px solid rgba(58, 90, 64, 0.06);
+  z-index: 1;
+  position: relative;
+  color: #3A5A40;
+}
+
+.how-it-works-section h2 {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 60px;
+  color: #3A5A40;
+}
+
+.timeline-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline-step {
+  text-align: center;
+  position: relative;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #FAFAFA;
+  border: 2px solid #C1CFA1;
+  color: #3A5A40;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 0 15px rgba(193, 207, 161, 0.3);
+  transition: all 0.3s ease;
+}
+
+.timeline-step:hover .step-number {
+  background: #C1CFA1;
+  color: #3A5A40;
+  transform: scale(1.1);
+}
+
+.timeline-step h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #3A5A40;
+}
+
+.timeline-step p {
+  font-size: 0.9rem;
+  color: rgba(58, 90, 64, 0.85);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .timeline-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .timeline-step::after {
+    display: none;
+  }
+}

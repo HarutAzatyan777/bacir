@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearchPlus, FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import "./GallerySection.css";
 
 const galleryImages = [
   { id: 1, src: "images/1762250986-9.avif", tag: "Wedding / Portrait", size: "large", slug: "demo-wedding-portrait" },

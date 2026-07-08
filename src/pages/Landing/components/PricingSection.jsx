@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaCheck, FaFire } from "react-icons/fa";
+import "./PricingSection.css";
 
 export default function PricingSection({ t, onSelectPlan }) {
   const plans = [

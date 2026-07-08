@@ -7,6 +7,7 @@ import {
   FaImages, 
   FaCogs 
 } from "react-icons/fa";
+import "./FeaturesSection.css";
 
 export default function FeaturesSection({ t }) {
   return (

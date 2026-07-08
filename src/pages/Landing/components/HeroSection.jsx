@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEnvelopeOpenText } from "react-icons/fa";
+import "./HeroSection.css";
 
 export default function HeroSection({ t }) {
   const navigate = useNavigate();

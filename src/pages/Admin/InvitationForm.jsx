@@ -3,7 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../../firebase";
 import { Card, Button, Tabs, Modal, Spin, Typography, message, Space } from "antd";
-import { LeftOutlined, MobileOutlined, SaveOutlined } from "@ant-design/icons";
+import { MobileOutlined, SaveOutlined } from "@ant-design/icons";
 import "./InvitationForm.css";
 
 // Sub-tab Components

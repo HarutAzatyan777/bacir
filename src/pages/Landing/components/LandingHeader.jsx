@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
 import Logo from "../../../components/Logo/Logo";
+import "./LandingHeader.css";
 
 export default function LandingHeader({ t }) {
   const { currentLang, changeLanguage } = useLanguage();

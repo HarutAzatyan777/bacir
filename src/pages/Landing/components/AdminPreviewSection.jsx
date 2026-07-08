@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import "./AdminPreviewSection.css";
 
 export default function AdminPreviewSection({ t }) {
   return (

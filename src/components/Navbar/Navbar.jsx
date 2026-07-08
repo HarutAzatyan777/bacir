@@ -155,9 +155,8 @@ export default function Navbar() {
               icon={<LoginOutlined />}
               onClick={() => navigate("/admin/login")} 
               className="navbar-login-btn"
-            >
-              {loginText[currentLang] || loginText.en}
-            </Button>
+              title={loginText[currentLang] || loginText.en}
+            />
           )}
         </div>
       </div>

@@ -150,7 +150,11 @@ return (
   className={`envelope-stage ${isOpened ? "open" : ""} ${isFadingOut ? "fade-out" : ""}`}
   style={{ 
     '--envelope-texture': `url(${imageUrl})`,
-    backgroundColor: envelopeBgColor || undefined
+    backgroundColor: envelopeBgColor || "#2c3a1c",
+    backgroundImage: `url(${imageUrl})`,
+    backgroundSize: "contain",
+    backgroundRepeat: "repeat",
+    backgroundBlendMode: "multiply"
   }}
 >
 

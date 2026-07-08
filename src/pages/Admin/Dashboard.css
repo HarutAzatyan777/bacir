@@ -157,6 +157,7 @@
   height: 100%;
   border: none;
   background: #ffffff;
+  overflow: hidden !important;
 }
 
 /* Home Indicator */

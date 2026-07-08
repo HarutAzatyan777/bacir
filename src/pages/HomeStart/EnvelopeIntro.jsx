@@ -22,7 +22,7 @@ const translations = {
   }
 };
 
-export default function EnvelopeIntro({ onOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl }){
+export default function EnvelopeIntro({ onOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl, envelopeBgColor, loadingBgColor }){
 
 const navigate = useNavigate()
 const { currentLang } = useLanguage()
@@ -99,7 +99,10 @@ return (
   <>
     {/* Բեռնման էկրան (եթե դեռ ամբողջովին չի անհետացել) */}
     {isLoading && (
-      <div className={`loading-screen ${isHidingLoading ? "fade-out" : ""}`}>
+      <div 
+        className={`loading-screen ${isHidingLoading ? "fade-out" : ""}`}
+        style={{ backgroundColor: loadingBgColor || undefined }}
+      >
       <div className="spinner-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
         <FaSpinner className="spinner-icon" size={48} />
       </div>
@@ -110,7 +113,10 @@ return (
     {/* Հիմնական ծրարի էկրանը */}
 <div 
   className={`envelope-stage ${isOpened ? "open" : ""} ${isFadingOut ? "fade-out" : ""}`}
-  style={{ '--envelope-texture': `url(${imageUrl})` }}
+  style={{ 
+    '--envelope-texture': `url(${imageUrl})`,
+    backgroundColor: envelopeBgColor || undefined
+  }}
 >
 
 <div className="envelope" onClick={openEnvelope}>

@@ -42,30 +42,25 @@
   gap: 20px;
 }
 
-.lang-selector-glass {
-  display: flex;
-  background: rgba(58, 90, 64, 0.05);
-  border: 1px solid rgba(58, 90, 64, 0.1);
-  border-radius: 20px;
-  padding: 2px;
+.lang-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 90, 64, 0.05) !important;
+  border: 1px solid rgba(58, 90, 64, 0.1) !important;
+  color: #3A5A40 !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  height: 34px !important;
+  padding: 4px 14px !important;
+  transition: all 0.3s ease !important;
 }
 
-.lang-selector-glass button {
-  background: none;
-  border: none;
-  color: rgba(58, 90, 64, 0.6);
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 18px;
-  transition: all 0.3s ease;
-}
-
-.lang-selector-glass button.active {
-  background: #C1CFA1;
-  color: #3A5A40;
-  box-shadow: 0 4px 10px rgba(193, 207, 161, 0.3);
+.lang-dropdown-btn:hover,
+.lang-dropdown-btn:focus {
+  background: rgba(58, 90, 64, 0.1) !important;
+  border-color: rgba(58, 90, 64, 0.2) !important;
+  color: #3d5a49 !important;
 }
 
 .nav-admin-btn {

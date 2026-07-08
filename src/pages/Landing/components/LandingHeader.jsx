@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
 import Logo from "../../../components/Logo/Logo";
+import { Dropdown, Button } from "antd";
+import { GlobalOutlined, DownOutlined } from "@ant-design/icons";
 import "./LandingHeader.css";
 
 export default function LandingHeader({ t }) {
@@ -17,32 +19,41 @@ export default function LandingHeader({ t }) {
     }
   };
 
+  const langMenuItems = [
+    {
+      key: "am",
+      label: "AM (Հայերեն)",
+    },
+    {
+      key: "ru",
+      label: "RU (Русский)",
+    },
+    {
+      key: "en",
+      label: "EN (English)",
+    },
+  ];
+
   return (
     <header className="landing-header">
       <div className="logo-section" onClick={handleLogoClick} style={{ cursor: "pointer", display: "inline-flex" }}>
         <Logo variant="horizontal" height={32} theme="gold" />
       </div>
       <div className="nav-actions">
-        <div className="lang-selector-glass">
-          <button 
-            className={currentLang === "am" ? "active" : ""} 
-            onClick={() => changeLanguage("am")}
-          >
-            AM
-          </button>
-          <button 
-            className={currentLang === "ru" ? "active" : ""} 
-            onClick={() => changeLanguage("ru")}
-          >
-            RU
-          </button>
-          <button 
-            className={currentLang === "en" ? "active" : ""} 
-            onClick={() => changeLanguage("en")}
-          >
-            EN
-          </button>
-        </div>
+        <Dropdown 
+          menu={{ 
+            items: langMenuItems, 
+            onClick: ({ key }) => changeLanguage(key),
+            selectable: true,
+            selectedKeys: [currentLang]
+          }} 
+          trigger={["click"]} 
+          placement="bottomRight"
+        >
+          <Button className="lang-dropdown-btn" icon={<GlobalOutlined />}>
+            <span style={{ marginRight: 6 }}>{currentLang.toUpperCase()}</span> <DownOutlined style={{ fontSize: "10px" }} />
+          </Button>
+        </Dropdown>
       </div>
     </header>
   );

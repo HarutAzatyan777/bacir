@@ -77,6 +77,7 @@ export default function LocationSection({ locationData }) {
   const churchAddr2 = locationData?.church?.address2?.[currentLang] || locationData?.church?.address2?.am || t.churchMapAddr2;
   const churchTime = locationData?.church?.time || "15:00";
   const churchMapLink = locationData?.church?.mapLink || mapLinks.church;
+  const churchIcon = locationData?.church?.iconUrl || ChurchIconOutline;
 
   // Ռեստորան
   const partyTitle = locationData?.party?.title?.[currentLang] || locationData?.party?.title?.am || t.partyTitle;
@@ -86,9 +87,12 @@ export default function LocationSection({ locationData }) {
   const partyAddr2 = locationData?.party?.address2?.[currentLang] || locationData?.party?.address2?.am || t.partyMapAddr2;
   const partyTime = locationData?.party?.time || "17:30";
   const partyMapLink = locationData?.party?.mapLink || mapLinks.party;
+  const partyIcon = locationData?.party?.iconUrl || RestaurantIconOutline;
+
+  const textColorStyle = locationData?.textColor ? { color: locationData.textColor } : {};
 
   return (
-    <section className={styles.locationSection}>
+    <section className={styles.locationSection} style={textColorStyle}>
       <img 
         src={bgImg} 
         alt="Background" 
@@ -96,28 +100,28 @@ export default function LocationSection({ locationData }) {
         loading="lazy" 
       />
       <div className={styles.locationContentContainer}>
-        <h2 className={styles.mainSectionTitle}>{displayMainTitle}</h2>
+        <h2 className={styles.mainSectionTitle} style={textColorStyle}>{displayMainTitle}</h2>
 
         <div className={styles.timeline}>
           {/* Step 1: Church */}
           {showChurch && (
             <div className={styles.step}>
               <div className={styles.stepContentTop}>
-                <h3>{churchTitle}</h3>
-                <p className={styles.stepLocation}>{churchName}</p>
-                <span className={styles.stepTime}>{churchTime}</span>
+                <h3 style={textColorStyle}>{churchTitle}</h3>
+                <p className={styles.stepLocation} style={textColorStyle}>{churchName}</p>
+                <span className={styles.stepTime} style={textColorStyle}>{churchTime}</span>
               </div>
               
               <div className={styles.stepIconCenter}>
                   <img 
-                    src={ChurchIconOutline} 
+                    src={churchIcon} 
                     alt="Church" 
                     className={styles.largeIcon} 
                     loading="lazy"
                   />
               </div>
               
-              <p className={styles.stepAddress} style={{ marginBottom: '15px' }}>
+              <p className={styles.stepAddress} style={{ marginBottom: '15px', ...textColorStyle }}>
                 {churchAddr1} <br />
                 {churchAddr2}
               </p>
@@ -135,22 +139,22 @@ export default function LocationSection({ locationData }) {
           {showParty && (
             <div className={styles.step}>
                 <div className={styles.stepContentTop}>
-                  <h3>{partyTitle}</h3>
-                  <p className={styles.stepLocation}>{partyName}</p>
-                  {partyAddrExtra && <p className={styles.stepAddress}>{partyAddrExtra}</p>}
-                  <span className={styles.stepTime}>{partyTime}</span>
+                  <h3 style={textColorStyle}>{partyTitle}</h3>
+                  <p className={styles.stepLocation} style={textColorStyle}>{partyName}</p>
+                  {partyAddrExtra && <p className={styles.stepAddress} style={textColorStyle}>{partyAddrExtra}</p>}
+                  <span className={styles.stepTime} style={textColorStyle}>{partyTime}</span>
                 </div>
 
                 <div className={styles.stepIconCenter}>
                     <img 
-                      src={RestaurantIconOutline} 
+                      src={partyIcon} 
                       alt="Restaurant" 
                       className={styles.largeIcon} 
                       loading="lazy"
                     />
                 </div>
 
-                <p className={styles.stepAddress} style={{ marginBottom: '15px' }}>
+                <p className={styles.stepAddress} style={{ marginBottom: '15px', ...textColorStyle }}>
                   {partyAddr1} <br />
                   {partyAddr2}
                 </p>

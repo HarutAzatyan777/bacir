@@ -32,6 +32,14 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const [musicUrl, setMusicUrl] = useState("/wedding-audio.mp3");
   const [envelopeBgFile, setEnvelopeBgFile] = useState(null);
   const [envelopeBgUrl, setEnvelopeBgUrl] = useState("");
+  const [envelopeBgColor, setEnvelopeBgColor] = useState("#2c3a1c");
+  const [loadingBgColor, setLoadingBgColor] = useState("#2c3a1c");
+  const [calTextColor, setCalTextColor] = useState("#ffffff");
+  const [locTextColor, setLocTextColor] = useState("#2c3e35");
+  const [churchIconFile, setChurchIconFile] = useState(null);
+  const [churchIconUrl, setChurchIconUrl] = useState("");
+  const [partyIconFile, setPartyIconFile] = useState(null);
+  const [partyIconUrl, setPartyIconUrl] = useState("");
   const [sections, setSections] = useState([
     { id: "hero", type: "hero", enabled: true },
     { id: "calendar", type: "calendar", enabled: true },
@@ -165,6 +173,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setSealInitials(data.sealInitials || "RL");
         setMusicUrl(data.musicUrl || "/wedding-audio.mp3");
         setEnvelopeBgUrl(data.envelopeBgUrl || "");
+        setEnvelopeBgColor(data.envelopeBgColor || "#2c3a1c");
+        setLoadingBgColor(data.loadingBgColor || "#2c3a1c");
 
         if (data.sections && Array.isArray(data.sections)) {
           setSections(data.sections);
@@ -212,6 +222,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setCalInviteEn(data.calendar?.invite?.en || "");
         setEventDate(data.calendar?.eventDate ? data.calendar.eventDate.substring(0, 16) : "");
         setCalBgUrl(data.calendar?.bgUrl || "");
+        setCalTextColor(data.calendar?.textColor || "#ffffff");
 
         // Church
         setShowChurch(data.location?.church?.show !== false);
@@ -229,6 +240,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setChurchAddr2En(data.location?.church?.address2?.en || "");
         setChurchTime(data.location?.church?.time || "15:00");
         setChurchMapLink(data.location?.church?.mapLink || "");
+        setChurchIconUrl(data.location?.church?.iconUrl || "");
 
         // Party
         setShowParty(data.location?.party?.show !== false);
@@ -249,7 +261,9 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setPartyAddr2En(data.location?.party?.address2?.en || "");
         setPartyTime(data.location?.party?.time || "17:30");
         setPartyMapLink(data.location?.party?.mapLink || "");
+        setPartyIconUrl(data.location?.party?.iconUrl || "");
         setLocBgUrl(data.location?.bgUrl || "");
+        setLocTextColor(data.location?.textColor || "#2c3e35");
 
         // Gallery
         setGalleryUrls(data.gallery?.images || []);
@@ -472,6 +486,16 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         const url = await handleUpload(locBgFile, "location");
         if (url) finalLocBg = url;
       }
+      let finalChurchIcon = churchIconUrl;
+      let finalPartyIcon = partyIconUrl;
+      if (churchIconFile) {
+        const url = await handleUpload(churchIconFile, "location");
+        if (url) finalChurchIcon = url;
+      }
+      if (partyIconFile) {
+        const url = await handleUpload(partyIconFile, "location");
+        if (url) finalPartyIcon = url;
+      }
 
       // Upload gallery photos
       if (galleryFiles.length > 0) {
@@ -489,6 +513,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         sealInitials,
         musicUrl,
         envelopeBgUrl: finalEnvelopeBg,
+        envelopeBgColor: envelopeBgColor,
+        loadingBgColor: loadingBgColor,
         ownerId: auth.currentUser ? auth.currentUser.uid : null,
         sections,
         theme: {
@@ -512,6 +538,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           invite: { am: calInviteAm, ru: calInviteRu, en: calInviteEn },
           eventDate: eventDate ? new Date(eventDate).toISOString() : "",
           bgUrl: finalCalBg,
+          textColor: calTextColor,
         },
         location: {
           title: { 
@@ -527,6 +554,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             address2: { am: churchAddr2Am, ru: churchAddr2Ru, en: churchAddr2En },
             time: churchTime,
             mapLink: churchMapLink,
+            iconUrl: finalChurchIcon,
           },
           party: {
             show: showParty,
@@ -537,8 +565,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             address2: { am: partyAddr2Am, ru: partyAddr2Ru, en: partyAddr2En },
             time: partyTime,
             mapLink: partyMapLink,
+            iconUrl: finalPartyIcon,
           },
           bgUrl: finalLocBg,
+          textColor: locTextColor,
         },
         gallery: {
           images: finalGalleryUrls,
@@ -637,6 +667,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           setEnvelopeBgFile={setEnvelopeBgFile}
           envelopeBgUrl={envelopeBgUrl}
           setEnvelopeBgUrl={setEnvelopeBgUrl}
+          envelopeBgColor={envelopeBgColor}
+          setEnvelopeBgColor={setEnvelopeBgColor}
+          loadingBgColor={loadingBgColor}
+          setLoadingBgColor={setLoadingBgColor}
         />
       )
     },
@@ -804,6 +838,18 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           setLocBgFile={setLocBgFile}
           locBgUrl={locBgUrl}
           setLocBgUrl={setLocBgUrl}
+          calTextColor={calTextColor}
+          setCalTextColor={setCalTextColor}
+          locTextColor={locTextColor}
+          setLocTextColor={setLocTextColor}
+          churchIconFile={churchIconFile}
+          setChurchIconFile={setChurchIconFile}
+          churchIconUrl={churchIconUrl}
+          setChurchIconUrl={setChurchIconUrl}
+          partyIconFile={partyIconFile}
+          setPartyIconFile={setPartyIconFile}
+          partyIconUrl={partyIconUrl}
+          setPartyIconUrl={setPartyIconUrl}
         />
       )
     },
@@ -929,6 +975,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                   src={`/i/${previewSlug}?preview=true`} 
                   title="iPhone 17 Preview"
                   className="preview-iframe"
+                  scrolling="no"
                 />
               )}
             </div>

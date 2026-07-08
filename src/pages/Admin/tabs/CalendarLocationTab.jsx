@@ -99,7 +99,19 @@ export default function CalendarLocationTab({
   locBgFile,
   setLocBgFile,
   locBgUrl,
-  setLocBgUrl
+  setLocBgUrl,
+  calTextColor,
+  setCalTextColor,
+  locTextColor,
+  setLocTextColor,
+  churchIconFile,
+  setChurchIconFile,
+  churchIconUrl,
+  setChurchIconUrl,
+  partyIconFile,
+  setPartyIconFile,
+  partyIconUrl,
+  setPartyIconUrl
 }) {
   return (
     <div className="tab-pane">
@@ -124,6 +136,25 @@ export default function CalendarLocationTab({
             setUrl={setCalBgUrl}
             dimensionsInfo="Խորհուրդ է տրվում՝ 1200 x 800px"
           />
+        </div>
+        <div className="form-field" style={{ marginTop: 10 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Օրացույցի տեքստի գույն (Calendar Text Color)
+          </label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={calTextColor || "#ffffff"}
+              onChange={(e) => setCalTextColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={calTextColor || "#ffffff"}
+              onChange={(e) => setCalTextColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
 
         <div className="form-field">
@@ -259,6 +290,16 @@ export default function CalendarLocationTab({
               <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Քարտեզի հղում (Google Maps Link)</label>
               <Input value={churchMapLink} onChange={(e) => setChurchMapLink(e.target.value)} size="large" />
             </div>
+            <div className="form-field" style={{ marginTop: 10 }}>
+              <ImageUpload
+                label="Եկեղեցու պատկերակ (Church Icon)"
+                file={churchIconFile}
+                setFile={setChurchIconFile}
+                url={churchIconUrl}
+                setUrl={setChurchIconUrl}
+                dimensionsInfo="Խորհուրդ է տրվում՝ 64 x 64px կամ SVG"
+              />
+            </div>
           </div>
           <Divider style={{ margin: "32px 0" }} />
         </>
@@ -341,12 +382,22 @@ export default function CalendarLocationTab({
               <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Քարտեզի հղում (Google Maps Link)</label>
               <Input value={partyMapLink} onChange={(e) => setPartyMapLink(e.target.value)} size="large" />
             </div>
+            <div className="form-field" style={{ marginTop: 10 }}>
+              <ImageUpload
+                label="Ռեստորանի պատկերակ (Restaurant Icon)"
+                file={partyIconFile}
+                setFile={setPartyIconFile}
+                url={partyIconUrl}
+                setUrl={setPartyIconUrl}
+                dimensionsInfo="Խորհուրդ է տրվում՝ 64 x 64px կամ SVG"
+              />
+            </div>
           </div>
           <Divider style={{ margin: "32px 0" }} />
         </>
       )}
 
-      <div className="form-grid" style={{ marginTop: "20px" }}>
+      <div className="form-grid" style={{ marginTop: "20px", gridTemplateColumns: "1fr 1fr" }}>
         <div className="form-field">
           <ImageUpload
             label="Տեղանքի բաժնի ֆոնային նկար"
@@ -356,6 +407,25 @@ export default function CalendarLocationTab({
             setUrl={setLocBgUrl}
             dimensionsInfo="Խորհուրդ է տրվում՝ 1200 x 800px"
           />
+        </div>
+        <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Տեղանքի տեքստի գույն (Location Text Color)
+          </label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={locTextColor || "#2c3e35"}
+              onChange={(e) => setLocTextColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={locTextColor || "#2c3e35"}
+              onChange={(e) => setLocTextColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
       </div>
     </div>

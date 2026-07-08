@@ -29,15 +29,14 @@ export default function ImageCropperModal({
   // Center image inside the crop frame initially
   const handleImageLoad = () => {
     const img = imgRef.current;
-    const frame = frameRef.current;
-    if (!img || !frame) return;
+    if (!img) return;
 
-    const imgRect = img.getBoundingClientRect();
-    const frameRect = frame.getBoundingClientRect();
+    const w = img.offsetWidth;
+    const h = img.offsetHeight;
 
     setPosition({
-      x: (frameRect.width - imgRect.width) / 2,
-      y: (frameRect.height - imgRect.height) / 2
+      x: (320 - w) / 2,
+      y: (320 - h) / 2
     });
     setZoom(1);
   };
@@ -197,6 +196,8 @@ export default function ImageCropperModal({
                 transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
                 cursor: isDragging ? "grabbing" : "grab",
                 position: "absolute",
+                left: "0px",
+                top: "0px",
                 maxWidth: "none",
                 maxHeight: "none"
               }}

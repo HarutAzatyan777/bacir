@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged, signOut, getIdTokenResult } from "firebase/auth";
 import { auth } from "../../firebase";
 import { Dropdown, Avatar, Button, Spin, Typography } from "antd";
@@ -11,6 +11,10 @@ import "./Navbar.css";
 const { Text } = Typography;
 
 export default function Navbar() {
+  const location = useLocation();
+
+
+
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -108,6 +112,16 @@ export default function Navbar() {
       label: "EN (English)",
     },
   ];
+
+  // Hide the navbar on invitation and demo routes
+  if (
+    location.pathname.startsWith("/i/") ||
+    location.pathname === "/show-invitation" ||
+    location.pathname === "/home" ||
+    location.pathname === "/demo"
+  ) {
+    return null;
+  }
 
   return (
     <nav className="navbar">

@@ -1,57 +1,56 @@
 /* Language Switcher Container */
 .language-switcher {
-  position: fixed; 
-  /* Փորձիր սա, որպեսզի հաստատ լինի վերևի աջ անկյունում */
-  top: 20px;
-  right: 20px; 
-  left: auto; /* Ավելացնում ենք սա, որպեսզի չեղարկենք հնարավոր left արժեքները */
-  
-  display: flex;
-  flex-direction: row; /* Հորիզոնական դասավորություն */
-  gap: 8px;
-  z-index: 9999; /* Ավելի բարձր շերտ, որ ոչ մի բան չծածկի */
+  position: fixed !important; 
+  top: 20px !important;
+  right: 20px !important; 
+  left: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  z-index: 9999 !important;
 }
 
 /* Ընդհանուր կոճակների ոճը */
-.language-switcher button {
-  background-color: rgba(255, 255, 255, 0.7); /* Ավելի թափանցիկ */
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Noto Serif Armenian', serif;
-  text-transform: uppercase; /* Որպեսզի լեզուները միշտ մեծատառ լինեն */
-  cursor: pointer;
-  border-radius: 50px; /* Ավելի կլորավուն */
-  transition: all 0.3s ease;
-  color: #222;
-  backdrop-filter: blur(8px); /* Ավելի ուժեղ ապակե էֆեկտ */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.language-switcher-btn {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #222 !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  font-family: 'Noto Serif Armenian', serif !important;
+  height: 34px !important;
+  padding: 4px 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Հովեր էֆեկտ */
-.language-switcher button:hover {
-  background-color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Ակտիվ լեզվի կոճակը */
-.language-switcher button.active {
-  background-color: #000; /* Սև ֆոն ակտիվի համար */
-  color: #fff;
-  border-color: #000;
+.language-switcher-btn:hover,
+.language-switcher-btn:focus {
+  background-color: #fff !important;
+  color: #000 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Մոբայլ տարբերակ */
 @media (max-width: 600px) {
   .language-switcher {
-    top: 15px;
-    right: 15px;
+    top: 15px !important;
+    right: 15px !important;
   }
   
-  .language-switcher button {
-    padding: 4px 10px;
-    font-size: 11px;
+  .language-switcher-btn {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    height: 30px !important;
   }
 }

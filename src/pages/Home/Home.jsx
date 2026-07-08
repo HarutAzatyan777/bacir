@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../../context/LanguageContext"; // Ներմուծում ենք hook-ը
 import { FaMusic, FaVolumeMute } from "react-icons/fa";
+import { Dropdown, Button } from "antd";
+import { GlobalOutlined, DownOutlined } from "@ant-design/icons";
 
 import HeroSection from "../../components/HeroSection/HeroSection";
 import InvitationText from "../../components/InvitationText/InvitationText";
@@ -136,24 +138,24 @@ export default function Home({ invitationData }) {
 
       {/* Լեզվի փոխարկիչը թողնում ենք այստեղ կամ տեղափոխում Navbar */}
       <div className="language-switcher">
-        <button 
-          className={currentLang === "am" ? "active" : ""}
-          onClick={() => changeLanguage("am")} 
+        <Dropdown 
+          menu={{ 
+            items: [
+              { key: "am", label: "AM (Հայերեն)" },
+              { key: "ru", label: "RU (Русский)" },
+              { key: "en", label: "EN (English)" }
+            ], 
+            onClick: ({ key }) => changeLanguage(key),
+            selectable: true,
+            selectedKeys: [currentLang]
+          }} 
+          trigger={["click"]} 
+          placement="bottomRight"
         >
-          ՀԱՅ
-        </button>
-        <button 
-          className={currentLang === "ru" ? "active" : ""}
-          onClick={() => changeLanguage("ru")}
-        >
-          РУС
-        </button>
-        <button 
-          className={currentLang === "en" ? "active" : ""}
-          onClick={() => changeLanguage("en")}
-        >
-          ENG
-        </button>
+          <Button className="language-switcher-btn" icon={<GlobalOutlined />}>
+            <span style={{ marginRight: 6 }}>{currentLang.toUpperCase()}</span> <DownOutlined style={{ fontSize: "10px" }} />
+          </Button>
+        </Dropdown>
       </div>
 
       {/* Dynamic Sections */}

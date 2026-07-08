@@ -19,7 +19,11 @@ export default function GeneralTab({
   envelopeBgFile,
   setEnvelopeBgFile,
   envelopeBgUrl,
-  setEnvelopeBgUrl
+  setEnvelopeBgUrl,
+  envelopeBgColor,
+  setEnvelopeBgColor,
+  loadingBgColor,
+  setLoadingBgColor
 }) {
   return (
     <div className="tab-pane">
@@ -95,6 +99,46 @@ export default function GeneralTab({
             aspectRatio={3/2}
             dimensionsInfo="Խորհուրդ է տրվում՝ 1200 x 800px (3:2)"
           />
+        </div>
+
+        <div className="form-field full-width" style={{ marginTop: 15 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Ծրարի բացման էջի ֆոնի գույն (Envelope Intro Page BG Color)
+          </label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={envelopeBgColor || "#2c3a1c"}
+              onChange={(e) => setEnvelopeBgColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={envelopeBgColor || "#2c3a1c"}
+              onChange={(e) => setEnvelopeBgColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
+        </div>
+
+        <div className="form-field full-width" style={{ marginTop: 15 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Բեռնման էկրանի ֆոնի գույն (Loading Page BG Color)
+          </label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={loadingBgColor || "#2c3a1c"}
+              onChange={(e) => setLoadingBgColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={loadingBgColor || "#2c3a1c"}
+              onChange={(e) => setLoadingBgColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
       </div>
     </div>

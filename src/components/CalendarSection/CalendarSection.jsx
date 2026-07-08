@@ -81,6 +81,8 @@ export default function CalendarSection({ calendarData }) {
   const displayInvite = calendarData?.invite?.[currentLang] || calendarData?.invite?.am || t.invite;
   const bgImg = calendarData?.bgUrl || "/location-bg.jpg";
 
+  const textColorStyle = calendarData?.textColor ? { color: calendarData.textColor, textShadow: "none" } : {};
+
   return (
     <div
       className="calendar-section"
@@ -93,15 +95,15 @@ export default function CalendarSection({ calendarData }) {
       />
       
       <div className="calendar-content">
-        <h2 data-aos="fade-down" className="section-title">
+        <h2 data-aos="fade-down" className="section-title" style={textColorStyle}>
           {displayTitle}
         </h2>
 
-        <p data-aos="fade-right" className="intro-text">
+        <p data-aos="fade-right" className="intro-text" style={textColorStyle}>
           {displayIntro}
         </p>
 
-        <p data-aos="fade-left" className="invite-text">
+        <p data-aos="fade-left" className="invite-text" style={textColorStyle}>
           {displayInvite}
         </p>
 

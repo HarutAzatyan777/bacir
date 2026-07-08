@@ -291,6 +291,7 @@ export default function Dashboard() {
                   src={`/i/${previewInvitationId}?preview=true`} 
                   title="iPhone 17 Preview"
                   className="preview-iframe"
+                  scrolling="no"
                 />
               )}
             </div>

@@ -14,6 +14,72 @@ export default function InvitationLoader() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isEnvelopeOpened, setIsEnvelopeOpened] = useState(false);
+  const isPreview = searchParams.get("preview") === "true";
+
+  useEffect(() => {
+    if (!isPreview) return;
+
+    document.body.classList.add("preview-mode");
+
+    let isDown = false;
+    let startY;
+    let scrollTop;
+
+    const handleMouseDown = (e) => {
+      // Don't drag-scroll if clicking interactive inputs/buttons
+      if (
+        e.target.tagName === "BUTTON" ||
+        e.target.tagName === "A" ||
+        e.target.tagName === "INPUT" ||
+        e.target.tagName === "SELECT" ||
+        e.target.tagName === "TEXTAREA" ||
+        e.target.closest("button") ||
+        e.target.closest("a") ||
+        e.target.closest(".seal") ||
+        e.target.closest(".lang-dropdown-btn") ||
+        e.target.closest(".language-switcher-btn") ||
+        e.target.closest(".nav-admin-btn")
+      ) {
+        return;
+      }
+      isDown = true;
+      document.body.classList.add("grabbing");
+      startY = e.clientY;
+      scrollTop = window.scrollY || document.documentElement.scrollTop;
+    };
+
+    const handleMouseLeave = () => {
+      isDown = false;
+      document.body.classList.remove("grabbing");
+    };
+
+    const handleMouseUp = () => {
+      isDown = false;
+      document.body.classList.remove("grabbing");
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const y = e.clientY;
+      const walk = (y - startY) * 1.5; // Scroll speed multiplier
+      window.scrollTo(0, scrollTop - walk);
+    };
+
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.body.classList.remove("preview-mode");
+      document.body.classList.remove("grabbing");
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [isPreview]);
 
   useEffect(() => {
     const fetchInvitation = async () => {
@@ -79,6 +145,8 @@ export default function InvitationLoader() {
         heroBgMobile={invitationData.hero?.bgMobileUrl}
         heroBgDesktop={invitationData.hero?.bgDesktopUrl}
         envelopeBgUrl={invitationData.envelopeBgUrl}
+        envelopeBgColor={invitationData.envelopeBgColor}
+        loadingBgColor={invitationData.loadingBgColor}
       />
     );
   }

@@ -1,5 +1,8 @@
 import React from "react";
-import { Input, Button, Table, Divider } from "antd";
+import { Input, Button, Table, Divider, Typography } from "antd";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+
+const { Title } = Typography;
 
 export default function RsvpTelegramTab({
   rsvpDeadline,

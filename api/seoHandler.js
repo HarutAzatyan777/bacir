@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
     let title = "Մեր մեծ օրը - Հարսանեկան հրավեր";
     let description = "Սիրով հրավիրում ենք մասնակցել մեր տոնական արարողությանը:";
-    let imageUrl = "https://devaura.site/social-preview.png"; // fallback
+    let imageUrl = "https://www.bacir.online/images/1758566259-hero-adovasio3.avif"; // fallback
 
     if (docSnap.exists) {
       const data = docSnap.data();

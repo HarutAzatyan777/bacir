@@ -30,8 +30,8 @@
    ========================= */
 .envelope {
   position: absolute;
-  width: max(100vw, 150vh);
-  height: max(100vh, 66.66vw);
+  width: max(100%, 150vh);
+  height: max(100%, 66.66vw);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -213,6 +213,35 @@
     0 2px 5px rgba(0, 0, 0, 0.2), 
     inset 4px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.1s ease;
+}
+
+/* Wax Seal Shapes */
+.seal.seal-shape-circle {
+  border-radius: 50% !important;
+}
+.seal.seal-shape-circle::before {
+  border-radius: 50% !important;
+}
+
+.seal.seal-shape-organic {
+  border-radius: 48% 52% 50% 50% / 50% 48% 52% 50% !important;
+}
+.seal.seal-shape-organic::before {
+  border-radius: 51% 49% 48% 52% / 52% 48% 52% 48% !important;
+}
+
+.seal.seal-shape-square {
+  border-radius: 20% !important;
+}
+.seal.seal-shape-square::before {
+  border-radius: 18% !important;
+}
+
+.seal.seal-shape-oval {
+  border-radius: 50% / 60% 60% 40% 40% !important;
+}
+.seal.seal-shape-oval::before {
+  border-radius: 50% / 60% 60% 40% 40% !important;
 }
 /* =========================
    BOTTOM TEXT

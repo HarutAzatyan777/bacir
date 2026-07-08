@@ -34,6 +34,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const [envelopeBgUrl, setEnvelopeBgUrl] = useState("");
   const [envelopeBgColor, setEnvelopeBgColor] = useState("#2c3a1c");
   const [loadingBgColor, setLoadingBgColor] = useState("#2c3a1c");
+  const [envelopeTextColor, setEnvelopeTextColor] = useState("#b3c0a4");
+  const [envelopeTextFont, setEnvelopeTextFont] = useState("inherit");
+  const [sealColor, setSealColor] = useState("#e7dcc8");
+  const [sealShape, setSealShape] = useState("organic");
   const [calTextColor, setCalTextColor] = useState("#ffffff");
   const [locTextColor, setLocTextColor] = useState("#2c3e35");
   const [churchIconFile, setChurchIconFile] = useState(null);
@@ -171,9 +175,13 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setEventName(data.eventName || "");
         setEventType(data.eventType || "wedding");
         setSealInitials(data.sealInitials || "RL");
+        setSealColor(data.sealColor || "#e7dcc8");
+        setSealShape(data.sealShape || "organic");
         setMusicUrl(data.musicUrl || "/wedding-audio.mp3");
         setEnvelopeBgUrl(data.envelopeBgUrl || "");
         setEnvelopeBgColor(data.envelopeBgColor || "#2c3a1c");
+        setEnvelopeTextColor(data.envelopeTextColor || "#b3c0a4");
+        setEnvelopeTextFont(data.envelopeTextFont || "inherit");
         setLoadingBgColor(data.loadingBgColor || "#2c3a1c");
 
         if (data.sections && Array.isArray(data.sections)) {
@@ -511,9 +519,13 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         eventName,
         eventType,
         sealInitials,
+        sealColor,
+        sealShape,
         musicUrl,
         envelopeBgUrl: finalEnvelopeBg,
         envelopeBgColor: envelopeBgColor,
+        envelopeTextColor: envelopeTextColor,
+        envelopeTextFont: envelopeTextFont,
         loadingBgColor: loadingBgColor,
         ownerId: auth.currentUser ? auth.currentUser.uid : null,
         sections,
@@ -661,6 +673,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           handleEventTypeChange={handleEventTypeChange}
           sealInitials={sealInitials}
           setSealInitials={setSealInitials}
+          sealColor={sealColor}
+          setSealColor={setSealColor}
+          sealShape={sealShape}
+          setSealShape={setSealShape}
           musicUrl={musicUrl}
           setMusicUrl={setMusicUrl}
           envelopeBgFile={envelopeBgFile}
@@ -669,6 +685,10 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           setEnvelopeBgUrl={setEnvelopeBgUrl}
           envelopeBgColor={envelopeBgColor}
           setEnvelopeBgColor={setEnvelopeBgColor}
+          envelopeTextColor={envelopeTextColor}
+          setEnvelopeTextColor={setEnvelopeTextColor}
+          envelopeTextFont={envelopeTextFont}
+          setEnvelopeTextFont={setEnvelopeTextFont}
           loadingBgColor={loadingBgColor}
           setLoadingBgColor={setLoadingBgColor}
         />

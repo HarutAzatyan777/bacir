@@ -22,11 +22,46 @@ const translations = {
   }
 };
 
-export default function EnvelopeIntro({ onOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl, envelopeBgColor, loadingBgColor }){
+function isDarkColor(hex) {
+  if (!hex) return false;
+  const c = hex.replace("#", "");
+  if (c.length === 3) {
+    const r = parseInt(c.substr(0, 1) + c.substr(0, 1), 16);
+    const g = parseInt(c.substr(1, 1) + c.substr(1, 1), 16);
+    const b = parseInt(c.substr(2, 1) + c.substr(2, 1), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 128;
+  }
+  if (c.length === 6) {
+    const r = parseInt(c.substr(0, 2), 16);
+    const g = parseInt(c.substr(2, 2), 16);
+    const b = parseInt(c.substr(4, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 128;
+  }
+  return false;
+}
+
+export default function EnvelopeIntro({ onOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl, envelopeBgColor, loadingBgColor, sealColor, sealShape, envelopeTextColor, envelopeTextFont }){
 
 const navigate = useNavigate()
 const { currentLang } = useLanguage()
 const t = translations[currentLang]
+
+const sealShapeClass = sealShape ? `seal-shape-${sealShape}` : "seal-shape-organic";
+
+const sealStyle = sealColor ? {
+  backgroundColor: sealColor,
+  backgroundImage: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%)`
+} : {};
+
+const isDark = isDarkColor(sealColor || "#e7dcc8");
+const sealSpanStyle = sealColor ? {
+  color: isDark ? "rgba(255, 255, 255, 0.9)" : "rgba(0, 0, 0, 0.6)",
+  textShadow: isDark 
+    ? "1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(255,255,255,0.2)"
+    : "1px 1px 1px rgba(255,255,255,0.7), -1px -1px 1px rgba(0,0,0,0.3)"
+} : {};
 
 const [isOpened,setOpened] = useState(false)
 const [isFadingOut, setFadingOut] = useState(false)
@@ -129,7 +164,13 @@ return (
 
 </div>
 
-<div className="bottom-text">
+<div 
+  className="bottom-text"
+  style={{
+    color: envelopeTextColor || undefined,
+    fontFamily: envelopeTextFont && envelopeTextFont !== "inherit" ? envelopeTextFont : undefined
+  }}
+>
 {t.openText1}<br/>
 {t.openText2}
 </div>
@@ -138,8 +179,11 @@ return (
 
 <div className="flap"/>
 
-<div className="seal">
-<span>{sealInitials || "RL"}</span>
+<div 
+  className={`seal ${sealShapeClass}`}
+  style={sealStyle}
+>
+<span style={sealSpanStyle}>{sealInitials || "RL"}</span>
 </div>
 
 </div>

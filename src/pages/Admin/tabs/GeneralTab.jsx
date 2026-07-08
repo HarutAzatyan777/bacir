@@ -14,6 +14,10 @@ export default function GeneralTab({
   handleEventTypeChange,
   sealInitials,
   setSealInitials,
+  sealColor,
+  setSealColor,
+  sealShape,
+  setSealShape,
   musicUrl,
   setMusicUrl,
   envelopeBgFile,
@@ -22,6 +26,10 @@ export default function GeneralTab({
   setEnvelopeBgUrl,
   envelopeBgColor,
   setEnvelopeBgColor,
+  envelopeTextColor,
+  setEnvelopeTextColor,
+  envelopeTextFont,
+  setEnvelopeTextFont,
   loadingBgColor,
   setLoadingBgColor
 }) {
@@ -68,13 +76,47 @@ export default function GeneralTab({
         </div>
 
         <div className="form-field">
-          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Կնիքի տառերը (Initials, օր.՝ RL)</label>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Կնիքի տառերը (Seal Initials)</label>
           <Input
-            maxLength={4}
+            placeholder="օր.՝ RL"
             value={sealInitials}
             onChange={(e) => setSealInitials(e.target.value)}
+            maxLength={3}
             size="large"
           />
+        </div>
+
+        <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Կնիքի գույնը (Seal Color)</label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={sealColor || "#e7dcc8"}
+              onChange={(e) => setSealColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={sealColor || "#e7dcc8"}
+              onChange={(e) => setSealColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
+        </div>
+
+        <div className="form-field">
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>Կնիքի ձևը (Seal Shape)</label>
+          <Select
+            value={sealShape || "organic"}
+            onChange={setSealShape}
+            size="large"
+            style={{ width: "100%" }}
+          >
+            <Option value="organic">Օրգանական (Բնական)</Option>
+            <Option value="circle">Կլոր (Perfect Circle)</Option>
+            <Option value="square">Կլորացված քառակուսի</Option>
+            <Option value="oval">Ձվաձև</Option>
+          </Select>
         </div>
 
         <div className="form-field full-width">
@@ -119,6 +161,45 @@ export default function GeneralTab({
               style={{ flex: 1 }}
             />
           </div>
+        </div>
+
+        <div className="form-field" style={{ marginTop: 15 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Հրահանգի տեքստի գույն (Instruction Text Color)
+          </label>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <input
+              type="color"
+              value={envelopeTextColor || "#b3c0a4"}
+              onChange={(e) => setEnvelopeTextColor(e.target.value)}
+              style={{ width: "60px", height: "40px", padding: "2px", border: "1px solid #cbd5e1", background: "transparent", cursor: "pointer", borderRadius: "6px" }}
+            />
+            <Input
+              value={envelopeTextColor || "#b3c0a4"}
+              onChange={(e) => setEnvelopeTextColor(e.target.value)}
+              size="large"
+              style={{ flex: 1 }}
+            />
+          </div>
+        </div>
+
+        <div className="form-field" style={{ marginTop: 15 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>
+            Հրահանգի տեքստի տառատեսակ (Instruction Text Font)
+          </label>
+          <Select
+            value={envelopeTextFont || "inherit"}
+            onChange={setEnvelopeTextFont}
+            size="large"
+            style={{ width: "100%" }}
+          >
+            <Option value="inherit">Լռելյայն (Default)</Option>
+            <Option value="'Montserrat', sans-serif">Montserrat (Modern Sans-Serif)</Option>
+            <Option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</Option>
+            <Option value="'Inter', sans-serif">Inter (Clean Neutral)</Option>
+            <Option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Wedding Serif)</Option>
+            <Option value="'Great Vibes', cursive">Great Vibes (Romantic Script)</Option>
+          </Select>
         </div>
 
         <div className="form-field full-width" style={{ marginTop: 15 }}>

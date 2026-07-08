@@ -147,6 +147,10 @@ export default function InvitationLoader() {
         envelopeBgUrl={invitationData.envelopeBgUrl}
         envelopeBgColor={invitationData.envelopeBgColor}
         loadingBgColor={invitationData.loadingBgColor}
+        sealColor={invitationData.sealColor}
+        sealShape={invitationData.sealShape}
+        envelopeTextColor={invitationData.envelopeTextColor}
+        envelopeTextFont={invitationData.envelopeTextFont}
       />
     );
   }

@@ -7,14 +7,13 @@ if (!getApps().length) {
 
   if (serviceAccountKey) {
     try {
-      // ԱՅՍ ՏՈՂԸ ԱՄԵՆԱԿԱՐԵՎՈՐՆ Է. այն մաքրում է կրկնակի \\n-երը
-      const parsedKey = serviceAccountKey.replace(/\\n/g, '\n');
-      const serviceAccount = JSON.parse(parsedKey);
+      // Պարզապես parse ենք անում Vercel-ի փոփոխականը՝ առանց տեքստը փոփոխելու
+      const serviceAccount = JSON.parse(serviceAccountKey);
 
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
-      console.log("Firebase initialized successfully!");
+      console.log("Firebase-ը հաջողությամբ ինիցիալիզացվեց:");
     } catch (e) {
       console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:", e);
     }

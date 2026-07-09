@@ -5,25 +5,24 @@ import { getApps } from 'firebase-admin/app';
 if (!getApps().length) {
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-  if (!serviceAccountKey) {
-    console.error("CRITICAL: FIREBASE_SERVICE_ACCOUNT_KEY փոփոխականը Vercel-ում չի գտնվել:");
-  } else {
+  if (serviceAccountKey) {
     try {
-      // Մաքրում ենք հնարավոր աղավաղված տողադարձերը, որոնք Vercel-ը կարող է ավելացնել
+      // ԱՅՍ ՏՈՂԸ ԱՄԵՆԱԿԱՐԵՎՈՐՆ Է. այն մաքրում է կրկնակի \\n-երը
       const parsedKey = serviceAccountKey.replace(/\\n/g, '\n');
       const serviceAccount = JSON.parse(parsedKey);
 
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
-      console.log("Firebase-ը հաջողությամբ ինիցիալիզացվեց:");
+      console.log("Firebase initialized successfully!");
     } catch (e) {
-      console.error("CRITICAL: Չհաջողվեց կարդալ (parse) FIREBASE_SERVICE_ACCOUNT_KEY-ը: Ստուգեք JSON ֆորմատը Vercel-ում:", e);
+      console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:", e);
     }
   }
 }
 
 const db = getApps().length ? admin.firestore() : null;
+
 
 export default async function handler(req, res) {
   // Read id from query params (which is mapped from vercel.json rewrite: ?id=:id)

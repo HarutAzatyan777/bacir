@@ -5,7 +5,11 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/((?!api|static|.*\\..*$).*)",
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]

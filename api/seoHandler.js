@@ -1,7 +1,8 @@
 import * as admin from 'firebase-admin';
+import { getApps } from 'firebase-admin/app';
 
 // Initialize Firebase Admin SDK
-if (!admin.apps.length) {
+if (!getApps().length) {
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   if (serviceAccountKey) {
     try {
@@ -21,7 +22,7 @@ if (!admin.apps.length) {
   }
 }
 
-const db = admin.apps.length ? admin.firestore() : null;
+const db = getApps().length ? admin.firestore() : null;
 
 export default async function handler(req, res) {
   // Read id from query params (which is mapped from vercel.json rewrite: ?id=:id)

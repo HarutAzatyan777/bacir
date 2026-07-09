@@ -6,11 +6,11 @@
   "rewrites": [
     {
       "source": "/i/:id",
-      "destination": "/api/seoHandler?id=:id"
+      "destination": "https://seohandler-46b7wgmg5a-uc.a.run.app?id=:id"
     },
     {
       "source": "/i/:id/",
-      "destination": "/api/seoHandler?id=:id"
+      "destination": "https://seohandler-46b7wgmg5a-uc.a.run.app?id=:id"
     },
     {
       "source": "/((?!api|static|.*\\..*$).*)",

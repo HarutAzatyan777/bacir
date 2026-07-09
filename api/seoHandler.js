@@ -4,20 +4,21 @@ import { getApps } from 'firebase-admin/app';
 // Initialize Firebase Admin SDK
 if (!getApps().length) {
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-  if (serviceAccountKey) {
+
+  if (!serviceAccountKey) {
+    console.error("CRITICAL: FIREBASE_SERVICE_ACCOUNT_KEY փոփոխականը Vercel-ում չի գտնվել:");
+  } else {
     try {
-      const serviceAccount = JSON.parse(serviceAccountKey);
+      // Մաքրում ենք հնարավոր աղավաղված տողադարձերը, որոնք Vercel-ը կարող է ավելացնել
+      const parsedKey = serviceAccountKey.replace(/\\n/g, '\n');
+      const serviceAccount = JSON.parse(parsedKey);
+
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
+      console.log("Firebase-ը հաջողությամբ ինիցիալիզացվեց:");
     } catch (e) {
-      console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY:", e);
-    }
-  } else {
-    try {
-      admin.initializeApp();
-    } catch (e) {
-      console.warn("Firebase Admin could not be initialized with default credentials.");
+      console.error("CRITICAL: Չհաջողվեց կարդալ (parse) FIREBASE_SERVICE_ACCOUNT_KEY-ը: Ստուգեք JSON ֆորմատը Vercel-ում:", e);
     }
   }
 }

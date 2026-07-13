@@ -14,6 +14,7 @@ export default function InvitationLoader() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isEnvelopeOpened, setIsEnvelopeOpened] = useState(false);
+  const [isEnvelopeRemoved, setIsEnvelopeRemoved] = useState(false);
   const isPreview = searchParams.get("preview") === "true";
 
   useEffect(() => {
@@ -137,23 +138,27 @@ export default function InvitationLoader() {
     );
   }
 
-  if (!isEnvelopeOpened) {
+  if (!isEnvelopeRemoved) {
     return (
-      <EnvelopeIntro
-        onOpen={() => setIsEnvelopeOpened(true)}
-        sealInitials={invitationData.sealInitials || "RL"}
-        heroBgMobile={invitationData.hero?.bgMobileUrl}
-        heroBgDesktop={invitationData.hero?.bgDesktopUrl}
-        envelopeBgUrl={invitationData.envelopeBgUrl}
-        envelopeBgColor={invitationData.envelopeBgColor}
-        loadingBgColor={invitationData.loadingBgColor}
-        sealColor={invitationData.sealColor}
-        sealShape={invitationData.sealShape}
-        envelopeTextColor={invitationData.envelopeTextColor}
-        envelopeTextFont={invitationData.envelopeTextFont}
-      />
+      <div className="invitation-main-container" style={{ position: "relative", minHeight: "100vh" }}>
+        <Home invitationData={invitationData} isEnvelopeOpened={isEnvelopeOpened} />
+        <EnvelopeIntro
+          onStartOpen={() => setIsEnvelopeOpened(true)}
+          onOpen={() => setIsEnvelopeRemoved(true)}
+          sealInitials={invitationData.sealInitials || "RL"}
+          heroBgMobile={invitationData.hero?.bgMobileUrl}
+          heroBgDesktop={invitationData.hero?.bgDesktopUrl}
+          envelopeBgUrl={invitationData.envelopeBgUrl}
+          envelopeBgColor={invitationData.envelopeBgColor}
+          loadingBgColor={invitationData.loadingBgColor}
+          sealColor={invitationData.sealColor}
+          sealShape={invitationData.sealShape}
+          envelopeTextColor={invitationData.envelopeTextColor}
+          envelopeTextFont={invitationData.envelopeTextFont}
+        />
+      </div>
     );
   }
 
-  return <Home invitationData={invitationData} />;
+  return <Home invitationData={invitationData} isEnvelopeOpened={true} />;
 }

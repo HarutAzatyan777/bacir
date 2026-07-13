@@ -155,12 +155,19 @@ export default function Invitations() {
                 <div key={invite.id} className="invitation-card-item">
                   <div className="card-image-container">
                     {cardImage ? (
-                      <img 
-                        src={cardImage} 
-                        alt={names || invite.eventName || "Invitation preview"} 
-                        className="card-preview-img"
-                        loading="lazy"
-                      />
+                      <>
+                        <img 
+                          src={cardImage} 
+                          alt="" 
+                          className="card-bg-blur" 
+                        />
+                        <img 
+                          src={cardImage} 
+                          alt={names || invite.eventName || "Invitation preview"} 
+                          className="card-preview-img"
+                          loading="lazy"
+                        />
+                      </>
                     ) : (
                       <div className="card-gradient-fallback">
                         <div className="fallback-inner-gold">BACIR</div>

@@ -1,8 +1,10 @@
 /* Dashboard.css */
 .dashboard-container {
   min-height: 100vh;
-  background-color: #f8faf9;
-  color: #1e293b;
+  background-color: #F4F0EA;
+  background-image: radial-gradient(rgba(44, 62, 53, 0.04) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+  color: #2c3e35;
   font-family: 'Montserrat', 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
@@ -13,16 +15,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+  margin: 16px 24px 8px 24px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(44, 62, 53, 0.03);
 }
 
 .header-left h1 {
-  font-size: 1.4rem;
+  font-family: 'Noto Serif Armenian', 'Georgia', serif !important;
+  font-size: 1.45rem;
   margin: 0;
-  font-weight: 600;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   color: #2c3e35;
 }
 
@@ -34,51 +42,171 @@
 /* Main Area */
 .dashboard-main {
   flex: 1;
-  padding: 40px;
+  padding: 24px;
   max-width: 1400px;
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
 }
 
+.dashboard-main h2 {
+  font-family: 'Noto Serif Armenian', 'Georgia', serif !important;
+  font-weight: 700 !important;
+  color: #2c3e35 !important;
+}
+
 /* Invitation Card overrides */
 .invitation-card {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02) !important;
-  border-radius: 12px !important;
-  border: 1px solid #e2e8f0 !important;
-  transition: all 0.3s ease !important;
+  background: #FAF8F5 !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(44, 62, 53, 0.02) !important;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
 }
 
 .invitation-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04) !important;
-  border-color: #cbd5e1 !important;
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(44, 62, 53, 0.08) !important;
+  border-color: rgba(212, 175, 55, 0.35) !important;
 }
 
-/* Modal styling for preview device */
-.preview-device-modal .ant-modal-content {
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+/* Has Background Styles (Glassmorphism & Contrast) */
+.invitation-card.has-background {
+  position: relative;
+  height: 380px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.invitation-card.has-background .ant-card-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 1;
+}
+
+.invitation-card.has-background .ant-card-head {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%) !important;
+  border-bottom: none !important;
+}
+
+.invitation-card.has-background .ant-card-body {
+  position: relative;
+  z-index: 10;
+  flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px 24px !important;
+}
+
+.invitation-card.has-background .ant-card-head-title,
+.invitation-card.has-background .ant-card-extra,
+.invitation-card.has-background .ant-card-extra a,
+.invitation-card.has-background .ant-card-extra span,
+.invitation-card.has-background .card-info-content,
+.invitation-card.has-background .card-info-content p,
+.invitation-card.has-background .ant-typography {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+.invitation-card.has-background .anticon-copy {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.invitation-card.has-background .ant-card-actions {
+  position: relative;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.invitation-card.has-background .ant-card-actions > li {
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.invitation-card.has-background .ant-card-actions button {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.invitation-card.has-background .ant-card-actions button:hover {
+  color: #ffffff !important;
+}
+
+
+/* ════════════════════════════════════
+   Fixed Phone Preview Panel — right
+   ════════════════════════════════════ */
+.fixed-phone-preview {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 24px 24px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(44, 62, 53, 0.1);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.1);
+  animation: slideInPhonePanel 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  gap: 16px;
+}
+
+.fixed-phone-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(44, 62, 53, 0.08);
+  color: #2c3e35;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.fixed-phone-close:hover {
+  background: #e53935;
+  color: #ffffff;
+  transform: scale(1.1);
 }
 
 .preview-device-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8fafc;
-  overflow: hidden;
-  padding: 10px;
 }
 
 /* iPhone 17 Frame Mockup */
 .iphone-17-frame {
   position: relative;
-  width: 330px;
-  height: 670px;
+  width: 280px;
+  height: 570px;
   background: #000000;
-  border: 10px solid #2d302e;
-  border-radius: 46px;
+  border: 8px solid #2d302e;
+  border-radius: 38px;
   box-shadow: 
     0 20px 40px -10px rgba(0, 0, 0, 0.3),
     0 0 0 2px rgba(255, 255, 255, 0.05),
@@ -143,7 +271,7 @@
 /* Screen */
 .iphone-screen {
   flex: 1;
-  border-radius: 36px;
+  border-radius: 30px;
   overflow: hidden;
   background: #ffffff;
   position: relative;
@@ -151,12 +279,17 @@
   flex-direction: column;
 }
 
-/* Iframe */
+/* Iframe with CSS transform zoom scaling for standard 375x750 viewport mapping */
 .preview-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 375px !important;
+  height: 750px !important;
+  border: none !important;
   background: #ffffff;
+  transform: scale(0.74) !important;
+  transform-origin: top left !important;
   overflow: hidden !important;
 }
 
@@ -188,4 +321,9 @@
   .dashboard-main {
     padding: 20px;
   }
+}
+
+@keyframes slideInPhonePanel {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
 }

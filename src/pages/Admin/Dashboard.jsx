@@ -3,7 +3,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
-import { Card, Button, Row, Col, Spin, Empty, Popconfirm, Modal, Typography, message, Space } from "antd";
+import { Card, Button, Row, Col, Spin, Empty, Popconfirm, Typography, message, Space } from "antd";
 import { 
   PlusOutlined, 
   LogoutOutlined, 
@@ -164,13 +164,23 @@ export default function Dashboard() {
               </Card>
             ) : (
               <Row gutter={[24, 24]}>
-                {invitations.map((inv) => (
-                  <Col xs={24} sm={12} md={8} key={inv.id}>
-                    <Card 
-                      title={<Text strong style={{ fontSize: "1.1rem" }}>{inv.eventName || inv.id}</Text>}
-                      extra={<Text type="secondary" copyable={{ text: `${window.location.origin}/i/${inv.id}` }}>/i/{inv.id}</Text>}
-                      bordered={false}
-                      className="invitation-card"
+                {invitations.map((inv) => {
+                  const cardImage = inv.hero?.bgMobileUrl || inv.hero?.bgDesktopUrl || inv.envelopeBgUrl;
+                  const coverComponent = cardImage ? (
+                    <div className="dashboard-card-bg-container" style={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius: "12px", zIndex: 1 }}>
+                      <img src={cardImage} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "blur(20px) brightness(0.75)", transform: "scale(1.15)", zIndex: 1 }} />
+                      <img src={cardImage} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", zIndex: 2 }} />
+                    </div>
+                  ) : null;
+                  
+                  return (
+                    <Col xs={24} sm={12} md={8} key={inv.id}>
+                      <Card 
+                        title={<Text strong style={{ fontSize: "1.1rem" }}>{inv.eventName || inv.id}</Text>}
+                        extra={<Text type="secondary" copyable={{ text: `${window.location.origin}/i/${inv.id}` }}>/i/{inv.id}</Text>}
+                        bordered={false}
+                        cover={coverComponent}
+                        className={`invitation-card ${cardImage ? "has-background" : ""}`}
                       actions={[
                         <Button 
                           type="link" 
@@ -232,7 +242,8 @@ export default function Dashboard() {
                       </div>
                     </Card>
                   </Col>
-                ))}
+                );
+              })}
               </Row>
             )}
           </div>
@@ -269,42 +280,36 @@ export default function Dashboard() {
         )}
       </main>
 
-      {/* iPhone 17 Preview Modal */}
-      <Modal
-        title="iPhone 17 Նախադիտում / Predпросмотр iPhone 17"
-        open={!!previewInvitationId}
-        onCancel={() => setPreviewInvitationId(null)}
-        footer={null}
-        width={380}
-        centered
-        className="preview-device-modal"
-        styles={{ body: { padding: 0 } }}
-      >
-        <div className="preview-device-container" style={{ display: "flex", justifyContent: "center", padding: "20px 0" }}>
-          <div className="iphone-17-frame">
-            {/* Dynamic Island */}
-            <div className="dynamic-island"></div>
-            {/* Screen frame */}
-            <div className="iphone-screen">
-              {previewInvitationId && (
-                <iframe 
-                  src={`/i/${previewInvitationId}?preview=true`} 
-                  title="iPhone 17 Preview"
+      {/* Fixed Phone Preview — right side */}
+      {previewInvitationId && (
+        <div className="fixed-phone-preview">
+          <button
+            className="fixed-phone-close"
+            onClick={() => setPreviewInvitationId(null)}
+            title="Փակել"
+          >
+            ×
+          </button>
+          <div className="preview-device-container">
+            <div className="iphone-17-frame">
+              <div className="dynamic-island"></div>
+              <div className="iphone-screen">
+                <iframe
+                  src={`/i/${previewInvitationId}?preview=true`}
+                  title="iPhone Preview"
                   className="preview-iframe"
                   scrolling="no"
                 />
-              )}
+              </div>
+              <div className="iphone-btn volume-up"></div>
+              <div className="iphone-btn volume-down"></div>
+              <div className="iphone-btn action-button"></div>
+              <div className="iphone-btn power-button"></div>
+              <div className="home-indicator"></div>
             </div>
-            {/* Side buttons */}
-            <div className="iphone-btn volume-up"></div>
-            <div className="iphone-btn volume-down"></div>
-            <div className="iphone-btn action-button"></div>
-            <div className="iphone-btn power-button"></div>
-            {/* Home Indicator */}
-            <div className="home-indicator"></div>
           </div>
         </div>
-      </Modal>
+      )}
     </div>
   );
 }

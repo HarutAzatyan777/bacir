@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import "./Envelope.css"
 import { useLanguage } from "../../context/LanguageContext";
 import { FaSpinner } from "react-icons/fa";
@@ -42,7 +42,25 @@ function isDarkColor(hex) {
   return false;
 }
 
-export default function EnvelopeIntro({ onOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl, envelopeBgColor, loadingBgColor, sealColor, sealShape, envelopeTextColor, envelopeTextFont }){
+function hexToRgba(hex, alpha = 0.45) {
+  if (!hex) return `rgba(44, 58, 28, ${alpha})`;
+  const cleanHex = hex.replace("#", "");
+  let r, g, b;
+  if (cleanHex.length === 3) {
+    r = parseInt(cleanHex.charAt(0) + cleanHex.charAt(0), 16);
+    g = parseInt(cleanHex.charAt(1) + cleanHex.charAt(1), 16);
+    b = parseInt(cleanHex.charAt(2) + cleanHex.charAt(2), 16);
+  } else if (cleanHex.length === 6) {
+    r = parseInt(cleanHex.substring(0, 2), 16);
+    g = parseInt(cleanHex.substring(2, 4), 16);
+    b = parseInt(cleanHex.substring(4, 6), 16);
+  } else {
+    return `rgba(44, 58, 28, ${alpha})`;
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export default function EnvelopeIntro({ onOpen, onStartOpen, sealInitials, heroBgMobile, heroBgDesktop, envelopeBgUrl, envelopeBgColor, loadingBgColor, sealColor, sealShape, envelopeTextColor, envelopeTextFont }){
 
 const navigate = useNavigate()
 const { currentLang } = useLanguage()
@@ -72,11 +90,11 @@ const [isHidingLoading, setIsHidingLoading] = useState(false)
 const imageUrl = envelopeBgUrl || "/texture.webp";
 
 useEffect(() => {
-const imagesToLoad = [
-  envelopeBgUrl || "texture.webp",
-  heroBgDesktop || "images/wedding-hero.webp",
-  heroBgMobile || "images/wedding-hero-mobile.webp"
-];
+  const imagesToLoad = [
+    envelopeBgUrl || "/texture.webp"
+  ];
+  if (heroBgDesktop) imagesToLoad.push(heroBgDesktop);
+  if (heroBgMobile) imagesToLoad.push(heroBgMobile);
 
   const imagePromises = imagesToLoad.map((src) => {
     return new Promise((resolve) => {
@@ -113,6 +131,9 @@ const openEnvelope = ()=>{
 if(isOpened) return
 
 setOpened(true)
+if (onStartOpen) {
+  onStartOpen();
+}
 
 // 1.5 վայրկյան սպասում ենք, որ ծրարի վերին մասը բացվի, ապա սկսում ենք մարել (fade-out) էկրանը
 setTimeout(() => {
@@ -146,19 +167,18 @@ return (
     )}
     
     {/* Հիմնական ծրարի էկրանը */}
-<div 
-  className={`envelope-stage ${isOpened ? "open" : ""} ${isFadingOut ? "fade-out" : ""}`}
-  style={{ 
-    '--envelope-texture': `url(${imageUrl})`,
-    backgroundColor: envelopeBgColor || "#2c3a1c",
-    backgroundImage: `url(${imageUrl})`,
-    backgroundSize: "contain",
-    backgroundRepeat: "repeat",
-    backgroundBlendMode: "multiply"
-  }}
->
-
-<div className="envelope" onClick={openEnvelope}>
+    <div 
+      className={`envelope-stage ${isOpened ? "open" : ""} ${isFadingOut ? "fade-out" : ""}`}
+      style={{ 
+        '--envelope-texture': `url(${imageUrl})`,
+        backgroundColor: hexToRgba(envelopeBgColor, 0.45),
+        backgroundImage: `url(${imageUrl})`,
+        backgroundSize: "contain",
+        backgroundRepeat: "repeat",
+        backgroundBlendMode: "multiply"
+      }}
+    >
+      <div className="envelope" onClick={openEnvelope}>
 
 <div className="pouch">
 

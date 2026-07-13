@@ -155,34 +155,47 @@
 
 /* Invitation Card */
 .invitation-card-item {
-  background: rgba(255, 255, 255, 0.7);
+  position: relative;
+  height: 450px;
   border: 1px solid rgba(58, 90, 64, 0.08);
-  backdrop-filter: blur(12px);
   border-radius: 20px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .invitation-card-item:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(58, 90, 64, 0.12);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   border-color: rgba(58, 90, 64, 0.18);
 }
 
 .card-image-container {
-  position: relative;
-  height: 360px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #E8E0D5;
 }
 
-.card-preview-img {
+.card-bg-blur {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(25px) brightness(0.85);
+  transform: scale(1.15);
+  z-index: 1;
+}
+
+.card-preview-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
   transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -212,6 +225,7 @@
   position: absolute;
   top: 16px;
   left: 16px;
+  z-index: 10;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -246,20 +260,28 @@
 
 /* Card Content */
 .card-info-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  flex-grow: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 30%, rgba(0, 0, 0, 0.85) 100%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10;
 }
 
 .card-event-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #3A5A40;
+  color: #ffffff;
   font-family: 'Montserrat', sans-serif;
   line-height: 1.4;
   margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
   /* Multi-line clamp */
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -271,9 +293,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #6a7b6d;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
   font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .date-icon {
@@ -282,24 +305,26 @@
 }
 
 .card-open-action-btn {
-  margin-top: 12px;
+  margin-top: auto;
   width: 100%;
-  background: #3A5A40;
-  color: #FAFAFA;
-  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   padding: 12px 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 30px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(58, 90, 64, 0.1);
+  box-shadow: none;
 }
 
 .card-open-action-btn:hover {
-  background: #2D4432;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(58, 90, 64, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
 }
 
 /* Responsive adjustments */

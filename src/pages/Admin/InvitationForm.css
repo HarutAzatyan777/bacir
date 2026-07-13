@@ -1,27 +1,28 @@
 /* InvitationForm.css */
 .form-container {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: #FAF8F5 !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-top: 4px solid #2c3e35 !important;
   border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+  padding: 12px 16px !important;
+  box-shadow: 0 10px 40px rgba(44, 62, 53, 0.04) !important;
 }
 
 .form-title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 20px;
+  margin-bottom: 12px !important;
+  border-bottom: 1px solid rgba(44, 62, 53, 0.06) !important;
+  padding-bottom: 8px !important;
 }
 
 .form-title-row h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2c3e35;
+  font-family: 'Noto Serif Armenian', 'Georgia', serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #2c3e35 !important;
   margin: 0;
-  letter-spacing: 0.5px;
 }
 
 .form-actions-top {
@@ -709,3 +710,462 @@
   cursor: not-allowed;
 }
 
+/* Global compact style overrides for InvitationForm */
+.form-container {
+  padding: 12px 16px !important;
+}
+
+.form-title-row {
+  margin-bottom: 12px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-title-row h2 {
+  font-size: 1.15rem !important;
+}
+
+.form-grid {
+  gap: 8px 12px !important;
+}
+
+.form-field label {
+  font-size: 0.78rem !important;
+  margin-bottom: 3px !important;
+  font-weight: 600 !important;
+}
+
+/* Force smaller height on all Ant Design Inputs, InputNumbers, Selects, and Textareas */
+.form-container .ant-input,
+.form-container .ant-input-affix-wrapper,
+.form-container .ant-input-number,
+.form-container .ant-select-selector,
+.form-container .ant-picker {
+  height: 30px !important;
+  padding: 2px 8px !important;
+  font-size: 0.82rem !important;
+  border-radius: 4px !important;
+}
+
+/* For Ant Design textareas, we don't want a fixed 30px height */
+.form-container textarea.ant-input {
+  height: auto !important;
+  min-height: 60px !important;
+  padding: 6px 8px !important;
+}
+
+/* Adjust select single line height centering */
+.form-container .ant-select-single .ant-select-selector .ant-select-selection-item,
+.form-container .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+  line-height: 24px !important;
+}
+
+/* Scale down large inputs if they use size="large" */
+.form-container .ant-input-lg,
+.form-container .ant-input-number-lg,
+.form-container .ant-select-lg .ant-select-selector,
+.form-container .ant-picker-lg {
+  height: 30px !important;
+  padding: 2px 8px !important;
+  font-size: 0.82rem !important;
+}
+
+.form-container .ant-select-lg .ant-select-selection-item,
+.form-container .ant-select-lg .ant-select-selection-placeholder {
+  line-height: 24px !important;
+}
+
+/* Color picker input box adjustment */
+.form-container input[type="color"] {
+  width: 40px !important;
+  height: 30px !important;
+  padding: 1px !important;
+  border-radius: 4px !important;
+}
+
+/* Ant Design overrides inside InvitationForm */
+.form-container .ant-card-body {
+  padding: 12px 16px !important;
+}
+
+.form-container .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  padding: 4px 8px !important;
+  font-size: 0.76rem !important;
+  margin-right: 2px !important;
+}
+
+.form-container .ant-tabs-nav {
+  margin-bottom: 12px !important;
+}
+
+/* Buttons size */
+.form-container .ant-btn,
+.form-title-row .ant-btn {
+  font-size: 0.78rem !important;
+  height: 28px !important;
+  padding: 2px 10px !important;
+  border-radius: 4px !important;
+}
+
+.form-container .ant-btn-lg,
+.form-title-row .ant-btn-lg {
+  height: 28px !important;
+  font-size: 0.78rem !important;
+}
+
+.tab-pane h4,
+.tab-pane h3 {
+  font-size: 1rem !important;
+  margin-bottom: 12px !important;
+}
+
+.tab-pane p,
+.tab-pane .ant-typography-secondary {
+  font-size: 0.78rem !important;
+  margin-bottom: 12px !important;
+}
+
+.form-divider {
+  margin: 10px 0 !important;
+}
+
+/* Gallery upload items size */
+.upload-gallery-grid {
+  gap: 10px !important;
+}
+
+.upload-gallery-item {
+  width: 70px !important;
+  height: 70px !important;
+}
+
+.upload-btn-card {
+  width: 70px !important;
+  height: 70px !important;
+}
+
+/* ════════════════════════════════════════════
+   Creator workspace layout
+   ════════════════════════════════════════════ */
+.creator-workspace-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+
+.creator-form-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Fixed phone preview on the right side of the viewport */
+.creator-preview-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 320px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 20px;
+  background: rgba(250, 248, 245, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(44, 62, 53, 0.1);
+  box-shadow: -6px 0 32px rgba(44, 62, 53, 0.08);
+  pointer-events: auto;
+}
+
+.creator-preview-panel .ant-typography {
+  text-align: center;
+}
+
+/* Phone drag-over overlay */
+.phone-drag-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(44, 62, 53, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  z-index: 200;
+  border-radius: 38px;
+  padding: 20px;
+  text-align: center;
+  border: 3px dashed #d4af37;
+}
+
+.phone-drag-overlay .overlay-icon {
+  font-size: 3rem;
+  color: #d4af37;
+  margin-bottom: 16px;
+}
+
+.phone-drag-overlay .overlay-title {
+  font-family: 'Noto Serif Armenian', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.phone-drag-overlay .overlay-subtitle {
+  font-size: 0.7rem;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+/* Preview iframe */
+.preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Loading state */
+.form-loading-wrapper {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.form-loading-text {
+  display: block;
+  margin-top: 16px;
+}
+
+/* Preview panel hint text */
+.preview-panel-hint {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  text-align: center;
+  display: block;
+  color: #556b5e;
+}
+
+/* ════════════════════════════════════════════
+   Full Editor Layout  (sidebar + workspace)
+   ════════════════════════════════════════════ */
+.form-editor-root {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f5f6f8;
+}
+
+/* ── Left Sidebar ── */
+.editor-sidebar {
+  width: 220px;
+  min-width: 220px;
+  height: 100vh;
+  background: #1e2d26;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 22px 20px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  gap: 4px;
+}
+
+.sidebar-brand {
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4af37;
+  letter-spacing: 1px;
+}
+
+.sidebar-mode {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── Tab Navigation ── */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scrollbar-width: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.sidebar-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sidebar-tab-btn.active {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+}
+
+.sidebar-tab-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-tab-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Sidebar Action Buttons ── */
+.sidebar-actions {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sidebar-btn-save {
+  background: #d4af37;
+  color: #1e2d26;
+}
+
+.sidebar-btn-save:hover:not(:disabled) {
+  background: #e0c04a;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+}
+
+.sidebar-btn-preview {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar-btn-preview:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.sidebar-btn-refresh {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar-btn-refresh:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.sidebar-btn-cancel {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-btn-cancel:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* ── Main workspace — shifted right of sidebar ── */
+.creator-workspace-container {
+  margin-left: 220px;
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.creator-form-panel {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* ── Tab content header ── */
+.creator-tab-content {
+  padding: 28px 32px 40px;
+}
+
+.tab-content-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(44, 62, 53, 0.1);
+}
+
+.tab-content-icon {
+  font-size: 1.3rem;
+  color: #2c3e35;
+  display: flex;
+  align-items: center;
+}
+
+.tab-content-title {
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c3e35;
+  margin: 0;
+}

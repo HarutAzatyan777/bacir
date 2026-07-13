@@ -14,7 +14,7 @@ import Galery from "../../components/Galery/Galery";
 
 import "./Home.css";
 
-export default function Home({ invitationData }) {
+export default function Home({ invitationData, isEnvelopeOpened = true }) {
   // Ստանում ենք լեզուն և փոխելու ֆունկցիան Context-ից
   const { currentLang, changeLanguage } = useLanguage();
   
@@ -24,6 +24,8 @@ export default function Home({ invitationData }) {
 
   // Փորձում ենք ավտոմատ միացնել երաժշտությունը (autoplay) հենց էջը բացվում է
   useEffect(() => {
+    if (!isEnvelopeOpened) return;
+
     let interactionHandler;
     const currentAudio = audioRef.current; // Պահպանում ենք հղումը մաքրման ֆունկցիայի համար
 
@@ -74,7 +76,7 @@ export default function Home({ invitationData }) {
         currentAudio.pause();
       }
     };
-  }, []);
+  }, [isEnvelopeOpened]);
 
   // Հետևել էջի ոլորմանը (scroll)
   useEffect(() => {

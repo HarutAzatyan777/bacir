@@ -12,6 +12,9 @@
   position: fixed;
   inset: 0;
   background: #2c3a1c;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;

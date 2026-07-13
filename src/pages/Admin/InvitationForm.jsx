@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../../firebase";
-import { Card, Button, Tabs, Modal, Spin, Typography, message, Space } from "antd";
-import { MobileOutlined, SaveOutlined } from "@ant-design/icons";
+import { Modal, Spin, Typography, message } from "antd";
+import { SaveOutlined, SettingOutlined, AppstoreOutlined, BgColorsOutlined, PictureOutlined, CalendarOutlined, CameraOutlined, SkinOutlined, SendOutlined } from "@ant-design/icons";
 import "./InvitationForm.css";
 
 // Sub-tab Components
@@ -16,14 +16,14 @@ import GalleryTab from "./tabs/GalleryTab";
 import DressCodeTab from "./tabs/DressCodeTab";
 import RsvpTelegramTab from "./tabs/RsvpTelegramTab";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export default function InvitationForm({ mode, invitationId, onSuccess, onCancel }) {
   const [activeTab, setActiveTab] = useState("general");
+  const [previewKey, setPreviewKey] = useState(0);
+  const [isDraggingOverPhone, setIsDraggingOverPhone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [previewSlug, setPreviewSlug] = useState("");
 
   // Form states
   const [slug, setSlug] = useState("");
@@ -641,19 +641,64 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     }
   };
 
-  const handlePreview = async () => {
-    const cleanSlug = await saveData();
-    if (cleanSlug) {
-      setPreviewSlug(cleanSlug);
-      setShowPreviewModal(true);
+
+  const handlePhoneDrop = async (e) => {
+    e.preventDefault();
+    setIsDraggingOverPhone(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.type.startsWith("image/")) {
+        const cleanSlug = slug.trim().toLowerCase();
+        if (!cleanSlug) {
+          message.warning("Խնդրում ենք նախ նշել հասցե (Slug): / Please specify a slug first.");
+          return;
+        }
+
+        message.loading({ content: "Նկարը վերբեռնվում է... / Uploading image...", key: "phone_upload", duration: 0 });
+        try {
+          // Upload directly to storage
+          const storageRef = ref(storage, `invitations/${cleanSlug}/hero/${Date.now()}_${file.name}`);
+          const snapshot = await uploadBytes(storageRef, file);
+          const downloadUrl = await getDownloadURL(snapshot.ref);
+          
+          // Clear local overrides and update state url
+          setHeroBgMobileFile(null);
+          setHeroBgMobileUrl(downloadUrl);
+          
+          // Write updated hero mobile bg to Firestore
+          const docRef = doc(db, "invitations", cleanSlug);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const currentData = docSnap.data();
+            const updatedHero = {
+              ...currentData.hero,
+              bgMobileUrl: downloadUrl
+            };
+            await setDoc(docRef, { ...currentData, hero: updatedHero });
+            
+            // Reload the preview iframe
+            setPreviewKey(prev => prev + 1);
+            message.success({ content: "Գլխավոր նկարը հաջողությամբ վերբեռնվեց և թարմացվեց: / Image uploaded successfully!", key: "phone_upload", duration: 3 });
+          } else {
+            message.error({ content: "Տվյալները չգտնվեցին: Խնդրում ենք նախ պահպանել: / Invitation not found. Please save first.", key: "phone_upload", duration: 3 });
+          }
+        } catch (err) {
+          console.error("Error dropping and uploading image:", err);
+          message.error({ content: "Վերբեռնելիս սխալ տեղի ունեցավ: / Upload failed.", key: "phone_upload", duration: 3 });
+        }
+      } else {
+        message.error("Խնդրում ենք ընտրել միայն նկարներ / Please drop images only.");
+      }
     }
   };
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "80px 0" }}>
+      <div className="form-loading-wrapper">
         <Spin size="large" />
-        <Text style={{ display: "block", marginTop: 16 }}>Բեռնվում է... / Loading form details...</Text>
+        <Text className="form-loading-text">Բեռնվում է... / Loading form details...</Text>
       </div>
     );
   }
@@ -661,7 +706,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const tabItems = [
     {
       key: "general",
-      label: "GENERAL",
+      icon: <SettingOutlined />,
+      label: "Ընդհանուր",
       children: (
         <GeneralTab
           mode={mode}
@@ -696,7 +742,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "sections",
-      label: "SECTIONS",
+      icon: <AppstoreOutlined />,
+      label: "Բաժիններ",
       children: (
         <SectionsTab
           sections={sections}
@@ -711,7 +758,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "theme",
-      label: "THEME",
+      icon: <BgColorsOutlined />,
+      label: "Թեմա",
       children: (
         <ThemeTab
           primaryColor={primaryColor}
@@ -733,7 +781,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "hero",
-      label: "HERO IMAGE",
+      icon: <PictureOutlined />,
+      label: "Hero նկար",
       children: (
         <HeroTab
           heroNamesAm={heroNamesAm}
@@ -761,7 +810,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "calendar_location",
-      label: "CALENDAR & LOCATION",
+      icon: <CalendarOutlined />,
+      label: "Օր և Վայր",
       children: (
         <CalendarLocationTab
           eventDate={eventDate}
@@ -875,7 +925,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "gallery",
-      label: "GALLERY",
+      icon: <CameraOutlined />,
+      label: "Պատկերասրահ",
       children: (
         <GalleryTab
           setGalleryFiles={setGalleryFiles}
@@ -887,7 +938,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "dress_code",
-      label: "DRESS CODE",
+      icon: <SkinOutlined />,
+      label: "Dress Code",
       children: (
         <DressCodeTab
           showDressCode={showDressCode}
@@ -910,7 +962,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     },
     {
       key: "rsvp_telegram",
-      label: "RSVP & TELEGRAM",
+      icon: <SendOutlined />,
+      label: "RSVP & Telegram",
       children: (
         <RsvpTelegramTab
           rsvpDeadline={rsvpDeadline}
@@ -936,79 +989,99 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   ];
 
   return (
-    <div className="form-container">
-      <div className="form-title-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-        <Title level={2} style={{ margin: 0 }}>
-          {mode === "create" ? "Ստեղծել նոր հրավեր" : "Խմբագրել հրավերը"}
-        </Title>
-        <Space>
-          <Button onClick={onCancel}>
-            Չեղարկել / Cancel
-          </Button>
-          <Button 
-            icon={<MobileOutlined />} 
-            onClick={handlePreview} 
+    <div className="form-editor-root">
+
+      {/* ── Left Sidebar ── */}
+      <aside className="editor-sidebar">
+        <div className="sidebar-header">
+          <span className="sidebar-brand">✦ BACIR</span>
+          <span className="sidebar-mode">{mode === "create" ? "Ստեղծել" : "Խմբագրել"}</span>
+        </div>
+
+        <nav className="sidebar-nav">
+          {tabItems.map(item => (
+            <button
+              key={item.key}
+              className={`sidebar-tab-btn ${activeTab === item.key ? "active" : ""}`}
+              onClick={() => setActiveTab(item.key)}
+            >
+              <span className="sidebar-tab-icon">{item.icon}</span>
+              <span className="sidebar-tab-label">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="sidebar-actions">
+          <button
+            className="sidebar-btn sidebar-btn-save"
+            onClick={handleSubmit}
             disabled={saving}
           >
-            Նախադիտում / Preview
-          </Button>
-          <Button 
-            type="primary" 
-            icon={<SaveOutlined />} 
-            onClick={handleSubmit} 
-            loading={saving}
-            style={{ backgroundColor: "#2c3e35" }}
+            <SaveOutlined />
+            <span>{saving ? "..." : "Պahel"}</span>
+          </button>
+          <button className="sidebar-btn sidebar-btn-cancel" onClick={onCancel}>
+            ✕ Ետ
+          </button>
+        </div>
+      </aside>
+
+      {/* ── Main Content ── */}
+      <div className="creator-workspace-container">
+        <div className="creator-form-panel">
+          <div className="creator-tab-content">
+            <div className="tab-content-header">
+              <span className="tab-content-icon">{tabItems.find(t => t.key === activeTab)?.icon}</span>
+              <h2 className="tab-content-title">{tabItems.find(t => t.key === activeTab)?.label}</h2>
+            </div>
+            {tabItems.find(t => t.key === activeTab)?.children}
+          </div>
+        </div>
+
+        {/* Fixed Phone Preview */}
+        {slug && (
+          <div
+            className="creator-preview-panel"
+            onDragOver={(e) => { e.preventDefault(); setIsDraggingOverPhone(true); }}
+            onDragLeave={() => setIsDraggingOverPhone(false)}
+            onDrop={handlePhoneDrop}
           >
-            Պահպանել / Save
-          </Button>
-        </Space>
-      </div>
-
-      <Card bordered={false} styles={{ body: { padding: "10px 24px" } }}>
-        <Tabs 
-          activeKey={activeTab} 
-          onChange={setActiveTab} 
-          items={tabItems}
-          type="card"
-        />
-      </Card>
-
-      {/* iPhone 17 Preview Modal */}
-      <Modal
-        title="iPhone 17 Նախադիտում / Предпросмотр iPhone 17"
-        open={showPreviewModal}
-        onCancel={() => setShowPreviewModal(false)}
-        footer={null}
-        width={380}
-        centered
-        className="preview-device-modal"
-        styles={{ body: { padding: 0 } }}
-      >
-        <div className="preview-device-container" style={{ display: "flex", justifyContent: "center", padding: "20px 0" }}>
-          <div className="iphone-17-frame">
-            {/* Dynamic Island */}
-            <div className="dynamic-island"></div>
-            {/* Screen frame */}
-            <div className="iphone-screen">
-              {previewSlug && (
-                <iframe 
-                  src={`/i/${previewSlug}?preview=true`} 
-                  title="iPhone 17 Preview"
+            <div className="iphone-17-frame">
+              <div className="dynamic-island"></div>
+              <div className="iphone-screen">
+                <iframe
+                  key={previewKey}
+                  src={`/i/${slug}?preview=true`}
+                  title="Live Preview"
                   className="preview-iframe"
                   scrolling="no"
                 />
+              </div>
+              <div className="iphone-btn volume-up"></div>
+              <div className="iphone-btn volume-down"></div>
+              <div className="iphone-btn action-button"></div>
+              <div className="iphone-btn power-button"></div>
+              <div className="home-indicator"></div>
+
+              {isDraggingOverPhone && (
+                <div className="phone-drag-overlay">
+                  <SaveOutlined className="overlay-icon" />
+                  <span className="overlay-title">
+                    Բաց թողեք նկարն այստեղ՝ գլխավոր նկարը փոխելու համար
+                  </span>
+                  <span className="overlay-subtitle">
+                    Drop to update hero background image
+                  </span>
+                </div>
               )}
             </div>
-            {/* Side buttons */}
-            <div className="iphone-btn volume-up"></div>
-            <div className="iphone-btn volume-down"></div>
-            <div className="iphone-btn action-button"></div>
-            <div className="iphone-btn power-button"></div>
-            {/* Home Indicator */}
-            <div className="home-indicator"></div>
+            <Text type="secondary" className="preview-panel-hint">
+              Կենդանի Նախադիտում / Live Preview<br />
+              (Քաշեք նկարը հեռախոսի վրա՝ փոխելու համար / Drag & Drop to change)
+            </Text>
           </div>
-        </div>
-      </Modal>
+        )}
+      </div>
     </div>
   );
 }

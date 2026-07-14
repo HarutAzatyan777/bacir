@@ -22,6 +22,8 @@ export default function InvitationLoader() {
   const [isEnvelopeRemoved, setIsEnvelopeRemoved] = useState(false);
   const isPreview = searchParams.get("preview") === "true";
 
+  console.log("InvitationLoader rendering. id:", id, "isPreview:", isPreview, "searchParams:", searchParams.toString());
+
   useEffect(() => {
     if (!isPreview) return;
 
@@ -89,6 +91,7 @@ export default function InvitationLoader() {
   
   // Prevent scrolling while envelope is active and scroll to top when it starts opening / unmounts
   useEffect(() => {
+    if (isPreview) return; // Don't lock scroll in preview mode
     if (!isEnvelopeRemoved) {
       window.scrollTo(0, 0);
       const originalOverflow = document.body.style.overflow;
@@ -99,46 +102,61 @@ export default function InvitationLoader() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [isEnvelopeRemoved, isEnvelopeOpened]);
+  }, [isEnvelopeRemoved, isEnvelopeOpened, isPreview]);
+
+  const mergePreviewData = (prev, data) => {
+    const merged = { ...prev, ...data };
+    if (prev && prev.theme && data.theme) {
+      merged.theme = { ...prev.theme, ...data.theme };
+    }
+    if (prev && prev.calendar && data.calendar) {
+      merged.calendar = { ...prev.calendar, ...data.calendar };
+    }
+    if (prev && prev.location && data.location) {
+      merged.location = { ...prev.location, ...data.location };
+    }
+    if (prev && prev.dressCode && data.dressCode) {
+      merged.dressCode = { ...prev.dressCode, ...data.dressCode };
+    }
+    if (prev && prev.rsvpTelegram && data.rsvpTelegram) {
+      merged.rsvpTelegram = { ...prev.rsvpTelegram, ...data.rsvpTelegram };
+    }
+    if (prev && prev.hero && data.hero) {
+      merged.hero = { ...prev.hero, ...data.hero };
+    }
+    return merged;
+  };
 
   useEffect(() => {
     if (!isPreview) return;
 
     const handleMessage = (e) => {
-      if (e.origin !== window.location.origin) return;
+      console.log("Iframe received message event. Origin:", e.origin, "Data:", e.data);
+      if (e.origin !== window.location.origin) {
+        console.warn("Origin check failed. Expected:", window.location.origin, "Got:", e.origin);
+        return;
+      }
 
       if (e.data && e.data.type === "INVITATION_PREVIEW_UPDATE") {
-        setInvitationData((prev) => {
-          const merged = { ...prev, ...e.data.data };
-          // Ensure nested objects merge properly instead of getting overwritten
-          if (prev && prev.theme && e.data.data.theme) {
-            merged.theme = { ...prev.theme, ...e.data.data.theme };
-          }
-          if (prev && prev.calendar && e.data.data.calendar) {
-            merged.calendar = { ...prev.calendar, ...e.data.data.calendar };
-          }
-          if (prev && prev.location && e.data.data.location) {
-            merged.location = { ...prev.location, ...e.data.data.location };
-          }
-          if (prev && prev.dressCode && e.data.data.dressCode) {
-            merged.dressCode = { ...prev.dressCode, ...e.data.data.dressCode };
-          }
-          if (prev && prev.rsvpTelegram && e.data.data.rsvpTelegram) {
-            merged.rsvpTelegram = { ...prev.rsvpTelegram, ...e.data.data.rsvpTelegram };
-          }
-          if (prev && prev.hero && e.data.data.hero) {
-            merged.hero = { ...prev.hero, ...e.data.data.hero };
-          }
-          return merged;
-        });
+        console.log("Iframe INVITATION_PREVIEW_UPDATE received successfully. Data:", e.data.data);
+        setInvitationData((prev) => mergePreviewData(prev, e.data.data));
         setLoading(false);
         setError(false);
       }
     };
 
+    // Expose direct update function for same-origin parent window
+    window.updatePreviewData = (data) => {
+      console.log("Direct updatePreviewData called. Data:", data);
+      setInvitationData((prev) => mergePreviewData(prev, data));
+      setLoading(false);
+      setError(false);
+    };
+
     window.addEventListener("message", handleMessage);
     return () => {
       window.removeEventListener("message", handleMessage);
+      delete window.updatePreviewData;
     };
   }, [isPreview]);
 

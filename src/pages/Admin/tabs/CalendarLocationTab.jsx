@@ -111,7 +111,9 @@ export default function CalendarLocationTab({
   partyIconFile,
   setPartyIconFile,
   partyIconUrl,
-  setPartyIconUrl
+  setPartyIconUrl,
+  ringStyle,
+  setRingStyle,
 }) {
   return (
     <div className="tab-pane">
@@ -136,6 +138,44 @@ export default function CalendarLocationTab({
             setUrl={setCalBgUrl}
             dimensionsInfo="Խորհուրդ է տրվում՝ 1200 x 800px"
           />
+        </div>
+        <div className="form-field" style={{ marginTop: 16 }}>
+          <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 10, display: "block" }}>
+            Մատանու ոճ (Ring Style)
+          </label>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+            {[
+              { key: "classic",  label: "Ոսկի",        emoji: "💍", color: "#ceab6f",  bg: "#fdf8ee", border: "2px solid #ceab6f" },
+              { key: "double",   label: "Կրկնակի",     emoji: "✨", color: "#d4af37",  bg: "#fffbea", border: "2px solid #d4af37" },
+              { key: "rose",     label: "Վարդի",       emoji: "🌹", color: "#c9746b",  bg: "#fff5f4", border: "2px solid #c9746b" },
+              { key: "emerald",  label: "Զմրուխտ",    emoji: "💚", color: "#3d9970",  bg: "#f0fff7", border: "2px solid #3d9970" },
+              { key: "platinum", label: "Պլատին",      emoji: "⭐", color: "#b0b8c1",  bg: "#f5f7f9", border: "2px solid #b0b8c1" },
+              { key: "infinity", label: "Անսահման",   emoji: "♾️", color: "#a855f7",  bg: "#faf5ff", border: "2px solid #a855f7" },
+            ].map(opt => (
+              <button
+                key={opt.key}
+                type="button"
+                onClick={() => setRingStyle(opt.key)}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px",
+                  padding: "10px 6px",
+                  background: ringStyle === opt.key ? opt.bg : "#f9f9f9",
+                  border: ringStyle === opt.key ? opt.border : "2px solid #e2e8f0",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  boxShadow: ringStyle === opt.key ? `0 0 0 1px ${opt.color}40` : "none",
+                }}
+              >
+                <span style={{ fontSize: "1.4rem" }}>{opt.emoji}</span>
+                <span style={{ fontSize: "0.72rem", fontWeight: 600, color: opt.color }}>{opt.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
         <div className="form-field" style={{ marginTop: 10 }}>
           <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "block" }}>

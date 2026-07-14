@@ -1400,3 +1400,34 @@
 .preview-reload-btn:active {
   transform: rotate(180deg) scale(0.95);
 }
+
+.preview-update-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 90%;
+  max-width: 250px;
+  padding: 10px 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1e2d26;
+  background: #d4af37;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+  transition: all 0.25s ease;
+  margin-top: 4px;
+}
+
+.preview-update-btn:hover {
+  background: #e0c04a;
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.35);
+  transform: translateY(-1px);
+}
+
+.preview-update-btn:active {
+  transform: translateY(0);
+}

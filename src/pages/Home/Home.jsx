@@ -126,17 +126,21 @@ export default function Home({ invitationData, isEnvelopeOpened = true }) {
       transition={{ duration: 1.5, ease: "easeInOut" }}
     >
       {/* Աուդիո ֆայլը և կառավարման կոճակը */}
-      <audio ref={audioRef} key={invitationData?.musicUrl || "/wedding-audio.mp3"} loop autoPlay>
-        <source src={invitationData?.musicUrl || "/wedding-audio.mp3"} type="audio/mpeg" />
-        {/* Որպեսզի լինտերը սխալ չտա track-ի բացակայության համար */}
-        <track kind="captions" />
-      </audio>
-      <button 
-        className={`audio-toggle-btn ${isPlaying ? "playing" : ""} ${isScrolling ? "scrolling" : ""}`} 
-        onClick={toggleAudio}
-      >
-        {isPlaying ? <FaMusic size={20} color="#2c3e35" /> : <FaVolumeMute size={22} color="#555" />}
-      </button>
+      {isEnvelopeOpened && (
+        <>
+          <audio ref={audioRef} key={invitationData?.musicUrl || "/wedding-audio.mp3"} loop autoPlay>
+            <source src={invitationData?.musicUrl || "/wedding-audio.mp3"} type="audio/mpeg" />
+            {/* Որպեսզի լինտերը սխալ չտա track-ի բացակայության համար */}
+            <track kind="captions" />
+          </audio>
+          <button 
+            className={`audio-toggle-btn ${isPlaying ? "playing" : ""} ${isScrolling ? "scrolling" : ""}`} 
+            onClick={toggleAudio}
+          >
+            {isPlaying ? <FaMusic size={20} color="#2c3e35" /> : <FaVolumeMute size={22} color="#555" />}
+          </button>
+        </>
+      )}
 
       {/* Լեզվի փոխարկիչը թողնում ենք այստեղ կամ տեղափոխում Navbar */}
       <div className="language-switcher">

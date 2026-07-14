@@ -47,6 +47,17 @@ export default function CalendarSection({ calendarData }) {
   const { currentLang } = useLanguage();
   const t = translations[currentLang];
 
+  // Map ringStyle value to CSS class
+  const ringClassMap = {
+    classic:   "ring-highlight",
+    double:    "ring-highlight-double",
+    rose:      "ring-highlight-rose",
+    emerald:   "ring-highlight-emerald",
+    platinum:  "ring-highlight-platinum",
+    infinity:  "ring-highlight-infinity",
+  };
+  const ringClass = ringClassMap[calendarData?.ringStyle] || "ring-highlight";
+
   // Դինամիկ կամ լռելյայն ամսաթիվ
   const eventDate = useMemo(() => {
     if (calendarData?.eventDate) {
@@ -135,7 +146,7 @@ export default function CalendarSection({ calendarData }) {
                 date.getMonth() === eventDate.getMonth() &&
                 date.getFullYear() === eventDate.getFullYear()
               ) {
-                return <div className="ring-highlight"></div>; // Մատանիի էֆեկտը
+                return <div className={ringClass}></div>; // Մատանիի էֆեկտը
               }
               return null;
             }}

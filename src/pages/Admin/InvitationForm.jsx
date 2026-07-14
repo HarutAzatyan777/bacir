@@ -104,6 +104,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   const [eventDate, setEventDate] = useState("");
   const [calBgFile, setCalBgFile] = useState(null);
   const [calBgUrl, setCalBgUrl] = useState("");
+  const [calRingStyle, setCalRingStyle] = useState("classic");
 
   // Location - Church
   const [churchTitleAm, setChurchTitleAm] = useState("ԵԿԵՂԵՑԻ");
@@ -244,6 +245,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setEventDate(data.calendar?.eventDate ? data.calendar.eventDate.substring(0, 16) : "");
         setCalBgUrl(data.calendar?.bgUrl || "");
         setCalTextColor(data.calendar?.textColor || "#ffffff");
+        setCalRingStyle(data.calendar?.ringStyle || "classic");
         setIntroType(data.introType || "envelope");
 
         // Church
@@ -385,8 +387,17 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   };
 
   const triggerPreviewUpdate = () => {
+    console.log("triggerPreviewUpdate called");
     const iframe = document.querySelector(".preview-iframe");
-    if (!iframe || !iframe.contentWindow) return;
+    console.log("iframe selector result:", iframe);
+    if (!iframe) {
+      console.warn("No iframe found with .preview-iframe class");
+      return;
+    }
+    if (!iframe.contentWindow) {
+      console.warn("Iframe has no contentWindow");
+      return;
+    }
 
     const currentDoc = {
       eventName,
@@ -424,6 +435,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         eventDate: eventDate ? new Date(eventDate).toISOString() : "",
         bgUrl: calBgUrl,
         textColor: calTextColor,
+        ringStyle: calRingStyle,
       },
       location: {
         title: { 
@@ -469,33 +481,21 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       },
     };
 
-    iframe.contentWindow.postMessage({
-      type: "INVITATION_PREVIEW_UPDATE",
-      data: currentDoc
-    }, window.location.origin);
-  };
+    console.log("Sending INVITATION_PREVIEW_UPDATE...");
 
-  useEffect(() => {
-    triggerPreviewUpdate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    eventName, eventType, sealInitials, sealColor, sealShape, musicUrl,
-    envelopeBgUrl, envelopeBgColor, envelopeTextColor, envelopeTextFont,
-    loadingBgColor, introType, sections, primaryColor, accentColor,
-    bgColor, textColor, sectionPadding, containerWidth, fontMain,
-    heroNamesAm, heroNamesRu, heroNamesEn, heroTitleAm, heroTitleRu, heroTitleEn,
-    heroBgMobileUrl, heroBgDesktopUrl,
-    calTitleAm, calTitleRu, calTitleEn, calIntroAm, calIntroRu, calIntroEn,
-    calInviteAm, calInviteRu, calInviteEn, eventDate, calBgUrl, calTextColor,
-    showChurch, churchTitleAm, churchTitleRu, churchTitleEn, churchNameAm, churchNameRu, churchNameEn,
-    churchAddr1Am, churchAddr1Ru, churchAddr1En, churchAddr2Am, churchAddr2Ru, churchAddr2En,
-    churchTime, churchMapLink, churchIconUrl,
-    showParty, partyTitleAm, partyTitleRu, partyTitleEn, partyNameAm, partyNameRu, partyNameEn,
-    partyAddrExtraAm, partyAddrExtraRu, partyAddrExtraEn, partyAddr1Am, partyAddr1Ru, partyAddr1En,
-    partyAddr2Am, partyAddr2Ru, partyAddr2En, partyTime, partyMapLink, partyIconUrl,
-    locBgUrl, locTextColor, galleryUrls, showDressCode, dressDescAm, dressDescRu, dressDescEn,
-    dressColors, rsvpDeadline, hosts, previewKey
-  ]);
+    // Try direct function call first (same-origin, most reliable)
+    if (typeof iframe.contentWindow.updatePreviewData === "function") {
+      console.log("Using direct updatePreviewData()");
+      iframe.contentWindow.updatePreviewData(currentDoc);
+    } else {
+      // Fall back to postMessage
+      console.log("updatePreviewData not found, using postMessage");
+      iframe.contentWindow.postMessage({
+        type: "INVITATION_PREVIEW_UPDATE",
+        data: currentDoc
+      }, "*");
+    }
+  };
 
   const handleAddColor = () => {
     if (!dressColors.includes(newColor)) {
@@ -685,6 +685,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           eventDate: eventDate ? new Date(eventDate).toISOString() : "",
           bgUrl: finalCalBg,
           textColor: calTextColor,
+          ringStyle: calRingStyle,
         },
         location: {
           title: { 
@@ -1056,6 +1057,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           setPartyIconFile={setPartyIconFile}
           partyIconUrl={partyIconUrl}
           setPartyIconUrl={setPartyIconUrl}
+          ringStyle={calRingStyle}
+          setRingStyle={setCalRingStyle}
         />
       )
     },
@@ -1313,6 +1316,13 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                 </div>
               )}
             </div>
+            <button
+              type="button"
+              className="preview-update-btn"
+              onClick={triggerPreviewUpdate}
+            >
+              <SyncOutlined /> Թարմացնել նախադիտումը / Update Preview
+            </button>
             <Text type="secondary" className="preview-panel-hint">
               Կենդանի Նախադիտում / Live Preview<br />
               (Քաշեք նկարը հեռախոսի վրա՝ փոխելու համար / Drag & Drop to change)

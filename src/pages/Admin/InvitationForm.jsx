@@ -358,14 +358,6 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       if (!heroTitleAm || heroTitleAm === "Հարսանյաց Օր" || heroTitleAm === "Ծննդյան Օր") setHeroTitleAm("Սուրբ Կնունք");
       if (!heroTitleRu || heroTitleRu === "День Свадьбы" || heroTitleRu === "День Рождения") setHeroTitleRu("Святое Крещение");
       if (!heroTitleEn || heroTitleEn === "Wedding Day" || heroTitleEn === "Birthday Party") setHeroTitleEn("Holy Baptism");
-      
-      if (!churchTitleAm || churchTitleAm === "ԵԿԵՂԵՑԻ") setChurchTitleAm("ԵԿԵՂԵՑԻ");
-      if (!churchTitleRu || churchTitleRu === "ЦЕРКОВЬ") setChurchTitleRu("ЦЕРКОВЬ");
-      if (!churchTitleEn || churchTitleEn === "CHURCH") setChurchTitleEn("CHURCH");
-      
-      if (!partyTitleAm || partyTitleAm === "ՌԵՍՏՈՐԱՆ" || partyTitleAm === "ՄԻՋՈՑԱՌՄԱՆ ՍՐԱՀ") setPartyTitleAm("ՀԱՑԿԵՐՈՒՅԹ");
-      if (!partyTitleRu || partyTitleRu === "РЕСТОРАН" || partyTitleRu === "БАНԿЕТНЫЙ ЗАЛ") setPartyTitleRu("ЗАСТОЛЬԵ");
-      if (!partyTitleEn || partyTitleEn === "RESTAURANT" || partyTitleEn === "BANQUET HALL") setPartyTitleEn("RECEPTION");
     }
   };
 
@@ -391,6 +383,119 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
       }
     }
   };
+
+  const triggerPreviewUpdate = () => {
+    const iframe = document.querySelector(".preview-iframe");
+    if (!iframe || !iframe.contentWindow) return;
+
+    const currentDoc = {
+      eventName,
+      eventType,
+      sealInitials,
+      sealColor,
+      sealShape,
+      musicUrl,
+      envelopeBgUrl,
+      envelopeBgColor,
+      envelopeTextColor,
+      envelopeTextFont,
+      loadingBgColor,
+      introType,
+      sections,
+      theme: {
+        primaryColor,
+        accentColor,
+        bgColor,
+        textColor,
+        sectionPadding,
+        containerWidth,
+        fontMain
+      },
+      hero: {
+        names: { am: heroNamesAm, ru: heroNamesRu, en: heroNamesEn },
+        title: { am: heroTitleAm, ru: heroTitleRu, en: heroTitleEn },
+        bgMobileUrl: heroBgMobileUrl,
+        bgDesktopUrl: heroBgDesktopUrl,
+      },
+      calendar: {
+        title: { am: calTitleAm, ru: calTitleRu, en: calTitleEn },
+        intro: { am: calIntroAm, ru: calIntroRu, en: calIntroEn },
+        invite: { am: calInviteAm, ru: calInviteRu, en: calInviteEn },
+        eventDate: eventDate ? new Date(eventDate).toISOString() : "",
+        bgUrl: calBgUrl,
+        textColor: calTextColor,
+      },
+      location: {
+        title: { 
+          am: churchTitleAm === "ԵԿԵՂԵՑԻ" ? "Տեղը և ժամանակացույցը" : "Место и расписание", 
+          ru: "Место и расписание",
+          en: "Location & Schedule"
+        },
+        church: {
+          show: showChurch,
+          title: { am: churchTitleAm, ru: churchTitleRu, en: churchTitleEn },
+          name: { am: churchNameAm, ru: churchNameRu, en: churchNameEn },
+          address1: { am: churchAddr1Am, ru: churchAddr1Ru, en: churchAddr1En },
+          address2: { am: churchAddr2Am, ru: churchAddr2Ru, en: churchAddr2En },
+          time: churchTime,
+          mapLink: churchMapLink,
+          iconUrl: churchIconUrl,
+        },
+        party: {
+          show: showParty,
+          title: { am: partyTitleAm, ru: partyTitleRu, en: partyTitleEn },
+          name: { am: partyNameAm, ru: partyNameRu, en: partyNameEn },
+          addressExtra: { am: partyAddrExtraAm, ru: partyAddrExtraRu, en: partyAddrExtraEn },
+          address1: { am: partyAddr1Am, ru: partyAddr1Ru, en: partyAddr1En },
+          address2: { am: partyAddr2Am, ru: partyAddr2Ru, en: partyAddr2En },
+          time: partyTime,
+          mapLink: partyMapLink,
+          iconUrl: partyIconUrl,
+        },
+        bgUrl: locBgUrl,
+        textColor: locTextColor,
+      },
+      gallery: {
+        images: galleryUrls,
+      },
+      dressCode: {
+        show: showDressCode,
+        description: { am: dressDescAm, ru: dressDescRu, en: dressDescEn },
+        colors: dressColors,
+      },
+      rsvp: {
+        deadline: rsvpDeadline,
+        hosts: hosts,
+      },
+    };
+
+    iframe.contentWindow.postMessage({
+      type: "INVITATION_PREVIEW_UPDATE",
+      data: currentDoc
+    }, window.location.origin);
+  };
+
+  useEffect(() => {
+    triggerPreviewUpdate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    eventName, eventType, sealInitials, sealColor, sealShape, musicUrl,
+    envelopeBgUrl, envelopeBgColor, envelopeTextColor, envelopeTextFont,
+    loadingBgColor, introType, sections, primaryColor, accentColor,
+    bgColor, textColor, sectionPadding, containerWidth, fontMain,
+    heroNamesAm, heroNamesRu, heroNamesEn, heroTitleAm, heroTitleRu, heroTitleEn,
+    heroBgMobileUrl, heroBgDesktopUrl,
+    calTitleAm, calTitleRu, calTitleEn, calIntroAm, calIntroRu, calIntroEn,
+    calInviteAm, calInviteRu, calInviteEn, eventDate, calBgUrl, calTextColor,
+    showChurch, churchTitleAm, churchTitleRu, churchTitleEn, churchNameAm, churchNameRu, churchNameEn,
+    churchAddr1Am, churchAddr1Ru, churchAddr1En, churchAddr2Am, churchAddr2Ru, churchAddr2En,
+    churchTime, churchMapLink, churchIconUrl,
+    showParty, partyTitleAm, partyTitleRu, partyTitleEn, partyNameAm, partyNameRu, partyNameEn,
+    partyAddrExtraAm, partyAddrExtraRu, partyAddrExtraEn, partyAddr1Am, partyAddr1Ru, partyAddr1En,
+    partyAddr2Am, partyAddr2Ru, partyAddr2En, partyTime, partyMapLink, partyIconUrl,
+    locBgUrl, locTextColor, galleryUrls, showDressCode, dressDescAm, dressDescRu, dressDescEn,
+    dressColors, rsvpDeadline, hosts, previewKey
+  ]);
 
   const handleAddColor = () => {
     if (!dressColors.includes(newColor)) {
@@ -1187,6 +1292,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
                   title="Live Preview"
                   className="preview-iframe"
                   scrolling="no"
+                  onLoad={triggerPreviewUpdate}
                 />
               </div>
               <div className="iphone-btn volume-up"></div>

@@ -86,6 +86,61 @@ export default function InvitationLoader() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, [isPreview]);
+  
+  // Prevent scrolling while envelope is active and scroll to top when it starts opening / unmounts
+  useEffect(() => {
+    if (!isEnvelopeRemoved) {
+      window.scrollTo(0, 0);
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow || "";
+      };
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [isEnvelopeRemoved, isEnvelopeOpened]);
+
+  useEffect(() => {
+    if (!isPreview) return;
+
+    const handleMessage = (e) => {
+      if (e.origin !== window.location.origin) return;
+
+      if (e.data && e.data.type === "INVITATION_PREVIEW_UPDATE") {
+        setInvitationData((prev) => {
+          const merged = { ...prev, ...e.data.data };
+          // Ensure nested objects merge properly instead of getting overwritten
+          if (prev && prev.theme && e.data.data.theme) {
+            merged.theme = { ...prev.theme, ...e.data.data.theme };
+          }
+          if (prev && prev.calendar && e.data.data.calendar) {
+            merged.calendar = { ...prev.calendar, ...e.data.data.calendar };
+          }
+          if (prev && prev.location && e.data.data.location) {
+            merged.location = { ...prev.location, ...e.data.data.location };
+          }
+          if (prev && prev.dressCode && e.data.data.dressCode) {
+            merged.dressCode = { ...prev.dressCode, ...e.data.data.dressCode };
+          }
+          if (prev && prev.rsvpTelegram && e.data.data.rsvpTelegram) {
+            merged.rsvpTelegram = { ...prev.rsvpTelegram, ...e.data.data.rsvpTelegram };
+          }
+          if (prev && prev.hero && e.data.data.hero) {
+            merged.hero = { ...prev.hero, ...e.data.data.hero };
+          }
+          return merged;
+        });
+        setLoading(false);
+        setError(false);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, [isPreview]);
 
   useEffect(() => {
     const fetchInvitation = async () => {

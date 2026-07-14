@@ -1,0 +1,197 @@
+/* GatefoldIntro.css */
+
+.gatefold-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.gatefold-stage.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Loading Overlay */
+.gatefold-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--loading-bg, #1c1c1c);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease;
+}
+
+.gatefold-loading-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gatefold-loading-content {
+  text-align: center;
+  color: #d4af37;
+}
+
+.gatefold-loading-spinner {
+  font-size: 2.2rem;
+  animation: gatefold-spin 1.2s linear infinite;
+  margin-bottom: 12px;
+}
+
+.gatefold-loading-text {
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@keyframes gatefold-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Instruction Text */
+.gatefold-instruction {
+  position: absolute;
+  top: 15%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  z-index: 10;
+  cursor: pointer;
+  animation: gatefoldFloat 2.5s ease-in-out infinite;
+}
+
+.gatefold-instruction p {
+  margin: 0;
+  font-weight: 300;
+}
+
+.gatefold-instruction .accent-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: #d4af37;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+@keyframes gatefoldFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* 3D Gatefold Wrapper */
+.gatefold-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  perspective: 1200px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* 3D Doors */
+.gatefold-door {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  z-index: 4;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.door-panel-inner {
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  margin: 12px;
+  position: relative;
+}
+
+.door-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.door-left {
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  border-right: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.door-right {
+  transform-origin: right center;
+  transform: rotateY(0deg);
+  border-left: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+/* Middle lock / Monogram Plate */
+.gatefold-lock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  cursor: pointer;
+  transition: all 0.6s ease;
+}
+
+.lock-plate {
+  width: 64px;
+  height: 64px;
+  background: radial-gradient(circle, #e5c158 0%, #b28a2a 100%);
+  border-radius: 4px;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+
+.lock-monogram {
+  transform: rotate(-45deg);
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Opening Animations */
+.gatefold-stage.open .door-left {
+  transform: rotateY(-115deg);
+}
+
+.gatefold-stage.open .door-right {
+  transform: rotateY(115deg);
+}
+
+.gatefold-stage.open .gatefold-lock {
+  transform: translate(-50%, -50%) scale(0) rotate(225deg);
+  opacity: 0;
+}

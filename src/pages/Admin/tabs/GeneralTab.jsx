@@ -64,7 +64,9 @@ export default function GeneralTab({
   envelopeTextFont,
   setEnvelopeTextFont,
   loadingBgColor,
-  setLoadingBgColor
+  setLoadingBgColor,
+  introType,
+  setIntroType
 }) {
   return (
     <div className="tab-pane">
@@ -185,6 +187,25 @@ export default function GeneralTab({
           <AudioOutlined style={{ color: "#2c3e35", marginRight: 8 }} /> Ծրար և Երաժշտություն / Envelope & Music
         </div>
         <div className="form-grid">
+          <div className="form-field full-width">
+            <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "flex", alignItems: "center", gap: "6px" }}>
+              <SyncOutlined style={{ color: "#d4af37" }} /> Բացման էֆեկտ / Opening Intro Effect
+            </label>
+            <Select
+              value={introType || "envelope"}
+              onChange={setIntroType}
+              size="large"
+              style={{ width: "100%" }}
+            >
+              <Option value="envelope">Նամակ / Ծրար (Envelope Reveal)</Option>
+              <Option value="gift_box">Նվեր Տուփ (Gift Box Reveal)</Option>
+              <Option value="scroll">Մագաղաթ (Wax Seal Scroll)</Option>
+              <Option value="curtain">Վարագույր (Velvet Curtain Reveal)</Option>
+              <Option value="splash">Մինիմալիստական (Typography Splash)</Option>
+              <Option value="gatefold">Երկփեղկ Դռներ (3D Gatefold Doors)</Option>
+            </Select>
+          </div>
+
           <div className="form-field full-width">
             <label style={{ fontWeight: 600, color: "#2c3e35", marginBottom: 8, display: "flex", alignItems: "center", gap: "6px" }}>
               <AudioOutlined style={{ color: "#d4af37" }} /> Երաժշտության URL (Music file link or path)

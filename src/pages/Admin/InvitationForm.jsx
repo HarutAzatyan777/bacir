@@ -3,7 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../../firebase";
 import { Modal, Spin, Typography, message } from "antd";
-import { SaveOutlined, SettingOutlined, AppstoreOutlined, BgColorsOutlined, PictureOutlined, CalendarOutlined, CameraOutlined, SkinOutlined, SendOutlined } from "@ant-design/icons";
+import { SaveOutlined, SettingOutlined, AppstoreOutlined, BgColorsOutlined, PictureOutlined, CalendarOutlined, CameraOutlined, SkinOutlined, SendOutlined, LeftOutlined, RightOutlined, EyeOutlined, SyncOutlined } from "@ant-design/icons";
 import "./InvitationForm.css";
 
 // Sub-tab Components
@@ -20,10 +20,23 @@ const { Text } = Typography;
 
 export default function InvitationForm({ mode, invitationId, onSuccess, onCancel }) {
   const [activeTab, setActiveTab] = useState("general");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
   const [isDraggingOverPhone, setIsDraggingOverPhone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [navPage, setNavPage] = useState(1);
+  const [introType, setIntroType] = useState("envelope");
+
+  // Automatically switch navPage on mobile when activeTab changes
+  useEffect(() => {
+    const page2Tabs = ["gallery", "dress_code", "rsvp_telegram"];
+    if (page2Tabs.includes(activeTab)) {
+      setNavPage(2);
+    } else {
+      setNavPage(1);
+    }
+  }, [activeTab]);
 
   // Form states
   const [slug, setSlug] = useState("");
@@ -231,6 +244,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         setEventDate(data.calendar?.eventDate ? data.calendar.eventDate.substring(0, 16) : "");
         setCalBgUrl(data.calendar?.bgUrl || "");
         setCalTextColor(data.calendar?.textColor || "#ffffff");
+        setIntroType(data.introType || "envelope");
 
         // Church
         setShowChurch(data.location?.church?.show !== false);
@@ -362,6 +376,20 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
     const storageRef = ref(storage, `invitations/${cleanSlug}/${folder}/${Date.now()}_${file.name}`);
     const snapshot = await uploadBytes(storageRef, file);
     return await getDownloadURL(snapshot.ref);
+  };
+
+  const handleIntroTypeChange = async (type) => {
+    setIntroType(type);
+    const cleanSlug = slug.trim().toLowerCase();
+    if (cleanSlug) {
+      try {
+        const docRef = doc(db, "invitations", cleanSlug);
+        await setDoc(docRef, { introType: type }, { merge: true });
+        setPreviewKey(prev => prev + 1);
+      } catch (err) {
+        console.error("Error auto-updating introType for preview:", err);
+      }
+    }
   };
 
   const handleAddColor = () => {
@@ -527,6 +555,7 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
         envelopeTextColor: envelopeTextColor,
         envelopeTextFont: envelopeTextFont,
         loadingBgColor: loadingBgColor,
+        introType,
         ownerId: auth.currentUser ? auth.currentUser.uid : null,
         sections,
         theme: {
@@ -737,6 +766,8 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           setEnvelopeTextFont={setEnvelopeTextFont}
           loadingBgColor={loadingBgColor}
           setLoadingBgColor={setLoadingBgColor}
+          introType={introType}
+          setIntroType={handleIntroTypeChange}
         />
       )
     },
@@ -989,16 +1020,58 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
   ];
 
   return (
-    <div className="form-editor-root">
+    <div className={`form-editor-root ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
+
+      {/* Mobile Top Header */}
+      <div className="mobile-top-header">
+        <button type="button" className="mobile-header-btn cancel" onClick={onCancel}>
+          ✕
+        </button>
+        <span className="mobile-header-title">
+          {tabItems.find(t => t.key === activeTab)?.label}
+        </span>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          {slug && (
+            <button
+              type="button"
+              className="mobile-header-btn preview-btn-mobile"
+              onClick={() => window.open(`/i/${slug}?preview=true`, "_blank")}
+              title="Նախադիտում / Live Preview"
+            >
+              <EyeOutlined />
+            </button>
+          )}
+          <button
+            type="button"
+            className="mobile-header-btn save"
+            onClick={handleSubmit}
+            disabled={saving}
+          >
+            {saving ? "..." : <SaveOutlined />}
+          </button>
+        </div>
+      </div>
 
       {/* ── Left Sidebar ── */}
       <aside className="editor-sidebar">
+        <button
+          type="button"
+          className="sidebar-collapse-toggle"
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          title={isSidebarCollapsed ? "Բացել կողային վահանակը / Expand Sidebar" : "Փակել կողային վահանակը / Collapse Sidebar"}
+        >
+          {isSidebarCollapsed ? <RightOutlined /> : <LeftOutlined />}
+        </button>
+
         <div className="sidebar-header">
-          <span className="sidebar-brand">✦ BACIR</span>
-          <span className="sidebar-mode">{mode === "create" ? "Ստեղծել" : "Խմբագրել"}</span>
+          <span className="sidebar-brand">✦ {!isSidebarCollapsed && "BACIR"}</span>
+          {!isSidebarCollapsed && (
+            <span className="sidebar-mode">{mode === "create" ? "Ստեղծել" : "Խմբագրել"}</span>
+          )}
         </div>
 
-        <nav className="sidebar-nav">
+        {/* Desktop Navigation (hidden on mobile) */}
+        <nav className="sidebar-nav desktop-nav">
           {tabItems.map(item => (
             <button
               key={item.key}
@@ -1011,33 +1084,84 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
           ))}
         </nav>
 
+        {/* Mobile Group Navigation (hidden on desktop) */}
+        <nav className="sidebar-nav mobile-nav">
+          {navPage === 1 ? (
+            <>
+              {tabItems.slice(0, 5).map(item => (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={`sidebar-tab-btn ${activeTab === item.key ? "active" : ""}`}
+                  onClick={() => setActiveTab(item.key)}
+                >
+                  <span className="sidebar-tab-icon">{item.icon}</span>
+                </button>
+              ))}
+              <button
+                type="button"
+                className="sidebar-tab-btn nav-arrow-btn"
+                onClick={() => setNavPage(2)}
+                title="Հաջորդը / Next"
+              >
+                <span className="sidebar-tab-icon"><RightOutlined /></span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="sidebar-tab-btn nav-arrow-btn"
+                onClick={() => setNavPage(1)}
+                title="Նախորդը / Previous"
+              >
+                <span className="sidebar-tab-icon"><LeftOutlined /></span>
+              </button>
+              {tabItems.slice(5).map(item => (
+                <button
+                  key={item.key}
+                  type="button"
+                  className={`sidebar-tab-btn ${activeTab === item.key ? "active" : ""}`}
+                  onClick={() => setActiveTab(item.key)}
+                >
+                  <span className="sidebar-tab-icon">{item.icon}</span>
+                </button>
+              ))}
+              {/* Maintain flex item alignments */}
+              <div style={{ flex: 1 }} />
+              <div style={{ flex: 1 }} />
+            </>
+          )}
+        </nav>
+
         <div className="sidebar-actions">
+          {slug && (
+            <button
+              type="button"
+              className="sidebar-btn sidebar-btn-preview"
+              onClick={() => window.open(`/i/${slug}?preview=true`, "_blank")}
+              title="Նախադիտում / Live Preview"
+            >
+              <EyeOutlined />
+              <span>Նախադիտում</span>
+            </button>
+          )}
           <button
             className="sidebar-btn sidebar-btn-save"
             onClick={handleSubmit}
             disabled={saving}
           >
             <SaveOutlined />
-            <span>{saving ? "..." : "Պahel"}</span>
+            <span>{saving ? "..." : "Պահել"}</span>
           </button>
           <button className="sidebar-btn sidebar-btn-cancel" onClick={onCancel}>
-            ✕ Ետ
+            ✕ <span>Ետ</span>
           </button>
         </div>
       </aside>
 
       {/* ── Main Content ── */}
       <div className="creator-workspace-container">
-        <div className="creator-form-panel">
-          <div className="creator-tab-content">
-            <div className="tab-content-header">
-              <span className="tab-content-icon">{tabItems.find(t => t.key === activeTab)?.icon}</span>
-              <h2 className="tab-content-title">{tabItems.find(t => t.key === activeTab)?.label}</h2>
-            </div>
-            {tabItems.find(t => t.key === activeTab)?.children}
-          </div>
-        </div>
-
         {/* Fixed Phone Preview */}
         {slug && (
           <div
@@ -1046,6 +1170,14 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             onDragLeave={() => setIsDraggingOverPhone(false)}
             onDrop={handlePhoneDrop}
           >
+            <button
+              type="button"
+              className="preview-reload-btn"
+              onClick={() => setPreviewKey(prev => prev + 1)}
+              title="Թարմացնել նախադիտումը / Reload Preview"
+            >
+              <SyncOutlined />
+            </button>
             <div className="iphone-17-frame">
               <div className="dynamic-island"></div>
               <div className="iphone-screen">
@@ -1081,6 +1213,17 @@ export default function InvitationForm({ mode, invitationId, onSuccess, onCancel
             </Text>
           </div>
         )}
+
+        <div className={`creator-form-panel ${slug ? "has-preview" : ""}`}>
+          <div className="creator-tab-content">
+            <div className="tab-content-header">
+              <span className="tab-content-icon">{tabItems.find(t => t.key === activeTab)?.icon}</span>
+              <h2 className="tab-content-title">{tabItems.find(t => t.key === activeTab)?.label}</h2>
+            </div>
+
+            {tabItems.find(t => t.key === activeTab)?.children}
+          </div>
+        </div>
       </div>
     </div>
   );

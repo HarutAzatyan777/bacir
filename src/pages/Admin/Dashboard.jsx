@@ -102,6 +102,33 @@ export default function Dashboard() {
     );
   }
 
+  if (view === "create") {
+    return (
+      <InvitationForm
+        mode="create"
+        onSuccess={() => {
+          setView("list");
+          fetchInvitations();
+        }}
+        onCancel={() => setView("list")}
+      />
+    );
+  }
+
+  if (view === "edit") {
+    return (
+      <InvitationForm
+        mode="edit"
+        invitationId={selectedId}
+        onSuccess={() => {
+          setView("list");
+          fetchInvitations();
+        }}
+        onCancel={() => setView("list")}
+      />
+    );
+  }
+
   return (
     <div className="dashboard-container">
       {/* Sidebar / Header */}
@@ -249,28 +276,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {view === "create" && (
-          <InvitationForm
-            mode="create"
-            onSuccess={() => {
-              setView("list");
-              fetchInvitations();
-            }}
-            onCancel={() => setView("list")}
-          />
-        )}
 
-        {view === "edit" && (
-          <InvitationForm
-            mode="edit"
-            invitationId={selectedId}
-            onSuccess={() => {
-              setView("list");
-              fetchInvitations();
-            }}
-            onCancel={() => setView("list")}
-          />
-        )}
 
         {view === "rsvps" && (
           <RsvpList

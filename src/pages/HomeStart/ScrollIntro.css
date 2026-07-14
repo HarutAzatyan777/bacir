@@ -1,0 +1,250 @@
+/* ScrollIntro.css */
+
+.scroll-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.scroll-stage.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Loading Overlay */
+.scroll-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--loading-bg, #2c3a1c);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease;
+}
+
+.scroll-loading-overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-loading-content {
+  text-align: center;
+  color: #d4af37;
+}
+
+.scroll-loading-spinner {
+  font-size: 2.2rem;
+  animation: scroll-spin 1.2s linear infinite;
+  margin-bottom: 12px;
+}
+
+.scroll-loading-text {
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@keyframes scroll-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Instruction Text */
+.scroll-instruction {
+  position: absolute;
+  top: 18%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Noto Serif Armenian', Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  z-index: 10;
+  cursor: pointer;
+  animation: scrollFloat 2.5s ease-in-out infinite;
+}
+
+.scroll-instruction p {
+  margin: 0;
+  font-weight: 300;
+}
+
+.scroll-instruction .accent-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: #d4af37;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+@keyframes scrollFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Scroll Wrapper */
+.scroll-wrapper {
+  position: relative;
+  width: 320px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* Scroll Paper */
+.scroll-content-paper {
+  position: relative;
+  width: 0;
+  height: 180px;
+  background: #fcf9f2;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05), 0 8px 25px rgba(0,0,0,0.15);
+  border-top: 2px solid #e5d9c2;
+  border-bottom: 2px solid #e5d9c2;
+  overflow: hidden;
+  z-index: 4;
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-paper-inner {
+  border: 1px dashed rgba(212, 175, 55, 0.4);
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+.scroll-monogram {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2rem;
+  color: #2c3e35;
+  line-height: 1;
+}
+
+.scroll-divider {
+  width: 40px;
+  height: 1px;
+  background: #d4af37;
+  margin: 8px 0;
+}
+
+.scroll-invite-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Scroll Rollers (left and right cylinders) */
+.scroll-roller {
+  position: absolute;
+  width: 24px;
+  height: 210px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-left {
+  left: 148px;
+}
+
+.scroll-right {
+  right: 148px;
+}
+
+.roller-body {
+  width: 14px;
+  flex: 1;
+  background: linear-gradient(to right, #cfb78f 0%, #e7d8bd 30%, #e7d8bd 70%, #cfb78f 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.roller-handle {
+  width: 22px;
+  height: 12px;
+  background: radial-gradient(circle, #e5c158 0%, #b28a2a 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Wax Seal holding scroll in center */
+.scroll-wax-seal {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  transform: scale(1);
+}
+
+.scroll-wax-seal:hover {
+  transform: scale(1.05);
+}
+
+.wax-seal-inner {
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif Armenian', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Opening Animations */
+.scroll-stage.open .scroll-left {
+  transform: translateX(-120px);
+}
+
+.scroll-stage.open .scroll-right {
+  transform: translateX(120px);
+}
+
+.scroll-stage.open .scroll-content-paper {
+  width: 216px;
+  opacity: 1;
+}
+
+.scroll-stage.open .scroll-wax-seal {
+  transform: scale(0);
+  opacity: 0;
+}

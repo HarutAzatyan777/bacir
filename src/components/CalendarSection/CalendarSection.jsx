@@ -88,10 +88,9 @@ export default function CalendarSection({ calendarData }) {
       className="calendar-section"
       data-aos="fade-up"
     >
-      <img
-        src={bgImg}
-        alt=""
-        className="calendar-bg-img"
+      <div
+        className="calendar-bg-overlay"
+        style={{ backgroundImage: `url(${bgImg})` }}
       />
       
       <div className="calendar-content">

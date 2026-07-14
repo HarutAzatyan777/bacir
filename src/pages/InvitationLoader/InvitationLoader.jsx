@@ -3,6 +3,11 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import EnvelopeIntro from "../HomeStart/EnvelopeIntro";
+import GiftBoxIntro from "../HomeStart/GiftBoxIntro";
+import ScrollIntro from "../HomeStart/ScrollIntro";
+import CurtainIntro from "../HomeStart/CurtainIntro";
+import SplashIntro from "../HomeStart/SplashIntro";
+import GatefoldIntro from "../HomeStart/GatefoldIntro";
 import Home from "../Home/Home";
 import "./InvitationLoader.css";
 
@@ -138,24 +143,48 @@ export default function InvitationLoader() {
     );
   }
 
+  const renderIntro = () => {
+    const props = {
+      onStartOpen: () => setIsEnvelopeOpened(true),
+      onOpen: () => setIsEnvelopeRemoved(true),
+      sealInitials: invitationData.sealInitials || "RL",
+      heroBgMobile: invitationData.hero?.bgMobileUrl,
+      heroBgDesktop: invitationData.hero?.bgDesktopUrl,
+      envelopeBgUrl: invitationData.envelopeBgUrl,
+      envelopeBgColor: invitationData.envelopeBgColor,
+      loadingBgColor: invitationData.loadingBgColor,
+      envelopeTextColor: invitationData.envelopeTextColor,
+      envelopeTextFont: invitationData.envelopeTextFont
+    };
+
+    switch (invitationData.introType) {
+      case "gift_box":
+        return <GiftBoxIntro {...props} />;
+      case "scroll":
+        return <ScrollIntro {...props} sealColor={invitationData.sealColor} />;
+      case "curtain":
+        return <CurtainIntro {...props} />;
+      case "splash":
+        return <SplashIntro {...props} />;
+      case "gatefold":
+        return <GatefoldIntro {...props} />;
+      default:
+        return (
+          <EnvelopeIntro
+            {...props}
+            envelopeBgUrl={invitationData.envelopeBgUrl}
+            sealColor={invitationData.sealColor}
+            sealShape={invitationData.sealShape}
+          />
+        );
+    }
+  };
+
   if (!isEnvelopeRemoved) {
     return (
       <div className="invitation-main-container" style={{ position: "relative", minHeight: "100vh" }}>
         <Home invitationData={invitationData} isEnvelopeOpened={isEnvelopeOpened} />
-        <EnvelopeIntro
-          onStartOpen={() => setIsEnvelopeOpened(true)}
-          onOpen={() => setIsEnvelopeRemoved(true)}
-          sealInitials={invitationData.sealInitials || "RL"}
-          heroBgMobile={invitationData.hero?.bgMobileUrl}
-          heroBgDesktop={invitationData.hero?.bgDesktopUrl}
-          envelopeBgUrl={invitationData.envelopeBgUrl}
-          envelopeBgColor={invitationData.envelopeBgColor}
-          loadingBgColor={invitationData.loadingBgColor}
-          sealColor={invitationData.sealColor}
-          sealShape={invitationData.sealShape}
-          envelopeTextColor={invitationData.envelopeTextColor}
-          envelopeTextFont={invitationData.envelopeTextFont}
-        />
+        {renderIntro()}
       </div>
     );
   }

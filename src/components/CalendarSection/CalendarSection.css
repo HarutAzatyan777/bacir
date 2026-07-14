@@ -12,14 +12,16 @@
   font-family: 'Noto Serif Armenian', sans-serif;
 }
 
-/* Calendar Background Image */
-.calendar-bg-img {
+/* Calendar Background Overlay */
+.calendar-bg-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 0;
   opacity: 0.6;
 }
